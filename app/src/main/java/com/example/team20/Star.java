@@ -1,2 +1,5 @@
-package com.example.team20;public class Star {
+package com.example.team20;
+
+public class Star extends Shape {
+
 }
