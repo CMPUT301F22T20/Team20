@@ -2,4 +2,5 @@
 
 | name  |  ccid  |  github user name  |
 |:-----:|:------:|:------------------:|
- |  Ian  | igauk  |       Igauk        |
+|  Ian  | igauk  |       Igauk        |
+| Elena | earnold|    ElenaArnold     | 
