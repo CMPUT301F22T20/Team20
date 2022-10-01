@@ -2,5 +2,7 @@
 
 | name  |  ccid  |  github user name  |
 |:-----:|:------:|:------------------:|
- |  Ian  | igauk  |       Igauk        |
- | Boyuan| btao1  |      btao732       |
+|  Ian  | igauk  |       Igauk        |
+| Elena | earnold|    ElenaArnold     |
+| Boyuan| btao1  |    btao732         | 
+
