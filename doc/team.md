@@ -5,4 +5,5 @@
 |  Ian  | igauk  |       Igauk        |
 | Elena | earnold|    ElenaArnold     |
 | Boyuan| btao1  |    btao732         | 
+| Sidharth| sr11 | SidharthSrinivasan |
 
