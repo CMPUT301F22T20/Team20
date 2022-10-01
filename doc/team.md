@@ -3,4 +3,6 @@
 | name  |  ccid  |  github user name  |
 |:-----:|:------:|:------------------:|
 |  Ian  | igauk  |       Igauk        |
-| Elena | earnold|    ElenaArnold     | 
+| Elena | earnold|    ElenaArnold     |
+| Boyuan| btao1  |    btao732         | 
+
