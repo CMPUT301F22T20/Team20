@@ -5,59 +5,60 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/ingredientDescription"
+        android:id="@+id/textIngredientDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/duru_sans"
         android:paddingTop="20dp"
         android:paddingLeft="10dp"
-        android:text="Description"
-        android:textSize="20dp" />
+        android:text="@string/textIngredientDescription"
+        android:textSize="20sp" />
 
     <RelativeLayout
-        android:id="@+id/expand_ingredients"
+        android:id="@+id/expandIngredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
         <TextView
-            android:id="@+id/ingredientExpiry"
+            android:id="@+id/textIngredientExpiry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Expiry Date"
+            android:fontFamily="@font/duru_sans"
+            android:text="@string/textIngredientExpiry"
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/ingredientCategory"
+            android:id="@+id/textIngredientCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category"
+            android:text="@string/textIngredientCategory"
+            android:fontFamily="@font/duru_sans"
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
-            android:layout_below="@id/ingredientExpiry"
-            android:textSize="16dp" />
+            android:layout_below="@id/textIngredientExpiry"
+            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/ingredientQuantity"
+            android:id="@+id/textIngredientQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quantity"
+            android:text="@string/textIngredientQuantity"
+            android:fontFamily="@font/duru_sans"
             android:paddingTop="10dp"
             android:paddingRight="15dp"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/ingredientAmount"
-            android:textSize="16dp" />
+            android:layout_below="@id/textIngredientAmount"
+            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/ingredientAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Amount"
-            android:paddingTop="10dp"
+            android:id="@+id/textIngredientAmount"
+            android:text="@string/textIngredientAmount"
             android:paddingRight="15dp"
             android:layout_alignParentRight="true"
-            android:textSize="16dp" />
+            style="@style/textViewDimension" />
 
 
     </RelativeLayout>

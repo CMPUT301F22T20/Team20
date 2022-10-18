@@ -5,14 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.SimpleTimeZone;
 
+/**
+ * This is an array adapter that keeps track of {@link Ingredient} Ingredient objects
+ */
 //TO DO: will have to "expand" the ingredients list
 public class IngredientAdapter extends ArrayAdapter<Ingredient> {
 
@@ -26,6 +32,13 @@ public class IngredientAdapter extends ArrayAdapter<Ingredient> {
 
     }
 
+    /**
+     * This method displays data of a specified Ingredient in the array of Ingredients
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
 
     @NonNull
     @Override
@@ -39,18 +52,18 @@ public class IngredientAdapter extends ArrayAdapter<Ingredient> {
 
         Ingredient ingredient = IngredientList.get(position);
 
-        TextView ingredientDescription = view.findViewById(R.id.ingredientDescription);
-        TextView ingredientExpiry = view.findViewById(R.id.ingredientExpiry);
-        TextView ingredientCategory = view.findViewById(R.id.ingredientCategory);
-        TextView ingredientAmount = view.findViewById(R.id.ingredientAmount);
-        TextView ingredientQuantity = view.findViewById(R.id.ingredientQuantity);
-        RelativeLayout expandIngredient = view.findViewById(R.id.expand_ingredients);
+        TextView textIngredientDescription = view.findViewById(R.id.textIngredientDescription);
+        TextView textIngredientExpiry = view.findViewById(R.id.textIngredientExpiry);
+        TextView textIngredientCategory = view.findViewById(R.id.textIngredientCategory);
+        TextView textIngredientAmount = view.findViewById(R.id.textIngredientAmount);
+        TextView textIngredientQuantity = view.findViewById(R.id.textIngredientQuantity);
+        RelativeLayout expandIngredient = view.findViewById(R.id.expandIngredient);
 
-        ingredientDescription.setText(ingredient.getDescription());
-        ingredientExpiry.setText(ingredient.getExpiry());
-        ingredientCategory.setText(ingredient.getCategory());
-        ingredientAmount.setText(ingredient.getAmount());
-        ingredientQuantity.setText(ingredient.getQuantity());
+        textIngredientDescription.setText(ingredient.getDescription());
+        textIngredientCategory.setText(ingredient.getCategory());
+        textIngredientAmount.setText((CharSequence) ingredient.getAmount());//not sure if this should be casted to charSequence
+        textIngredientQuantity.setText(ingredient.getQuantity());
+        textIngredientExpiry.setText((CharSequence) ingredient.getExpiry());
 
 
         return view;
