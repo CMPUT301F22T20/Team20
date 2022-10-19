@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.foodtracker.databinding.IngredientMainBinding;
@@ -27,7 +28,7 @@ public class IngredientFragment extends Fragment {
         binding = IngredientMainBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final ListView listview = binding.ingredientList;
+        final RecyclerView recyclerView = binding.ingredientList;
         //IngredientViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
