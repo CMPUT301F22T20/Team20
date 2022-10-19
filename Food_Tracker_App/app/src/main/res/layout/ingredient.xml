@@ -11,7 +11,7 @@
         android:fontFamily="@font/duru_sans"
         android:paddingTop="20dp"
         android:paddingLeft="10dp"
-        android:text="@string/textIngredientDescription"
+        android:text="@string/text_ingredient_description"
         android:textSize="20sp" />
 
     <RelativeLayout
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/duru_sans"
-            android:text="@string/textIngredientExpiry"
+            android:text="@string/text_ingredient_expiry"
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
             android:textSize="16sp" />
@@ -34,7 +34,7 @@
             android:id="@+id/textIngredientCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/textIngredientCategory"
+            android:text="@string/text_ingredient_category"
             android:fontFamily="@font/duru_sans"
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
@@ -45,7 +45,7 @@
             android:id="@+id/textIngredientQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/textIngredientQuantity"
+            android:text="@string/text_ingredient_quantity"
             android:fontFamily="@font/duru_sans"
             android:paddingTop="10dp"
             android:paddingRight="15dp"
@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/textIngredientAmount"
-            android:text="@string/textIngredientAmount"
+            android:text="@string/text_ingredient_amount"
             android:paddingRight="15dp"
             android:layout_alignParentRight="true"
             style="@style/textViewDimension" />
