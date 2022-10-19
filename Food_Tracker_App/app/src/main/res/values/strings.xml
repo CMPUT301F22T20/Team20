@@ -3,11 +3,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="textIngredientDescription">Description</string>
-    <string name="textIngredientExpiry">Expiry Date</string>
-    <string name="textIngredientCategory">Category</string>
-    <string name="textIngredientQuantity">Quantity</string>
-    <string name="textIngredientAmount">Amount</string>
+    <string name="text_ingredient_amount">Amount</string>
+    <string name="text_ingredient_quantity">Quantity</string>
+    <string name="text_ingredient_category">Category</string>
+    <string name="text_ingredient_expiry">Expiry Date</string>
+    <string name="text_ingredient_description">Description</string>
 
 
 </resources>
