@@ -4,4 +4,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_ingredients">Ingredients</string>
+    <string name="text_ingredient_description">Description</string>
+    <string name="text_ingredient_expiry">Expiry Date</string>
+    <string name="text_ingredient_category">Category</string>
+    <string name="text_ingredient_cost">Cost</string>
+    <string name="text_ingredient_amount">Amount</string>
 </resources>
