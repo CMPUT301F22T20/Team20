@@ -18,6 +18,7 @@ public class Ingredient {
     private String category;
     private int amount;
     private Date expiry;
+    private boolean expanded;
 
     /**
      * A constructor to create an Ingredient object
@@ -36,6 +37,8 @@ public class Ingredient {
         setCategory(category);
         setAmount(amount);
         setExpiry(expiry);
+
+        this.expanded = false;
     }
 
     /**
@@ -132,5 +135,13 @@ public class Ingredient {
      */
     public void setExpiry(Date expiry) {
         this.expiry = expiry;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
 }

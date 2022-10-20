@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +15,14 @@ import com.example.foodtracker.R;
 import java.util.ArrayList;
 
 /**
- * This class creates an adapter for the recycler view of ingredients
+ * This class creates an adapter for the recycler view of ingredients. The items in recycler view expand
+ * through a boolean. Once an item is clicked, the boolean value is changed, and
+ * ingredient values are set to "visible"
  * Copyright: COYG
  *      @https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
+ * Copyright:
+ *      @https://www.youtube.com/watch?v=pGi02uJre4M&ab_channel=AndroidWorldClub
+ *
  */
 public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.ViewHolder>{
 
@@ -40,7 +46,16 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Ingredient ingredient = ingredientArrayList.get(position);
-        holder.myTextView.setText(ingredient.getDescription());
+
+        holder.textIngredientDescription.setText(ingredient.getDescription());
+        holder.textIngredientCost.setText(ingredient.getCost().toString());
+        holder.textIngredientAmount.setText(ingredient.getAmount());
+        holder.textIngredientCategory.setText(ingredient.getCategory());
+        holder.textIngredientExpiry.setText(ingredient.getExpiry().toString());
+        holder.textIngredientLocation.setText(ingredient.getLocation());
+
+        boolean isExpanded = ingredientArrayList.get(position).isExpanded();
+        holder.recyclerIngredientList.setVisibility(isExpanded ? View.VISIBLE:View.GONE);
     }
 
     @Override
@@ -49,18 +64,48 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        TextView textIngredientDescription;
+        TextView textIngredientCost;
+        TextView textIngredientAmount;
+        TextView textIngredientCategory;
+        TextView textIngredientExpiry;
+        TextView textIngredientLocation;
+
+        LinearLayout linearLayout;
+        RecyclerView recyclerIngredientList;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.textIngredientDescription);
-            itemView.setOnClickListener(this);
-        }
+            textIngredientDescription = itemView.findViewById(R.id.textIngredientDescription);
+            textIngredientCost = itemView.findViewById(R.id.textIngredientCost);
+            textIngredientAmount = itemView.findViewById(R.id.textIngredientAmount);
+            textIngredientCategory = itemView.findViewById(R.id.textIngredientCategory);
+            textIngredientExpiry = itemView.findViewById(R.id.textIngredientExpiry);
+            textIngredientLocation = itemView.findViewById(R.id.textIngredientLocation);
 
+
+            linearLayout = itemView.findViewById(R.id.linearLayout);
+            recyclerIngredientList = itemView.findViewById(R.id.ingredient_list);
+
+            //itemView.setOnClickListener(this);
+            //When container is clicked, it expands to show details
+            linearLayout.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    Ingredient ingredient = ingredientArrayList.get(getAdapterPosition());
+                    ingredient.setExpanded(!ingredient.isExpanded());
+                    notifyItemChanged(getAdapterPosition());
+                }
+            });
+
+
+        }
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
+
+
     }
 
     // convenience method for getting data at click position

@@ -9,4 +9,5 @@
     <string name="text_ingredient_category">Category</string>
     <string name="text_ingredient_cost">Cost</string>
     <string name="text_ingredient_amount">Amount</string>
+    <string name="text_ingredient_location">Location</string>
 </resources>

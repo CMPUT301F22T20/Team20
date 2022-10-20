@@ -16,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodtracker.databinding.IngredientMainBinding;
 import com.example.foodtracker.ui.ingredients.IngredientViewModel;
 
+import java.util.ArrayList;
+
 public class IngredientFragment extends Fragment {
 
     private IngredientMainBinding binding;
+    private ArrayList<Ingredient> ingredientList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -29,6 +32,12 @@ public class IngredientFragment extends Fragment {
         View root = binding.getRoot();
 
         final RecyclerView recyclerView = binding.ingredientList;
+
+        // initialize adapter ingredient
+        IngredientRecyclerViewAdapter ingredientAdapter = new IngredientRecyclerViewAdapter(
+                this.getContext(),ingredientList);
+        recyclerView.setAdapter(ingredientAdapter);
+        recyclerView.setHasFixedSize(true);
         //IngredientViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
