@@ -21,18 +21,18 @@ import java.util.ArrayList;
 public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<Ingredient> ingredientArrayList;
-    private LayoutInflater mInflater;
+    Context context;
     private ItemClickListener mClickListener;
 
     IngredientRecyclerViewAdapter (Context context, ArrayList<Ingredient> ingredientArrayList) {
-        this.mInflater = LayoutInflater.from(context);
+        this.context = context;
         this.ingredientArrayList = ingredientArrayList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.ingredient_content, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.ingredient_content, parent, false);
         return new ViewHolder(view);
     }
 
