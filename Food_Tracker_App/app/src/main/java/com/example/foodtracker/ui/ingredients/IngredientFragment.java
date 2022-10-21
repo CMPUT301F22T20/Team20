@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,10 +24,13 @@ import com.example.foodtracker.ui.ingredients.IngredientViewModel;
 
 import java.util.ArrayList;
 
-public class IngredientFragment extends Fragment {
+//implements AddIngredientDialog.OnFragmentInteractionListener
+public class IngredientFragment extends Fragment implements testDialog.OnFragmentInteractionListener {
 
     private ArrayList<Ingredient> ingredientArrayList;
     private RecyclerView ingredientRV;
+    IngredientRecyclerViewAdapter adapter;
+    Button add_ingredient_button;
 
     FragmentActivity listener;
 
@@ -41,6 +45,7 @@ public class IngredientFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
 
@@ -63,8 +68,9 @@ public class IngredientFragment extends Fragment {
 
          */
 
+        View view = inflater.inflate(R.layout.ingredient_main, container, false);
 
-       return inflater.inflate(R.layout.ingredient_main, container, false);
+       return view;
 
     }
 
@@ -76,13 +82,33 @@ public class IngredientFragment extends Fragment {
         ingredientRV = view.findViewById(R.id.ingredient_list);
         ingredientRV.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        IngredientRecyclerViewAdapter adapter = new IngredientRecyclerViewAdapter(getContext(),ingredientArrayList);
+        adapter = new IngredientRecyclerViewAdapter(getContext(),ingredientArrayList);
 
         ingredientRV.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        add_ingredient_button = view.findViewById(R.id.add_ingredient_button);
+
+        /*
+        add_ingredient_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddIngredientDialog().show(getChildFragmentManager(), "Add_ingredient" );
+            }
+        });
+        */
+
+        add_ingredient_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new testDialog().show(getChildFragmentManager(), "Add_ingredient" );
+            }
+        });
+
+
 
     }
+
 
     private void dataInitialize() {
 
@@ -94,6 +120,15 @@ public class IngredientFragment extends Fragment {
         ingredientArrayList.add(apple);
         ingredientArrayList.add(broccoli);
     }
+
+
+    @Override
+    public void onOkPressed(Ingredient newIngredient) {
+        ingredientArrayList.add(newIngredient);
+        adapter.notifyDataSetChanged();
+    }
+
+
 
 
 
@@ -108,5 +143,6 @@ public class IngredientFragment extends Fragment {
         super.onDetach();
         this.listener = null;
     }
+
 
 }
