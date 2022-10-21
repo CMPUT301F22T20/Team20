@@ -22,4 +22,9 @@
         android:name="com.example.foodtracker.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_ingredients"
+        android:name="com.example.foodtracker.ui.ingredients.IngredientFragment"
+        android:label="@string/title_ingredients"
+        tools:layout="@layout/ingredient_main" />
 </navigation>
