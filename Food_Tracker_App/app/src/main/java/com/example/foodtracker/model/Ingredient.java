@@ -1,6 +1,11 @@
-package com.example.foodtracker.ui.ingredients;
+package com.example.foodtracker.model;
 
-public class Ingredient {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Ingredient implements Documentable {
+
+    public static final String INGREDIENTS_COLLECTION_NAME = "Ingredients";
     private String description;
     private Double cost;
     private String location;
@@ -8,8 +13,27 @@ public class Ingredient {
     private int amount;
     private String expiry;
 
+    public Ingredient() {}
+
     public Ingredient(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String getCollectionName() {
+        return INGREDIENTS_COLLECTION_NAME;
+    }
+
+    @Override
+    public String getKey() {
+        return getDescription();
+    }
+
+    @Override
+    public Map<String, Object> getData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("Description", getDescription());
+        return data;
     }
 
     public int getAmount() {
