@@ -4,10 +4,8 @@
     <string name="title_recipes">Recipes</string>
     <string name="title_meal_plan">Meal Plan</string>
     <string name="title_ingredients">Ingredients</string>
-    <string name="text_ingredient_description">Description</string>
-    <string name="text_ingredient_expiry">Expiry Date</string>
-    <string name="text_ingredient_category">Category</string>
-    <string name="text_ingredient_cost">Cost</string>
-    <string name="text_ingredient_amount">Amount</string>
-    <string name="text_ingredient_location">Location</string>
+    <string name="add_ingredient">Add ingredient</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_nav_bar_item">A menu navbar item</string>
+    <string name="plus_icon">+</string>
 </resources>

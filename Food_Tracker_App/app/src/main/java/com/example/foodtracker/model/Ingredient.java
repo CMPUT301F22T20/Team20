@@ -1,6 +1,11 @@
-package com.example.foodtracker.ui.ingredients;
+package com.example.foodtracker.model;
 
-public class Ingredient {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Ingredient implements Documentable {
+
+    public static final String INGREDIENTS_COLLECTION_NAME = "Ingredients";
     private String description;
     private Double cost;
     private String location;
@@ -8,16 +13,27 @@ public class Ingredient {
     private int amount;
     private String expiry;
 
-    boolean visible; //to check if ingredient is expanded
+    public Ingredient() {}
 
-    public Ingredient(String description, Double cost, String location, String category,
-                      int amount, String expiry) {
-        setDescription(description);
-        setCost(cost);
-        setLocation(location);
-        setCategory(category);
-        setAmount(amount);
-        setExpiry(expiry);
+    public Ingredient(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String getCollectionName() {
+        return INGREDIENTS_COLLECTION_NAME;
+    }
+
+    @Override
+    public String getKey() {
+        return getDescription();
+    }
+
+    @Override
+    public Map<String, Object> getData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("Description", getDescription());
+        return data;
     }
 
     public int getAmount() {
@@ -66,13 +82,5 @@ public class Ingredient {
 
     public void setExpiry(String expiry) {
         this.expiry = expiry;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 }

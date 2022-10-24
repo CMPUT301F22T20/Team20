@@ -1,6 +1,6 @@
 package com.example.foodtracker.utils;
 
-import com.example.foodtracker.models.Documentable;
+import com.example.foodtracker.model.Documentable;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -11,15 +11,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GenericCollection<T extends Documentable> {
+public class Collection<T extends Documentable> {
 
     private final Class<T> typeParameterClass;
-    private T instance;
-    private final CollectionReference collection = FirebaseFirestore.getInstance().collection(instance.getCollectionName());
+    private final CollectionReference collection;
 
-    public GenericCollection(Class<T> typeParameterClass, T instance) {
+    public Collection(Class<T> typeParameterClass, T instance) {
         this.typeParameterClass = typeParameterClass;
-        this.instance = instance;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        collection = db.collection(instance.getCollectionName());
     }
 
     /**
@@ -50,6 +50,17 @@ public class GenericCollection<T extends Documentable> {
      */
     public void createOrUpdate(T document) {
         collection.document(document.getKey()).set(document.getData());
+    }
+
+    /**
+     * Updates or creates all documents in the passed list, with the data from these documents
+     *
+     * @param documents to create or update
+     */
+    public void createOrUpdateMultiple(List<T> documents) {
+        for (T document : documents) {
+            createOrUpdate(document);
+        }
     }
 
     /**
