@@ -58,7 +58,8 @@ public class testDialog extends DialogFragment {
                 .setNeutralButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Ingredient egg = new Ingredient("egg");
+                        Ingredient egg = new Ingredient("egg", 1.6, "pantry"," food"
+                        ,1,"02/02/2022");
                         listener.onOkPressed(egg);
                     }
                 }).create();

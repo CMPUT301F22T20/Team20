@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,28 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     public void onBindViewHolder(ViewHolder holder, int position) {
         Ingredient ingredient = ingredientArrayList.get(position);
         holder.myTextView.setText(ingredient.getDescription());
+        holder.textIngredientCost.setText(String.valueOf(ingredient.getCost()));
+        holder.textIngredientAmount.setText(String.valueOf(ingredient.getAmount()));
+        holder.textIngredientExpiry.setText(ingredient.getExpiry());
+        holder.textIngredientCategory.setText(ingredient.getCategory());
+        holder.textIngredientLocation.setText(ingredient.getLocation());
+
+
+
+        boolean isVisible = ingredient.visible;
+        holder.expandIngredient.setVisibility(isVisible ? View.VISIBLE:View.GONE);
+
+        holder.myTextView.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Ingredient ingredientPos = ingredientArrayList.get(holder.getAdapterPosition());
+                ingredientPos.setVisible(!ingredientPos.isVisible());
+                notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
+
+
     }
 
     @Override
@@ -48,19 +72,34 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         return ingredientArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         TextView myTextView;
+        TextView textIngredientCost;
+        TextView textIngredientAmount;
+        TextView textIngredientCategory;
+        TextView textIngredientExpiry;
+        TextView textIngredientLocation;
+
+        LinearLayout linearLayout; //when we click on this, trigger an expansion
+        RelativeLayout expandIngredient;
+
+
+
 
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.ingredient_name);
-            itemView.setOnClickListener(this);
+            textIngredientCost = itemView.findViewById(R.id.text_ingredient_cost);
+            textIngredientAmount = itemView.findViewById(R.id.text_ingredient_amount);
+            textIngredientCategory = itemView.findViewById(R.id.text_ingredient_category);
+            textIngredientExpiry = itemView.findViewById(R.id.text_ingredient_expiry);
+            textIngredientLocation = itemView.findViewById(R.id.text_ingredient_location);
+
+            linearLayout = itemView.findViewById(R.id.linearLayout);
+            expandIngredient = itemView.findViewById(R.id.expand_ingredient);
+
         }
 
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
     }
 
     // convenience method for getting data at click position

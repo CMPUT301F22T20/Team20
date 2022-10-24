@@ -8,8 +8,16 @@ public class Ingredient {
     private int amount;
     private String expiry;
 
-    public Ingredient(String description) {
-        this.description = description;
+    boolean visible; //to check if ingredient is expanded
+
+    public Ingredient(String description, Double cost, String location, String category,
+                      int amount, String expiry) {
+        setDescription(description);
+        setCost(cost);
+        setLocation(location);
+        setCategory(category);
+        setAmount(amount);
+        setExpiry(expiry);
     }
 
     public int getAmount() {
@@ -58,5 +66,13 @@ public class Ingredient {
 
     public void setExpiry(String expiry) {
         this.expiry = expiry;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

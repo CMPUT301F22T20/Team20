@@ -113,9 +113,12 @@ public class IngredientFragment extends Fragment implements testDialog.OnFragmen
     private void dataInitialize() {
 
         ingredientArrayList = new ArrayList<>();
-        Ingredient tuna = new Ingredient("tuna");
-        Ingredient apple = new Ingredient("apple");
-        Ingredient broccoli = new Ingredient("broccoli");
+        Ingredient tuna = new Ingredient("tuna",1.0,"Pantry","Food",
+                2,"02/022/2022");
+        Ingredient apple = new Ingredient("apple", 1.0,"Pantry","Food",
+                3,"02/022/2022");
+        Ingredient broccoli = new Ingredient("broccoli",1.0,"Pantry","Food",
+                2,"02/022/2022");
         ingredientArrayList.add(tuna);
         ingredientArrayList.add(apple);
         ingredientArrayList.add(broccoli);
