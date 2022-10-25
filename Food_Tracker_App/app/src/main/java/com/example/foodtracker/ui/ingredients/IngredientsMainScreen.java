@@ -14,21 +14,46 @@ import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
 
+/**
+ * This class creates an object that is used to represent the main screen for the Ingredients
+ * This class extends from {@link AppCompatActivity}
+ * THis class implements the {@link AddIngredientDialog.AddIngredientDialogListener} from {@link AddIngredientDialog} class
+ */
 public class IngredientsMainScreen extends AppCompatActivity implements AddIngredientDialog.AddIngredientDialogListener {
 
+    /**
+     * This is a private final variable
+     * This holds a collection of {@link Ingredient} objects and is of type {@link Ingredient}
+     */
     private final Collection<Ingredient> ingredientsCollection = new Collection<>(Ingredient.class, new Ingredient());
+    /**
+     * This is a private variable
+     * This holds the adapter for the ingredient list
+     */
     private IngredientRecyclerViewAdapter adapter;
+    /**
+     * This is a private variable
+     * This holds a list of {@link Ingredient} objects and is of type {@link ArrayList<Ingredient>}
+     */
     private ArrayList<Ingredient> ingredientArrayList;
 
+    /**
+     * This is the constructor for the class
+     */
     public IngredientsMainScreen() {
         super(R.layout.ingredient_main);
     }
 
+    /**
+     * This function is called when a main screen object is created
+     * @param savedInstanceState This is of type {@link Bundle}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingredient_main);
         initializeData();
+
         RecyclerView ingredientsRecyclerView = findViewById(R.id.ingredient_list);
         ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         adapter = new IngredientRecyclerViewAdapter(getBaseContext(), ingredientArrayList);
@@ -45,12 +70,21 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
         }
     }
 
+    /**
+     * This is called when an Ingredient is added by clicking on the add button
+     * This is the implementation of a function from {@link AddIngredientDialog.AddIngredientDialogListener}
+     * @param addedIngredient This is the Ingredient that is added which is of type {@link Ingredient}
+     */
     @Override
     public void onIngredientAdd(Ingredient addedIngredient) {
         ingredientArrayList.add(addedIngredient);
         adapter.notifyItemInserted(ingredientArrayList.indexOf(addedIngredient));
     }
 
+    /**
+     * This is called when cancel button is clicked
+     * This is the implementation of a function from {@link AddIngredientDialog.AddIngredientDialogListener}
+     */
     @Override
     public void onCancel() {
 
@@ -89,6 +123,9 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
         ingredientsCollection.createOrUpdateMultiple(ingredientArrayList);
     }
 
+    /**
+     * This function helps to return back to main menu
+     */
     private void returnToMainMenu() {
         finish();
     }
