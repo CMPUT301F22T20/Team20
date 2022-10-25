@@ -13,11 +13,20 @@ import androidx.fragment.app.DialogFragment;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.Ingredient;
 
-
+/**
+ * This class creates an object to represent the dialog used to add an {@link Ingredient}
+ */
 public class AddIngredientDialog extends DialogFragment {
 
+    /**
+     * This is the listener for the add ingredient dialogue
+     */
     private AddIngredientDialogListener listener;
 
+    /**
+     * This function is called when the dialog fragment is attached to the current context
+     * @param context This is the context which is of type {@link Context}
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -28,6 +37,11 @@ public class AddIngredientDialog extends DialogFragment {
         }
     }
 
+    /**
+     * This function is called when the dialog fragment is created
+     * @param savedInstanceState This is of type {@link Bundle}
+     * @return This is of type {@link AlertDialog.Builder}
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -42,6 +56,9 @@ public class AddIngredientDialog extends DialogFragment {
 
     }
 
+    /**
+     * This is an interface to specify functions that need to be implemented when a dialog fragment is created
+     */
     public interface AddIngredientDialogListener {
 
         /**
