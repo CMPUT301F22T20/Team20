@@ -10,19 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.Ingredient;
 
 import java.util.ArrayList;
 
 /**
  * This class creates an adapter for the recycler view of ingredients
  * Copyright: COYG
- *      @https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
+ *
+ * @see <a href=https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example">Stack Overflow</a>
  */
 public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.ViewHolder>{
 
-    private ArrayList<Ingredient> ingredientArrayList;
-    Context context;
+    private final ArrayList<Ingredient> ingredientArrayList;
     private ItemClickListener mClickListener;
+    Context context;
 
     IngredientRecyclerViewAdapter (Context context, ArrayList<Ingredient> ingredientArrayList) {
         this.context = context;
