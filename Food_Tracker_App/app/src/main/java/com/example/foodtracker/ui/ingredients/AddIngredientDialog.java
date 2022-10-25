@@ -24,7 +24,7 @@ public class AddIngredientDialog extends DialogFragment {
     private AddIngredientDialogListener listener;
 
     /**
-     * This function is called when the dialog fragment is attached to the current context
+     * This function is called when the dialog fragment is attached to the current context.
      * @param context This is the context which is of type {@link Context}
      */
     @Override
