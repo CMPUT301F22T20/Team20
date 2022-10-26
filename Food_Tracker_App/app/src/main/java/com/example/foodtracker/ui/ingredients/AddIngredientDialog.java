@@ -36,7 +36,7 @@ public class AddIngredientDialog extends DialogFragment {
         return builder
                 .setView(view)
                 .setNeutralButton("ok", (dialogInterface, i) -> {
-                    Ingredient egg = new Ingredient("egg");
+                    Ingredient egg = new Ingredient("egg",1.0,"Pantry","Food",5,"05/02/2022");
                     listener.onIngredientAdd(egg);
                 }).create();
 

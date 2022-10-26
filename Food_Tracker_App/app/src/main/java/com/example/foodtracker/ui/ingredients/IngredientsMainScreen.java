@@ -81,6 +81,13 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
      * Adds some initial data to the list
      */
     private void initializeData() {
+        Ingredient tuna = new Ingredient("Tuna", 1.0, "Pantry", "Food", 5, "05/02/2022");
+        Ingredient apple = new Ingredient("Apple", 1.0, "Pantry", "Food", 5, "05/02/2022");
+        Ingredient broccoli = new Ingredient("Broccoli", 1.0, "Pantry", "Food", 5, "05/02/2022");
+        ingredientArrayList.add(tuna);
+        ingredientArrayList.add(apple);
+        ingredientArrayList.add(broccoli);
+        ingredientsCollection.createOrUpdateMultiple(ingredientArrayList);
         ingredientsCollection.getAll(list -> {
             ingredientArrayList.addAll(list);
             adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
