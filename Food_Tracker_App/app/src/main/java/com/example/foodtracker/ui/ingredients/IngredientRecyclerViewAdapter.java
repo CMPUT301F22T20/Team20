@@ -71,7 +71,7 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         return ingredientArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textIngredientName;
         TextView textIngredientCost;
         TextView textIngredientAmount;
@@ -84,8 +84,6 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
 
         RelativeLayout relativeLayout; //when we click on this, trigger an expansion
         RelativeLayout expandIngredient;
-
-
 
 
         ViewHolder(View itemView) {
@@ -103,6 +101,21 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
             relativeLayout = itemView.findViewById(R.id.relative_layout);
             expandIngredient = itemView.findViewById(R.id.expand_ingredient);
 
+            deleteIngredient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Ingredient ingredient = ingredientArrayList.get(getAdapterPosition());
+                    ingredientArrayList.remove(ingredient);
+                    notifyDataSetChanged();
+
+                }
+            });
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
     }
