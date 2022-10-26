@@ -54,16 +54,12 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         holder.textIngredientLocation.setText(String.format("Location: %s",ingredient.getLocation()));
 
 
-        boolean isVisible = ingredient.isVisible();
-        holder.expandIngredient.setVisibility(isVisible ? View.VISIBLE:View.GONE);
+        holder.expandIngredient.setVisibility(View.GONE);
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Ingredient ingredientPos = ingredientArrayList.get(holder.getAdapterPosition());
-                ingredientPos.setVisible(!ingredientPos.isVisible());
-                notifyItemChanged(holder.getAdapterPosition());
-
+                holder.expandIngredient.setVisibility(holder.expandIngredient.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 }
         });
 

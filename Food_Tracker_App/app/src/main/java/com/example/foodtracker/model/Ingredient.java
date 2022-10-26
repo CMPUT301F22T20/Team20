@@ -13,8 +13,6 @@ public class Ingredient implements Documentable {
     private int amount;
     private String expiry;
 
-    private boolean visible;
-
     public Ingredient() {}
 
     public Ingredient(String description, Double cost, String location, String category,
@@ -94,9 +92,4 @@ public class Ingredient implements Documentable {
         this.expiry = expiry;
     }
 
-    public boolean isVisible() {return visible;}
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
 }
