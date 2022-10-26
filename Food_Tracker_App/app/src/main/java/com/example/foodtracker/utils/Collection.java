@@ -9,6 +9,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Collection<T extends Documentable> {
@@ -22,13 +23,16 @@ public class Collection<T extends Documentable> {
         collection = db.collection(instance.getCollectionName());
     }
 
+    public interface getAllComplete<T> {
+        void onComplete(List<T> list);
+    }
+
     /**
      * Adds all task results to a passed list
      *
-     * @param list to add all results to
      */
-    public void getAll(List<T> list) {
-        collection.get().addOnCompleteListener(getObjectsFromQuery(list));
+    public void getAll(getAllComplete<T> onTaskComplete) {
+        collection.get().addOnCompleteListener(getObjectsFromQuery(onTaskComplete));
     }
 
     /**
@@ -38,10 +42,10 @@ public class Collection<T extends Documentable> {
      * @param sortedByColumn column to sort the results by
      * @param direction      to sort in
      */
-    public void getAll(List<T> list, String sortedByColumn, @Nullable Query.Direction direction) {
-        Query.Direction sortingDirection = direction != null ? direction : Query.Direction.ASCENDING;
-        collection.orderBy(sortedByColumn, sortingDirection).get().addOnCompleteListener(getObjectsFromQuery(list));
-    }
+//    public void getAll(List<T> list, String sortedByColumn, @Nullable Query.Direction direction) {
+//        Query.Direction sortingDirection = direction != null ? direction : Query.Direction.ASCENDING;
+//        collection.orderBy(sortedByColumn, sortingDirection).get().addOnCompleteListener(getObjectsFromQuery(list));
+//    }
 
     /**
      * Updates or creates the document specified by this documents key, with this documents data
@@ -70,11 +74,10 @@ public class Collection<T extends Documentable> {
         collection.document(document.getKey()).delete();
     }
 
-    private OnCompleteListener<QuerySnapshot> getObjectsFromQuery(List<T> list) {
+    private OnCompleteListener<QuerySnapshot> getObjectsFromQuery(getAllComplete<T> onTaskComplete) {
         return queryResult -> {
-            if (queryResult.isSuccessful()) {
-                list.addAll(queryResult.getResult().toObjects(typeParameterClass));
-            }
+            List<T> list = new ArrayList<>(queryResult.getResult().toObjects(typeParameterClass));
+            onTaskComplete.onComplete(list);
         };
     }
 }

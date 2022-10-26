@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class IngredientsMainScreen extends AppCompatActivity implements AddIngredientDialog.AddIngredientDialogListener {
 
     private final Collection<Ingredient> ingredientsCollection = new Collection<>(Ingredient.class, new Ingredient());
-    private IngredientRecyclerViewAdapter adapter;
-    private ArrayList<Ingredient> ingredientArrayList;
+    private final ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
+    private final IngredientRecyclerViewAdapter adapter = new IngredientRecyclerViewAdapter(getBaseContext(), ingredientArrayList);
 
     public IngredientsMainScreen() {
         super(R.layout.ingredient_main);
@@ -27,15 +27,20 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ingredient_main);
+        initializeRecyclerView();
         initializeData();
-        RecyclerView ingredientsRecyclerView = findViewById(R.id.ingredient_list);
-        ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        adapter = new IngredientRecyclerViewAdapter(getBaseContext(), ingredientArrayList);
-        ingredientsRecyclerView.setAdapter(adapter);
-        adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
         initializeAddIngredientButton();
         initializeBackButton();
+        addNavbar(savedInstanceState);
+    }
+
+    private void initializeRecyclerView() {
+        RecyclerView ingredientsRecyclerView = findViewById(R.id.ingredient_list);
+        ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        ingredientsRecyclerView.setAdapter(adapter);
+    }
+
+    private void addNavbar(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             NavBar navBar = NavBar.newInstance(MenuItem.INGREDIENTS);
             getSupportFragmentManager().beginTransaction()
@@ -69,24 +74,18 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
      */
     private void initializeBackButton() {
         Button backButton = findViewById(R.id.return_button);
-        backButton.setOnClickListener(ingredientView -> {
-            returnToMainMenu();
-        });
+        backButton.setOnClickListener(ingredientView -> returnToMainMenu());
     }
 
     /**
      * Adds some initial data to the list
      */
     private void initializeData() {
-        ingredientArrayList = new ArrayList<>();
-        Ingredient tuna = new Ingredient("Tuna");
-        Ingredient apple = new Ingredient("Apple");
-        Ingredient broccoli = new Ingredient("Broccoli");
-        ingredientArrayList.add(tuna);
-        ingredientArrayList.add(apple);
-        ingredientArrayList.add(broccoli);
-        // todo: figure out why this is not working...
-        ingredientsCollection.createOrUpdateMultiple(ingredientArrayList);
+        ingredientsCollection.getAll(list -> {
+            ingredientArrayList.addAll(list);
+            adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
+            System.out.println("NUM INGREDIENTS ADDED: " + ingredientArrayList.size());
+        });
     }
 
     private void returnToMainMenu() {
