@@ -4,9 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,26 +46,25 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Ingredient ingredient = ingredientArrayList.get(position);
-        holder.myTextView.setText(ingredient.getDescription());
-        holder.textIngredientCost.setText(String.valueOf(ingredient.getCost()));
-        holder.textIngredientAmount.setText(String.valueOf(ingredient.getAmount()));
-        holder.textIngredientExpiry.setText(ingredient.getExpiry());
-        holder.textIngredientCategory.setText(ingredient.getCategory());
-        holder.textIngredientLocation.setText(ingredient.getLocation());
+        holder.textIngredientName.setText(ingredient.getDescription());
+        holder.textIngredientCost.setText(String.format("Cost: $%s", ingredient.getCost()));
+        holder.textIngredientAmount.setText(String.format("Quantity: %s", ingredient.getAmount()));
+        holder.textIngredientExpiry.setText(String.format("Expiry Date: %s",ingredient.getExpiry()));
+        holder.textIngredientCategory.setText(String.format("Category: %s",ingredient.getCategory()));
+        holder.textIngredientLocation.setText(String.format("Location: %s",ingredient.getLocation()));
 
 
-
-        boolean isVisible = ingredient.visible;
+        boolean isVisible = ingredient.isVisible();
         holder.expandIngredient.setVisibility(isVisible ? View.VISIBLE:View.GONE);
 
-        holder.myTextView.setOnClickListener(new View.OnClickListener(){
-
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Ingredient ingredientPos = ingredientArrayList.get(holder.getAdapterPosition());
                 ingredientPos.setVisible(!ingredientPos.isVisible());
                 notifyItemChanged(holder.getAdapterPosition());
-            }
+
+                }
         });
 
 
@@ -75,14 +76,17 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView myTextView;
+        TextView textIngredientName;
         TextView textIngredientCost;
         TextView textIngredientAmount;
         TextView textIngredientCategory;
         TextView textIngredientExpiry;
         TextView textIngredientLocation;
 
-        LinearLayout linearLayout; //when we click on this, trigger an expansion
+        Button editIngredient;
+        Button deleteIngredient;
+
+        RelativeLayout relativeLayout; //when we click on this, trigger an expansion
         RelativeLayout expandIngredient;
 
 
@@ -90,14 +94,17 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.ingredient_name);
+            textIngredientName= itemView.findViewById(R.id.ingredient_name);
             textIngredientCost = itemView.findViewById(R.id.text_ingredient_cost);
             textIngredientAmount = itemView.findViewById(R.id.text_ingredient_amount);
             textIngredientCategory = itemView.findViewById(R.id.text_ingredient_category);
             textIngredientExpiry = itemView.findViewById(R.id.text_ingredient_expiry);
             textIngredientLocation = itemView.findViewById(R.id.text_ingredient_location);
 
-            linearLayout = itemView.findViewById(R.id.linearLayout);
+            Button editIngredient = itemView.findViewById(R.id.edit_ingredient);
+            Button deleteIngredient= itemView.findViewById(R.id.delete_ingredient);
+
+            relativeLayout = itemView.findViewById(R.id.relative_layout);
             expandIngredient = itemView.findViewById(R.id.expand_ingredient);
 
         }
