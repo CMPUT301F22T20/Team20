@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
+import com.example.foodtracker.ui.mealPlan.MealPlanMainScreen;
+import com.example.foodtracker.ui.recipes.RecipesMainScreen;
+import com.example.foodtracker.ui.shoppingCart.ShoppingCartMainScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,10 +77,32 @@ public class NavBar extends Fragment {
             ImageButton recipesButton = navbarView.findViewById(R.id.navigation_recipes);
             ImageButton mealPlanButton = navbarView.findViewById(R.id.navigation_meal_plan);
             ImageButton shoppingCartButton = navbarView.findViewById(R.id.navigation_shopping);
+
             ingredientsButton.setOnClickListener(view -> {
                 if (!MenuItem.INGREDIENTS.equals(selectedItem)) {
                     Intent ingredientsIntent = new Intent(view.getContext(), IngredientsMainScreen.class);
                     startActivity(ingredientsIntent);
+                }
+            });
+
+            recipesButton.setOnClickListener(view -> {
+                if (!MenuItem.RECIPES.equals(selectedItem)) {
+                    Intent recipesIntent = new Intent(view.getContext(), RecipesMainScreen.class);
+                    startActivity(recipesIntent);
+                }
+            });
+
+            mealPlanButton.setOnClickListener(view -> {
+                if (!MenuItem.MEAL_PLANNER.equals(selectedItem)) {
+                    Intent mealPlanIntent = new Intent(view.getContext(), MealPlanMainScreen.class);
+                    startActivity(mealPlanIntent);
+                }
+            });
+
+            shoppingCartButton.setOnClickListener(view -> {
+                if (!MenuItem.SHOPPING_CART.equals(selectedItem)) {
+                    Intent shoppingCartIntent = new Intent(view.getContext(), ShoppingCartMainScreen.class);
+                    startActivity(shoppingCartIntent);
                 }
             });
         }
