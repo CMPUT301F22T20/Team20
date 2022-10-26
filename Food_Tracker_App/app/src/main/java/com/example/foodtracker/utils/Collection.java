@@ -23,29 +23,26 @@ public class Collection<T extends Documentable> {
         collection = db.collection(instance.getCollectionName());
     }
 
-    public interface getAllComplete<T> {
-        void onComplete(List<T> list);
-    }
-
     /**
      * Adds all task results to a passed list
      *
+     * @param onComplete callback on complete
      */
-    public void getAll(getAllComplete<T> onTaskComplete) {
-        collection.get().addOnCompleteListener(getObjectsFromQuery(onTaskComplete));
+    public void getAll(ListTask<T> onComplete) {
+        collection.get().addOnCompleteListener(getObjectsFromQuery(onComplete));
     }
 
     /**
      * Adds all task results to a passed list
      *
-     * @param list           to add all results to
+     * @param onComplete     callback on complete
      * @param sortedByColumn column to sort the results by
      * @param direction      to sort in
      */
-//    public void getAll(List<T> list, String sortedByColumn, @Nullable Query.Direction direction) {
-//        Query.Direction sortingDirection = direction != null ? direction : Query.Direction.ASCENDING;
-//        collection.orderBy(sortedByColumn, sortingDirection).get().addOnCompleteListener(getObjectsFromQuery(list));
-//    }
+    public void getAll(ListTask<T> onComplete, String sortedByColumn, @Nullable Query.Direction direction) {
+        Query.Direction sortingDirection = direction != null ? direction : Query.Direction.ASCENDING;
+        collection.orderBy(sortedByColumn, sortingDirection).get().addOnCompleteListener(getObjectsFromQuery(onComplete));
+    }
 
     /**
      * Updates or creates the document specified by this documents key, with this documents data
@@ -74,10 +71,18 @@ public class Collection<T extends Documentable> {
         collection.document(document.getKey()).delete();
     }
 
-    private OnCompleteListener<QuerySnapshot> getObjectsFromQuery(getAllComplete<T> onTaskComplete) {
+    private OnCompleteListener<QuerySnapshot> getObjectsFromQuery(ListTask<T> onTaskComplete) {
         return queryResult -> {
             List<T> list = new ArrayList<>(queryResult.getResult().toObjects(typeParameterClass));
             onTaskComplete.onComplete(list);
         };
+    }
+
+    public interface ListTask<T> {
+        void onComplete(List<T> list);
+    }
+
+    public interface DocumentTask<T> {
+        void onComplete(T document);
     }
 }
