@@ -4,7 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,7 +46,24 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Ingredient ingredient = ingredientArrayList.get(position);
-        holder.myTextView.setText(ingredient.getDescription());
+        holder.textIngredientName.setText(ingredient.getDescription());
+        holder.textIngredientCost.setText(String.format("Cost: $%s", ingredient.getCost()));
+        holder.textIngredientAmount.setText(String.format("Quantity: %s", ingredient.getAmount()));
+        holder.textIngredientExpiry.setText(String.format("Expiry Date: %s",ingredient.getExpiry()));
+        holder.textIngredientCategory.setText(String.format("Category: %s",ingredient.getCategory()));
+        holder.textIngredientLocation.setText(String.format("Location: %s",ingredient.getLocation()));
+
+
+        holder.expandIngredient.setVisibility(View.GONE);
+
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                holder.expandIngredient.setVisibility(holder.expandIngredient.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                }
+        });
+
+
     }
 
     @Override
@@ -50,19 +71,53 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         return ingredientArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView textIngredientName;
+        TextView textIngredientCost;
+        TextView textIngredientAmount;
+        TextView textIngredientCategory;
+        TextView textIngredientExpiry;
+        TextView textIngredientLocation;
+
+        Button editIngredient;
+        Button deleteIngredient;
+
+        RelativeLayout relativeLayout; //when we click on this, trigger an expansion
+        RelativeLayout expandIngredient;
+
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.ingredient_name);
-            itemView.setOnClickListener(this);
+            textIngredientName= itemView.findViewById(R.id.ingredient_name);
+            textIngredientCost = itemView.findViewById(R.id.text_ingredient_cost);
+            textIngredientAmount = itemView.findViewById(R.id.text_ingredient_amount);
+            textIngredientCategory = itemView.findViewById(R.id.text_ingredient_category);
+            textIngredientExpiry = itemView.findViewById(R.id.text_ingredient_expiry);
+            textIngredientLocation = itemView.findViewById(R.id.text_ingredient_location);
+
+            Button editIngredient = itemView.findViewById(R.id.edit_ingredient);
+            Button deleteIngredient= itemView.findViewById(R.id.delete_ingredient);
+
+            relativeLayout = itemView.findViewById(R.id.relative_layout);
+            expandIngredient = itemView.findViewById(R.id.expand_ingredient);
+
+            deleteIngredient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Ingredient ingredient = ingredientArrayList.get(getAdapterPosition());
+                    ingredientArrayList.remove(ingredient);
+                    notifyDataSetChanged();
+
+                }
+            });
+
         }
 
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
+
     }
 
     // convenience method for getting data at click position

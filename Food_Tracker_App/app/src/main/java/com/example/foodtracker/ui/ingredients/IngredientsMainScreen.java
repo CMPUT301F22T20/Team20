@@ -79,9 +79,9 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
      */
     private void initializeData() {
         ingredientArrayList = new ArrayList<>();
-        Ingredient tuna = new Ingredient("Tuna");
-        Ingredient apple = new Ingredient("Apple");
-        Ingredient broccoli = new Ingredient("Broccoli");
+        Ingredient tuna = new Ingredient("Tuna", 1.0, "Pantry", "Food", 5, "05/02/2022");
+        Ingredient apple = new Ingredient("Apple", 1.0, "Pantry", "Food", 5, "05/02/2022");
+        Ingredient broccoli = new Ingredient("Broccoli", 1.0, "Pantry", "Food", 5, "05/02/2022");
         ingredientArrayList.add(tuna);
         ingredientArrayList.add(apple);
         ingredientArrayList.add(broccoli);

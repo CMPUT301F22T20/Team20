@@ -15,8 +15,16 @@ public class Ingredient implements Documentable {
 
     public Ingredient() {}
 
-    public Ingredient(String description) {
-        this.description = description;
+    public Ingredient(String description, Double cost, String location, String category,
+                      int amount, String expiry) {
+        setDescription(description);
+        setCost(cost);
+        setLocation(location);
+        setCategory(category);
+        setAmount(amount);
+        setExpiry(expiry);
+
+
     }
 
     @Override
@@ -83,4 +91,5 @@ public class Ingredient implements Documentable {
     public void setExpiry(String expiry) {
         this.expiry = expiry;
     }
+
 }
