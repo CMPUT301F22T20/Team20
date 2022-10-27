@@ -17,7 +17,14 @@ import com.example.foodtracker.model.Ingredient;
 public class IngredientDialog extends DialogFragment {
 
     private IngredientDialogListener listener;
+    /**
+     * This is the listener for the add ingredient dialogue
+     */
 
+    /**
+     * This function is called when the dialog fragment is attached to the current context.
+     * @param context This is the context which is of type {@link Context}
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -28,6 +35,11 @@ public class IngredientDialog extends DialogFragment {
         }
     }
 
+    /**
+     * This function is called when the dialog fragment is created
+     * @param savedInstanceState This is of type {@link Bundle}
+     * @return This is of type {@link AlertDialog.Builder}
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -41,7 +53,9 @@ public class IngredientDialog extends DialogFragment {
                 }).create();
 
     }
-
+    /**
+     * This is an interface to specify functions that need to be implemented when a dialog fragment is created
+     */
     public interface IngredientDialogListener {
 
         /**
