@@ -1,11 +1,23 @@
 package com.example.foodtracker.model;
 
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Ingredient implements Documentable {
+public class Ingredient implements Documentable, Serializable {
 
-    public static final String INGREDIENTS_COLLECTION_NAME = "Ingredients";
+    public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
+
+    public static class FieldNames {
+        public static String DESCRIPTION = "description";
+        public static String COST = "cost";
+        public static String LOCATION = "location";
+        public static String CATEGORY = "category";
+        public static String AMOUNT = "amount";
+        public static String EXPIRY = "expiry";
+    }
+
     private String description;
     private Double cost;
     private String location;
@@ -40,7 +52,12 @@ public class Ingredient implements Documentable {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
-        data.put("Description", getDescription());
+        data.put(FieldNames.DESCRIPTION, this.getDescription());
+        data.put(FieldNames.COST, this.getCost());
+        data.put(FieldNames.LOCATION, this.getLocation());
+        data.put(FieldNames.CATEGORY, this.getCategory());
+        data.put(FieldNames.AMOUNT, this.getAmount());
+        data.put(FieldNames.EXPIRY, this.getExpiry());
         return data;
     }
 

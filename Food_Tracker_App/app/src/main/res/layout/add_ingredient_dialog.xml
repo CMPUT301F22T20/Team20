@@ -58,6 +58,26 @@
         android:layout_marginHorizontal="30dp"
         android:layout_marginVertical="10dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:background="@color/background_dark"
+            android:text="Expiry Date:" />
+        <EditText
+            android:id="@+id/showDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:text="dd/mm/yyyy" />
+    </LinearLayout>
+
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,7 +87,7 @@
         android:background="@color/background_dark"
         android:ems="10"
         android:paddingLeft="10dp"
-        android:text="Choose Expiry Date:" />
+        android:text="Set Expiry Date:" />
 
     <DatePicker
         android:id="@+id/datePicker"
