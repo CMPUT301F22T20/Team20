@@ -1,0 +1,14 @@
+Index: app/src/main/java/com/example/team20/Square.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.team20;\r\n\r\npublic class Square extends Shape{\r\n\r\n}\r\n
+===================================================================
+diff --git a/app/src/main/java/com/example/team20/Square.java b/app/src/main/java/com/example/team20/Square.java
+--- a/app/src/main/java/com/example/team20/Square.java	
++++ b/app/src/main/java/com/example/team20/Square.java	
+@@ -2,4 +2,5 @@
+ 
+ public class Square extends Shape{
+ 
++
+ }
