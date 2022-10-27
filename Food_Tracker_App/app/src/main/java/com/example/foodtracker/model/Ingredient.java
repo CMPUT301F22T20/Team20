@@ -18,6 +18,10 @@ public class Ingredient implements Documentable {
 
     public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
 
+    /**
+     * This is a public static class that contains all the FieldNames that will be used in EditText later
+     * The FieldNames are of type {@link String} and are public and static
+     */
     public static class FieldNames {
         public static String DESCRIPTION = "description";
         public static String COST = "cost";
@@ -27,11 +31,6 @@ public class Ingredient implements Documentable {
         public static String EXPIRY = "expiry";
     }
 
-    /**
-     * This variable is public, static and final.
-     * It holds the collection name for {@link Ingredient class} of type {@link String}
-     */
-    public static final String INGREDIENTS_COLLECTION_NAME = "Ingredients";
     /**
      * This variable is private and holds the description for an ingredient of type {@link String}
      */
@@ -74,7 +73,7 @@ public class Ingredient implements Documentable {
         setCategory(category);
         setAmount(amount);
         setExpiry(expiry);
-
+    }
     /**
      * This function returns the collection name for the class of ingredients
      * @return This is the name of the collection of ingredients of type {@link String}
