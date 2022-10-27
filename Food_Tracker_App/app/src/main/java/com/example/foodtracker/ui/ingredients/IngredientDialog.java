@@ -14,17 +14,17 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.Ingredient;
 
 
-public class AddIngredientDialog extends DialogFragment {
+public class IngredientDialog extends DialogFragment {
 
-    private AddIngredientDialogListener listener;
+    private IngredientDialogListener listener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            listener = (AddIngredientDialogListener) context;
+            listener = (IngredientDialogListener) context;
         } catch (ClassCastException classCastException) {
-            throw new RuntimeException("Must implement " + AddIngredientDialogListener.class.getSimpleName());
+            throw new RuntimeException("Must implement " + IngredientDialogListener.class.getSimpleName());
         }
     }
 
@@ -42,16 +42,11 @@ public class AddIngredientDialog extends DialogFragment {
 
     }
 
-    public interface AddIngredientDialogListener {
+    public interface IngredientDialogListener {
 
         /**
          * Callback when an ingredient is added within the dialog
          */
         void onIngredientAdd(Ingredient newIngredient);
-
-        /**
-         * Callback when the cancel button is clicked within the dialog
-         */
-        void onCancel();
     }
 }
