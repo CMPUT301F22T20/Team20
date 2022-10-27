@@ -12,25 +12,11 @@ import java.util.Map;
  * Category of the Ingredient
  * Amount of the Ingredient
  * Expiry Date of the Ingredient
- * {@link Documentable} allows objects to be used as Firebase instances
+ * {@link Document} allows objects to be used as Firebase instances
  */
-public class Ingredient implements Documentable {
+public class Ingredient extends Document {
 
     public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
-
-    /**
-     * This is a public static class that contains all the FieldNames that will be used in EditText later
-     * The FieldNames are of type {@link String} and are public and static
-     */
-    public static class FieldNames {
-        public static String DESCRIPTION = "description";
-        public static String COST = "cost";
-        public static String LOCATION = "location";
-        public static String CATEGORY = "category";
-        public static String AMOUNT = "amount";
-        public static String EXPIRY = "expiry";
-    }
-
     /**
      * This variable is private and holds the description for an ingredient of type {@link String}
      */
@@ -59,10 +45,12 @@ public class Ingredient implements Documentable {
     /**
      * This is an empty constructor to instantiate an {@link Ingredient} object
      */
-    public Ingredient() {}
+    public Ingredient() {
+    }
 
     /**
      * This is a constructor to instantiate a {@link Ingredient} object
+     *
      * @param description is the description of the Ingredient which is of type {@link String}
      */
     public Ingredient(String description, Double cost, String location, String category,
@@ -74,8 +62,10 @@ public class Ingredient implements Documentable {
         setAmount(amount);
         setExpiry(expiry);
     }
+
     /**
      * This function returns the collection name for the class of ingredients
+     *
      * @return This is the name of the collection of ingredients of type {@link String}
      */
     @Override
@@ -84,18 +74,9 @@ public class Ingredient implements Documentable {
     }
 
     /**
-     * This function returns the the description for an ingredient
-     * This function is the implementation of a function from the interface {@link Documentable}
-     * @return This is the description for the ingredient of ty[e {@link Ingredient}
-     */
-    @Override
-    public String getKey() {
-        return getDescription();
-    }
-
-    /**
      * This function returns key value pair of an ingredient as "Description: #descriptionofingredient""
-     * This function is the implementation of a function from the interface {@link Documentable}
+     * This function is the implementation of a function from the interface {@link Document}
+     *
      * @return This is the key-value pair of type {@link Map}
      */
     @Override
@@ -112,6 +93,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function returns the amount of the ingredient
+     *
      * @return This is the amount which is of type {@link Integer}
      */
     public int getAmount() {
@@ -120,6 +102,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function sets the amount of the ingredient
+     *
      * @param amount This is the amount which is of type {@link Integer}
      */
     public void setAmount(int amount) {
@@ -128,6 +111,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function returns the category of the ingredient
+     *
      * @return This is the category which is of type {@link String}
      */
     public String getCategory() {
@@ -136,6 +120,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function sets the category of the ingredient
+     *
      * @param category This is the amount which is of type {@link String}
      */
     public void setCategory(String category) {
@@ -144,6 +129,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function returns the description of the ingredient
+     *
      * @return This is the description which is of type {@link String}
      */
     public String getDescription() {
@@ -152,6 +138,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function sets the description of the ingredient
+     *
      * @param description This is the description which is of type {@link String}
      */
     public void setDescription(String description) {
@@ -160,6 +147,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function returns the location of the ingredient
+     *
      * @return This is the location which is of type {@link String}
      */
     public String getLocation() {
@@ -168,6 +156,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function sets the location of the ingredient
+     *
      * @param location This is the location which is of type {@link String}
      */
     public void setLocation(String location) {
@@ -176,6 +165,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function returns the cost of the ingredient
+     *
      * @return This is the cost which is of type {@link Double}
      */
     public Double getCost() {
@@ -184,6 +174,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function sets the cost of the ingredient
+     *
      * @param cost This is the cost which is of type {@link Double}
      */
     public void setCost(Double cost) {
@@ -192,6 +183,7 @@ public class Ingredient implements Documentable {
 
     /**
      * This function returns the expiry date of the ingredient
+     *
      * @return This is the expiry date which is of type {@link String}
      */
     public String getExpiry() {
@@ -200,10 +192,24 @@ public class Ingredient implements Documentable {
 
     /**
      * This function sets the expiry of the ingredient
+     *
      * @param expiry This is the expiry which is of type {@link String}
      */
     public void setExpiry(String expiry) {
         this.expiry = expiry;
+    }
+
+    /**
+     * This is a public static class that contains all the FieldNames that will be used in EditText later
+     * The FieldNames are of type {@link String} and are public and static
+     */
+    public static class FieldNames {
+        public static String DESCRIPTION = "description";
+        public static String COST = "cost";
+        public static String LOCATION = "location";
+        public static String CATEGORY = "category";
+        public static String AMOUNT = "amount";
+        public static String EXPIRY = "expiry";
     }
 
 }
