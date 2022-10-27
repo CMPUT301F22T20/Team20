@@ -4,19 +4,9 @@ package com.example.foodtracker.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Ingredient implements Documentable {
+public class Ingredient extends Document {
 
     public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
-
-    public static class FieldNames {
-        public static String DESCRIPTION = "description";
-        public static String COST = "cost";
-        public static String LOCATION = "location";
-        public static String CATEGORY = "category";
-        public static String AMOUNT = "amount";
-        public static String EXPIRY = "expiry";
-    }
-
     private String description;
     private Double cost;
     private String location;
@@ -26,26 +16,18 @@ public class Ingredient implements Documentable {
 
     public Ingredient() {}
 
-    public Ingredient(String description, Double cost, String location, String category,
-                      int amount, String expiry) {
+    public Ingredient(String description, Double cost, String location, String category, int amount, String expiry) {
         setDescription(description);
         setCost(cost);
         setLocation(location);
         setCategory(category);
         setAmount(amount);
         setExpiry(expiry);
-
-
     }
 
     @Override
     public String getCollectionName() {
         return INGREDIENTS_COLLECTION_NAME;
-    }
-
-    @Override
-    public String getKey() {
-        return getDescription();
     }
 
     @Override
@@ -108,4 +90,12 @@ public class Ingredient implements Documentable {
         this.expiry = expiry;
     }
 
+    public static class FieldNames {
+        public static String DESCRIPTION = "description";
+        public static String COST = "cost";
+        public static String LOCATION = "location";
+        public static String CATEGORY = "category";
+        public static String AMOUNT = "amount";
+        public static String EXPIRY = "expiry";
+    }
 }

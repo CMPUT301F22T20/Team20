@@ -64,15 +64,15 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     private void addIngredient(Ingredient ingredient) {
         ingredientArrayList.add(ingredient);
-        ingredientsCollection.createOrUpdate(ingredient);
-        adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient));
+        ingredientsCollection.createDocument(ingredient, () ->
+                adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient)));
     }
 
     private void removeIngredient(Ingredient ingredient) {
         int removedIndex = ingredientArrayList.indexOf(ingredient);
         ingredientArrayList.remove(removedIndex);
-        ingredientsCollection.delete(ingredient);
-        adapter.notifyItemRemoved(removedIndex);
+        ingredientsCollection.delete(ingredient, () ->
+                adapter.notifyItemRemoved(removedIndex));
     }
 
     /**
