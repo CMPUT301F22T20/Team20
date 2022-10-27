@@ -14,20 +14,32 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.Ingredient;
 
 
-public class AddIngredientDialog extends DialogFragment {
+public class IngredientDialog extends DialogFragment {
 
-    private AddIngredientDialogListener listener;
+    private IngredientDialogListener listener;
+    /**
+     * This is the listener for the add ingredient dialogue
+     */
 
+    /**
+     * This function is called when the dialog fragment is attached to the current context.
+     * @param context This is the context which is of type {@link Context}
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            listener = (AddIngredientDialogListener) context;
+            listener = (IngredientDialogListener) context;
         } catch (ClassCastException classCastException) {
-            throw new RuntimeException("Must implement " + AddIngredientDialogListener.class.getSimpleName());
+            throw new RuntimeException("Must implement " + IngredientDialogListener.class.getSimpleName());
         }
     }
 
+    /**
+     * This function is called when the dialog fragment is created
+     * @param savedInstanceState This is of type {@link Bundle}
+     * @return This is of type {@link AlertDialog.Builder}
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -41,17 +53,14 @@ public class AddIngredientDialog extends DialogFragment {
                 }).create();
 
     }
-
-    public interface AddIngredientDialogListener {
+    /**
+     * This is an interface to specify functions that need to be implemented when a dialog fragment is created
+     */
+    public interface IngredientDialogListener {
 
         /**
          * Callback when an ingredient is added within the dialog
          */
         void onIngredientAdd(Ingredient newIngredient);
-
-        /**
-         * Callback when the cancel button is clicked within the dialog
-         */
-        void onCancel();
     }
 }

@@ -19,7 +19,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/navigation_bar"
-        android:name="com.example.foodtracker.ui.ingredients.NavBar"
+        android:name="com.example.foodtracker.ui.NavBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

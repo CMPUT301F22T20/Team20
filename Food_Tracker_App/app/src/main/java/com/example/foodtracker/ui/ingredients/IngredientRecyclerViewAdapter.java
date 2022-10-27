@@ -5,16 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.Ingredient;
+import com.example.foodtracker.model.ArrayListener;
 
 import java.util.ArrayList;
 
@@ -24,46 +23,47 @@ import java.util.ArrayList;
  *
  * @see <a href=https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example">Stack Overflow</a>
  */
-public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.ViewHolder>{
+public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.IngredientHolder> {
+
+    /**
+     * See {@link ArrayListener}
+     * @implNote For safe type casting
+     */
+    public interface IngredientArrayListener extends ArrayListener<Ingredient> {}
 
     private final ArrayList<Ingredient> ingredientArrayList;
-    private ItemClickListener mClickListener;
-    Context context;
+    private final Context context;
+    private final IngredientArrayListener ingredientListener;
 
-    IngredientRecyclerViewAdapter (Context context, ArrayList<Ingredient> ingredientArrayList) {
+    IngredientRecyclerViewAdapter(Context context, ArrayList<Ingredient> ingredientArrayList) {
         this.context = context;
         this.ingredientArrayList = ingredientArrayList;
+        ingredientListener = (IngredientArrayListener) context;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public IngredientHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.ingredient_content, parent, false);
-        return new ViewHolder(view);
+        return new IngredientHolder(view, ingredientListener);
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * Populates the view with Ingredient information
+     */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(IngredientHolder holder, int position) {
         Ingredient ingredient = ingredientArrayList.get(position);
-        holder.textIngredientName.setText(ingredient.getDescription());
-        holder.textIngredientCost.setText(String.format("Cost: $%s", ingredient.getCost()));
-        holder.textIngredientAmount.setText(String.format("Quantity: %s", ingredient.getAmount()));
-        holder.textIngredientExpiry.setText(String.format("Expiry Date: %s",ingredient.getExpiry()));
-        holder.textIngredientCategory.setText(String.format("Category: %s",ingredient.getCategory()));
-        holder.textIngredientLocation.setText(String.format("Location: %s",ingredient.getLocation()));
-
-
-        holder.expandIngredient.setVisibility(View.GONE);
-
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                holder.expandIngredient.setVisibility(holder.expandIngredient.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-                }
+        holder.name.setText(ingredient.getDescription());
+        holder.cost.setText(String.format("Cost: $%s", ingredient.getCost()));
+        holder.amount.setText(String.format("Quantity: %s", ingredient.getAmount()));
+        holder.expiry.setText(String.format("Expiry Date: %s", ingredient.getExpiry()));
+        holder.category.setText(String.format("Category: %s", ingredient.getCategory()));
+        holder.location.setText(String.format("Location: %s", ingredient.getLocation()));
+        holder.extraIngredientInformation.setOnClickListener(v -> {
+            int toggledVisibility = holder.expandIngredient.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
+            holder.expandIngredient.setVisibility(toggledVisibility);
         });
-
-
     }
 
     @Override
@@ -71,67 +71,34 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         return ingredientArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView textIngredientName;
-        TextView textIngredientCost;
-        TextView textIngredientAmount;
-        TextView textIngredientCategory;
-        TextView textIngredientExpiry;
-        TextView textIngredientLocation;
+    /**
+     * Represents an {@link Ingredient} in our {@link IngredientRecyclerViewAdapter}
+     */
+    public class IngredientHolder extends RecyclerView.ViewHolder {
 
-        Button editIngredient;
-        Button deleteIngredient;
+        protected final TextView name = itemView.findViewById(R.id.ingredient_name);
+        protected final TextView cost = itemView.findViewById(R.id.text_ingredient_cost);
+        protected final TextView amount = itemView.findViewById(R.id.text_ingredient_amount);
+        protected final TextView category = itemView.findViewById(R.id.text_ingredient_category);
+        protected final TextView expiry = itemView.findViewById(R.id.text_ingredient_expiry);
+        protected final TextView location = itemView.findViewById(R.id.text_ingredient_location);
 
-        RelativeLayout relativeLayout; //when we click on this, trigger an expansion
-        RelativeLayout expandIngredient;
+        protected final RelativeLayout extraIngredientInformation = itemView.findViewById(R.id.relative_layout);
+        protected final RelativeLayout expandIngredient = itemView.findViewById(R.id.expand_ingredient);
 
 
-        ViewHolder(View itemView) {
+        IngredientHolder(View itemView, IngredientArrayListener ingredientListener) {
             super(itemView);
-            textIngredientName= itemView.findViewById(R.id.ingredient_name);
-            textIngredientCost = itemView.findViewById(R.id.text_ingredient_cost);
-            textIngredientAmount = itemView.findViewById(R.id.text_ingredient_amount);
-            textIngredientCategory = itemView.findViewById(R.id.text_ingredient_category);
-            textIngredientExpiry = itemView.findViewById(R.id.text_ingredient_expiry);
-            textIngredientLocation = itemView.findViewById(R.id.text_ingredient_location);
-
+            Button deleteIngredient = itemView.findViewById(R.id.delete_ingredient);
             Button editIngredient = itemView.findViewById(R.id.edit_ingredient);
-            Button deleteIngredient= itemView.findViewById(R.id.delete_ingredient);
-
-            relativeLayout = itemView.findViewById(R.id.relative_layout);
-            expandIngredient = itemView.findViewById(R.id.expand_ingredient);
-
-            deleteIngredient.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Ingredient ingredient = ingredientArrayList.get(getAdapterPosition());
-                    ingredientArrayList.remove(ingredient);
-                    notifyDataSetChanged();
-
-                }
+            deleteIngredient.setOnClickListener(onClick -> {
+                Ingredient ingredient = ingredientArrayList.get(getAdapterPosition());
+                ingredientListener.onDelete(ingredient);
             });
-
+            editIngredient.setOnClickListener(onClick -> {
+                Ingredient ingredient = ingredientArrayList.get(getAdapterPosition());
+                ingredientListener.onEdit(ingredient);
+            });
         }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-
-    }
-
-    // convenience method for getting data at click position
-    Ingredient getItem(int id) {
-        return ingredientArrayList.get(id);
-    }
-
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
     }
 }
