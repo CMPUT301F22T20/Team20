@@ -1,22 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/linearLayout2">
+    android:layout_margin="16dp"
+    cardView:cardBackgroundColor="@color/background_light"
+    cardView:cardCornerRadius="20dp"
+    cardView:contentPadding="16dp">
 
-    <TextView
-        android:id="@+id/ingredient_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="Ingredient Name"
-        android:textSize="25sp"
-        tools:layout_conversion_absoluteHeight="72dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="253dp">
-    </TextView>
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/ingredient_name"
+            style="@style/ingredientViewText"
+            android:text="@string/ingredient_name"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/text_ingredient_category"
+            style="@style/ingredientViewText"
+            android:layout_below="@id/ingredient_name"
+            android:text="@string/ingredient_category" />
+
+        <TextView
+            android:id="@+id/text_ingredient_expiry"
+            style="@style/ingredientViewText"
+            android:layout_below="@id/ingredient_name"
+            android:layout_alignParentEnd="true"
+            android:text="@string/ingredient_expiry" />
+
+        <TextView
+            android:id="@+id/text_ingredient_location"
+            style="@style/ingredientViewText"
+            android:layout_below="@id/text_ingredient_category"
+            android:text="@string/ingredient_location" />
+
+        <!-- Expandable content -->
+        <RelativeLayout
+            android:id="@+id/expand_ingredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_ingredient_location"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/text_ingredient_cost"
+                style="@style/ingredientViewText"
+                android:layout_alignParentEnd="true"
+                android:text="@string/ingredient_cost" />
+
+            <TextView
+                android:id="@+id/text_ingredient_amount"
+                style="@style/ingredientViewText"
+                android:layout_alignParentStart="true"
+                android:text="@string/ingredient_amount" />
+
+            <Button
+                android:id="@+id/delete_ingredient"
+                style="@style/ingredientViewButton"
+                android:layout_below="@+id/text_ingredient_amount"
+                android:backgroundTint="@color/negative"
+                android:text="@string/delete_button" />
+
+            <Button
+                android:id="@+id/edit_ingredient"
+                style="@style/ingredientViewButton"
+                android:layout_below="@+id/text_ingredient_cost"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/positive"
+                android:text="@string/edit_button" />
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -1,5 +1,6 @@
 package com.example.foodtracker.model;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,17 @@ import java.util.Map;
  * {@link Documentable} allows objects to be used as Firebase instances
  */
 public class Ingredient implements Documentable {
+
+    public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
+
+    public static class FieldNames {
+        public static String DESCRIPTION = "description";
+        public static String COST = "cost";
+        public static String LOCATION = "location";
+        public static String CATEGORY = "category";
+        public static String AMOUNT = "amount";
+        public static String EXPIRY = "expiry";
+    }
 
     /**
      * This variable is public, static and final.
@@ -54,9 +66,14 @@ public class Ingredient implements Documentable {
      * This is a constructor to instantiate a {@link Ingredient} object
      * @param description is the description of the Ingredient which is of type {@link String}
      */
-    public Ingredient(String description) {
-        this.description = description;
-    }
+    public Ingredient(String description, Double cost, String location, String category,
+                      int amount, String expiry) {
+        setDescription(description);
+        setCost(cost);
+        setLocation(location);
+        setCategory(category);
+        setAmount(amount);
+        setExpiry(expiry);
 
     /**
      * This function returns the collection name for the class of ingredients
@@ -85,7 +102,12 @@ public class Ingredient implements Documentable {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
-        data.put("Description", getDescription());
+        data.put(FieldNames.DESCRIPTION, this.getDescription());
+        data.put(FieldNames.COST, this.getCost());
+        data.put(FieldNames.LOCATION, this.getLocation());
+        data.put(FieldNames.CATEGORY, this.getCategory());
+        data.put(FieldNames.AMOUNT, this.getAmount());
+        data.put(FieldNames.EXPIRY, this.getExpiry());
         return data;
     }
 
@@ -184,4 +206,5 @@ public class Ingredient implements Documentable {
     public void setExpiry(String expiry) {
         this.expiry = expiry;
     }
+
 }
