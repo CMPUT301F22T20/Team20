@@ -1,7 +1,40 @@
 <resources>
     <string name="app_name">Food Tracker</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_shopping">Shopping</string>
+    <string name="title_recipes">Recipes</string>
+    <string name="title_meal_plan">Meal Plan</string>
     <string name="title_ingredients">Ingredients</string>
+    <string name="add_ingredient">Add ingredient</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_nav_bar_item">A menu navbar item</string>
+    <string name="plus_icon">+</string>
+    <string name="ingredient_name">Ingredient Name</string>
+    <string name="ingredient_expiry">Expiry Date</string>
+    <string name="ingredient_category">Category</string>
+    <string name="ingredient_location">Location</string>
+    <string name="ingredient_cost">Cost</string>
+    <string name="ingredient_amount">Amount</string>
+    <string name="delete_button">Delete</string>
+    <string name="edit_button">Edit</string>
+
+    <string-array name="locationList">
+        <item>Pantry</item>
+        <item>Fridge</item>
+        <item>Freezer</item>
+    </string-array>
+
+    <string-array name="categoryList">
+        <item>Vegetables</item>
+        <item>Fruits</item>
+        <item>Meat</item>
+        <item>Bakery</item>
+        <item>Dairy</item>
+        <item>Egg</item>
+        <item>Seafood</item>
+        <item>Deli</item>
+        <item>Snacks</item>
+        <item>Drinks</item>
+        <item>Frozen</item>
+    </string-array>
+
 </resources>

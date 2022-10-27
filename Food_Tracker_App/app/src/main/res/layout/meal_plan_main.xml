@@ -3,17 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.mealPlan.MealPlanMainScreen">
 
-    <TextView
-        android:id="@+id/testText"
-        android:layout_width="221dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="200dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="This is the test dialog"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/meal_plan_nav_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout="@layout/fragment_nav_bar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
