@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * This class creates an object that is used to represent the main screen for the Ingredients
  * This class extends from {@link AppCompatActivity}
- * THis class implements the {@link AddIngredientDialog.AddIngredientDialogListener} from {@link AddIngredientDialog} class
+ * THis class implements the {@link IngredientDialog.IngredientDialogListener} from {@link IngredientDialog} class
  */
 public class IngredientsMainScreen extends AppCompatActivity implements
         IngredientDialog.IngredientDialogListener,
@@ -65,7 +65,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     /**
      * This is called when an Ingredient is added by clicking on the add button
-     * This is the implementation of a function from {@link AddIngredientDialog.AddIngredientDialogListener}
+     * This is the implementation of a function from {@link IngredientDialog.IngredientDialogListener}
      * @param addedIngredient This is the Ingredient that is added which is of type {@link Ingredient}
      */
     @Override
