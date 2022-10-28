@@ -3,7 +3,6 @@ package com.example.foodtracker.ui.ingredients;
 import static android.content.ContentValues.TAG;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -24,8 +22,6 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.Ingredient;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 
 public class IngredientDialog extends DialogFragment {
@@ -40,20 +36,33 @@ public class IngredientDialog extends DialogFragment {
     private DatePicker expiry;
     private EditText dateText;
 
-    private AddIngredientDialogListener listener;
-
     private Ingredient edit_ingredient;
+    private IngredientDialogListener listener;
+    /**
+     * This is the listener for the add ingredient dialogue
+     */
 
+    /**
+     * This function is called when the dialog fragment is attached to the current context.
+     *
+     * @param context This is the context which is of type {@link Context}
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            listener = (AddIngredientDialogListener) context;
+            listener = (IngredientDialogListener) context;
         } catch (ClassCastException classCastException) {
-            throw new RuntimeException("Must implement " + AddIngredientDialogListener.class.getSimpleName());
+            throw new RuntimeException("Must implement " + IngredientDialogListener.class.getSimpleName());
         }
     }
 
+    /**
+     * This function is called when the dialog fragment is created
+     *
+     * @param savedInstanceState This is of type {@link Bundle}
+     * @return This is of type {@link AlertDialog.Builder}
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -68,7 +77,7 @@ public class IngredientDialog extends DialogFragment {
         location.setAdapter(locationAdapter);
 
 
-        category = (Spinner)view.findViewById(R.id.ingredientCategory);
+        category = (Spinner) view.findViewById(R.id.ingredientCategory);
         categoryAdapter = createAdapter(R.array.categoryList);
         category.setAdapter(categoryAdapter);
 
@@ -109,15 +118,13 @@ public class IngredientDialog extends DialogFragment {
 
     }
 
-
-
-
     /**
      * This method creates an ArrayAdapter for the spinner
+     *
      * @param spinnerDataXML string-array in xml
      * @return adapter of type ArrayAdapter<CharSequence>
      * copyright: Incimo
-     *  link: https://blog.csdn.net/qq_41912398/article/details/105548856
+     * link: https://blog.csdn.net/qq_41912398/article/details/105548856
      */
     public ArrayAdapter<CharSequence> createAdapter(int spinnerDataXML) {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
@@ -144,8 +151,8 @@ public class IngredientDialog extends DialogFragment {
         dateText.setText(old_ingredient.getExpiry());
         //set expiry date
         String old_date = old_ingredient.getExpiry();
-        String old_day = old_date.substring(0,2);
-        String old_month = old_date.substring(3,5);
+        String old_day = old_date.substring(0, 2);
+        String old_month = old_date.substring(3, 5);
         String old_year = old_date.substring(6);
 
         //current date
@@ -156,28 +163,25 @@ public class IngredientDialog extends DialogFragment {
 
         try {
             year_int = Integer.parseInt(old_year);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             Log.d(TAG, "setIngredient: " + year_int);
             e.printStackTrace();
         }
 
         try {
             month_int = Integer.parseInt(old_month);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
 
         try {
             day_int = Integer.parseInt(old_day);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
 
         //set expiry date
-        expiry.updateDate(year_int, month_int-1, day_int);
+        expiry.updateDate(year_int, month_int - 1, day_int);
 
 
     }
@@ -190,10 +194,9 @@ public class IngredientDialog extends DialogFragment {
         //edit cost of the ingredient
         String edit_cost_str = cost.getText().toString();
         Double edit_cost_double = 0.0;
-        try{
+        try {
             edit_cost_double = Double.parseDouble(edit_cost_str);
-        }
-        catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             ex.printStackTrace();
         }
         old_ingredient.setCost(edit_cost_double);
@@ -201,10 +204,9 @@ public class IngredientDialog extends DialogFragment {
         //edit quantity of the ingredient
         String edit_quantity_str = quantity.getText().toString();
         int edit_quantity_int = 1;
-        try{
+        try {
             edit_quantity_int = Integer.parseInt(edit_quantity_str);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         old_ingredient.setAmount(edit_quantity_int);
@@ -218,15 +220,13 @@ public class IngredientDialog extends DialogFragment {
         old_ingredient.setCategory(edit_category);
 
         //edit expiry date of the ingredient
-        String edit_date = expiry.getDayOfMonth()+"/"+ (expiry.getMonth() + 1)+"/"+expiry.getYear();
+        String edit_date = expiry.getDayOfMonth() + "/" + (expiry.getMonth() + 1) + "/" + expiry.getYear();
         if ((expiry.getDayOfMonth() < 10) && (expiry.getMonth() >= 9)) {
-            edit_date = "0" + expiry.getDayOfMonth()+"/"+ (expiry.getMonth() + 1)+"/"+expiry.getYear();
-        }
-        else if ((expiry.getDayOfMonth() >= 10) && (expiry.getMonth() < 9)) {
-            edit_date = expiry.getDayOfMonth()+"/0"+ (expiry.getMonth() + 1)+"/"+expiry.getYear();
-        }
-        else if ((expiry.getDayOfMonth() < 10) && (expiry.getMonth() < 9)) {
-            edit_date = "0" + expiry.getDayOfMonth()+"/0"+ (expiry.getMonth() + 1)+"/"+expiry.getYear();
+            edit_date = "0" + expiry.getDayOfMonth() + "/" + (expiry.getMonth() + 1) + "/" + expiry.getYear();
+        } else if ((expiry.getDayOfMonth() >= 10) && (expiry.getMonth() < 9)) {
+            edit_date = expiry.getDayOfMonth() + "/0" + (expiry.getMonth() + 1) + "/" + expiry.getYear();
+        } else if ((expiry.getDayOfMonth() < 10) && (expiry.getMonth() < 9)) {
+            edit_date = "0" + expiry.getDayOfMonth() + "/0" + (expiry.getMonth() + 1) + "/" + expiry.getYear();
         }
         old_ingredient.setExpiry(edit_date);
 
@@ -241,10 +241,9 @@ public class IngredientDialog extends DialogFragment {
         //cost of the added ingredient
         String add_cost_str = cost.getText().toString();
         Double add_cost_double = 0.0;
-        try{
+        try {
             add_cost_double = Double.parseDouble(add_cost_str);
-        }
-        catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             ex.printStackTrace();
             add_cost_double = 0.0;
         }
@@ -252,10 +251,9 @@ public class IngredientDialog extends DialogFragment {
         //quantity of the added ingredient
         String add_quantity_str = quantity.getText().toString();
         int add_quantity_int = 1;
-        try{
+        try {
             add_quantity_int = Integer.parseInt(add_quantity_str);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
             add_quantity_int = 1;
         }
@@ -267,16 +265,14 @@ public class IngredientDialog extends DialogFragment {
         String add_category = category.getSelectedItem().toString();
 
         //expiry date of the added ingredient
-        String add_date = expiry.getDayOfMonth()+"/"+ (expiry.getMonth() + 1)+"/"+expiry.getYear();
+        String add_date = expiry.getDayOfMonth() + "/" + (expiry.getMonth() + 1) + "/" + expiry.getYear();
 
         if ((expiry.getDayOfMonth() < 10) && (expiry.getMonth() >= 9)) {
-            add_date = "0" + expiry.getDayOfMonth()+"/"+ (expiry.getMonth() + 1)+"/"+expiry.getYear();
-        }
-        else if ((expiry.getDayOfMonth() >= 10) && (expiry.getMonth() < 9)) {
-            add_date = expiry.getDayOfMonth()+"/0"+ (expiry.getMonth() + 1)+"/"+expiry.getYear();
-        }
-        else if ((expiry.getDayOfMonth() < 10) && (expiry.getMonth() < 9)) {
-            add_date = "0" + expiry.getDayOfMonth()+"/0"+ (expiry.getMonth() + 1)+"/"+expiry.getYear();
+            add_date = "0" + expiry.getDayOfMonth() + "/" + (expiry.getMonth() + 1) + "/" + expiry.getYear();
+        } else if ((expiry.getDayOfMonth() >= 10) && (expiry.getMonth() < 9)) {
+            add_date = expiry.getDayOfMonth() + "/0" + (expiry.getMonth() + 1) + "/" + expiry.getYear();
+        } else if ((expiry.getDayOfMonth() < 10) && (expiry.getMonth() < 9)) {
+            add_date = "0" + expiry.getDayOfMonth() + "/0" + (expiry.getMonth() + 1) + "/" + expiry.getYear();
         }
 
         Ingredient add_ingredient = new Ingredient(add_description,
@@ -286,7 +282,7 @@ public class IngredientDialog extends DialogFragment {
         listener.onIngredientAdd(add_ingredient);
     }
 
-    public interface AddIngredientDialogListener {
+    public interface IngredientDialogListener {
 
         /**
          * Callback when an ingredient is added within the dialog
