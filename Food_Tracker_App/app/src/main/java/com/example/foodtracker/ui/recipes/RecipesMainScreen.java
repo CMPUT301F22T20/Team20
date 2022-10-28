@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
-import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.ingredients.NavBar;
 
 public class RecipesMainScreen extends AppCompatActivity {
 

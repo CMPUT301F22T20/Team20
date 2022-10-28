@@ -1,4 +1,4 @@
-package com.example.foodtracker.ui;
+package com.example.foodtracker.ui.ingredients;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
-import com.example.foodtracker.ui.ingredients.IngredientsMainScreen;
 import com.example.foodtracker.ui.mealPlan.MealPlanMainScreen;
 import com.example.foodtracker.ui.recipes.RecipesMainScreen;
 import com.example.foodtracker.ui.shoppingCart.ShoppingCartMainScreen;

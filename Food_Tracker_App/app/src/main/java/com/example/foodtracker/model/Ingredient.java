@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+<<<<<<< HEAD
 /**
  * This class creates an object to represent an Ingredient with:
  * Description of the Ingredient
@@ -16,6 +17,9 @@ import java.util.Map;
  * {@link Document} allows objects to be used as Firebase instances
  */
 public class Ingredient extends Document implements Serializable {
+=======
+public class Ingredient implements Documentable, Serializable {
+>>>>>>> 4be9dd76a139da10011255ba1957774a30bfb990
 
     public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
     /**
