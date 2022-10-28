@@ -24,7 +24,7 @@ import com.example.foodtracker.model.Ingredient;
 import java.util.Calendar;
 
 
-public class AddIngredientDialog extends DialogFragment {
+public class IngredientDialog extends DialogFragment {
 
     private EditText description;
     private EditText cost;
@@ -36,15 +36,10 @@ public class AddIngredientDialog extends DialogFragment {
     private DatePicker expiry;
     private EditText dateText;
 
-<<<<<<< HEAD:Food_Tracker_App/app/src/main/java/com/example/foodtracker/ui/ingredients/IngredientDialog.java
+
     private Ingredient edit_ingredient;
     private IngredientDialogListener listener;
-    /**
-     * This is the listener for the add ingredient dialogue
-     */
-=======
-    private AddIngredientDialogListener listener;
->>>>>>> 4be9dd76a139da10011255ba1957774a30bfb990:Food_Tracker_App/app/src/main/java/com/example/foodtracker/ui/ingredients/AddIngredientDialog.java
+
 
     /**
      * This function is called when the dialog fragment is attached to the current context.
@@ -55,9 +50,9 @@ public class AddIngredientDialog extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            listener = (AddIngredientDialogListener) context;
+            listener = (IngredientDialogListener) context;
         } catch (ClassCastException classCastException) {
-            throw new RuntimeException("Must implement " + AddIngredientDialogListener.class.getSimpleName());
+            throw new RuntimeException("Must implement " + IngredientDialogListener.class.getSimpleName());
         }
     }
 
@@ -122,13 +117,7 @@ public class AddIngredientDialog extends DialogFragment {
 
     }
 
-<<<<<<< HEAD:Food_Tracker_App/app/src/main/java/com/example/foodtracker/ui/ingredients/IngredientDialog.java
-=======
-
-
-
->>>>>>> 4be9dd76a139da10011255ba1957774a30bfb990:Food_Tracker_App/app/src/main/java/com/example/foodtracker/ui/ingredients/AddIngredientDialog.java
-    /**
+   /**
      * This method creates an ArrayAdapter for the spinner
      *
      * @param spinnerDataXML string-array in xml
@@ -292,26 +281,14 @@ public class AddIngredientDialog extends DialogFragment {
         listener.onIngredientAdd(add_ingredient);
     }
 
-<<<<<<< HEAD:Food_Tracker_App/app/src/main/java/com/example/foodtracker/ui/ingredients/IngredientDialog.java
-    public interface IngredientDialogListener {
-=======
-    public interface AddIngredientDialogListener {
->>>>>>> 4be9dd76a139da10011255ba1957774a30bfb990:Food_Tracker_App/app/src/main/java/com/example/foodtracker/ui/ingredients/AddIngredientDialog.java
 
+    public interface IngredientDialogListener {
         /**
          * Callback when an ingredient is added within the dialog
          */
         void onIngredientAdd(Ingredient newIngredient);
 
-<<<<<<< HEAD:Food_Tracker_App/app/src/main/java/com/example/foodtracker/ui/ingredients/IngredientDialog.java
         void onIngredientEdit(Ingredient oldIngredient);
 
-
-=======
-        /**
-         * Callback when the cancel button is clicked within the dialog
-         */
-        void onCancel();
->>>>>>> 4be9dd76a139da10011255ba1957774a30bfb990:Food_Tracker_App/app/src/main/java/com/example/foodtracker/ui/ingredients/AddIngredientDialog.java
     }
 }
