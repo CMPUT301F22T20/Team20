@@ -26,7 +26,7 @@ public class Recipe extends Document {
     }
 
     public Recipe(String image, String title, int prepTime, int servings, String category, String comment, ArrayList<Ingredient> ingredients) {
-        this.image =image;
+        this.image = image;
         this.title = title;
         this.prepTime = prepTime;
         this.servings = servings;
@@ -49,8 +49,24 @@ public class Recipe extends Document {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
-        data.put("Title", getTitle());
+        data.put(Recipe.FieldNames.TITLE, this.getTitle());
+        data.put(Recipe.FieldNames.IMAGE, this.getImage());
+        data.put(Recipe.FieldNames.PREPTIME, this.getPrepTime());
+        data.put(Recipe.FieldNames.CATEGORY, this.getCategory());
+        data.put(Recipe.FieldNames.SERVINGS, this.getServings());
+        data.put(Recipe.FieldNames.COMMENT, this.getComment());
+        data.put(FieldNames.INGREDIENTS, this.getIngredients());
         return data;
+    }
+
+    public static class FieldNames {
+        public static String TITLE = "title";
+        public static String IMAGE = "image";
+        public static String PREPTIME = "prep time";
+        public static String CATEGORY = "category";
+        public static String SERVINGS = "servings";
+        public static String COMMENT = "comment";
+        public static String INGREDIENTS = "ingredients";
     }
 
     public String getTitle() {
