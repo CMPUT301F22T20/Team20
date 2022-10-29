@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Recipe implements Documentable {
+public class Recipe extends Document {
 
     public static final String RECIPES_COLLECTION_NAME = "Recipes";
     private String image; // TODO: figure out if this should be a String or a different data type

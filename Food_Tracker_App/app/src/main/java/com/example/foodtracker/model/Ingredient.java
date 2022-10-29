@@ -12,9 +12,9 @@ import java.util.Map;
  * Category of the Ingredient
  * Amount of the Ingredient
  * Expiry Date of the Ingredient
- * {@link Documentable} allows objects to be used as Firebase instances
+ * {@link Document} allows objects to be used as Firebase instances
  */
-public class Ingredient implements Documentable {
+public class Ingredient extends Document {
 
     public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
     /**
