@@ -1,6 +1,7 @@
 package com.example.foodtracker.model;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import java.util.Map;
  * Expiry Date of the Ingredient
  * {@link Document} allows objects to be used as Firebase instances
  */
-public class Ingredient extends Document {
+public class Ingredient extends Document implements Serializable {
 
     public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
     /**
