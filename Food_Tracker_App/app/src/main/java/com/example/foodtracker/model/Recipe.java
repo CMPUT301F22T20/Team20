@@ -43,11 +43,6 @@ public class Recipe extends Document implements Serializable {
     }
 
     @Override
-    public String getKey() {
-        return getTitle();
-    }
-
-    @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
         data.put(Recipe.FieldNames.TITLE, this.getTitle());
@@ -63,7 +58,7 @@ public class Recipe extends Document implements Serializable {
     public static class FieldNames {
         public static String TITLE = "title";
         public static String IMAGE = "image";
-        public static String PREPTIME = "prep time";
+        public static String PREPTIME = "preptime";
         public static String CATEGORY = "category";
         public static String SERVINGS = "servings";
         public static String COMMENT = "comment";
