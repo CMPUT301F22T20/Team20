@@ -1,10 +1,11 @@
 package com.example.foodtracker.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Recipe extends Document {
+public class Recipe extends Document implements Serializable {
 
     public static final String RECIPES_COLLECTION_NAME = "Recipes";
     private String image; // TODO: figure out if this should be a String or a different data type

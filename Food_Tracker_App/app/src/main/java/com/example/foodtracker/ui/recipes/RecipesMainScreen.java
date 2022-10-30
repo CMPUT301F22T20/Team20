@@ -4,16 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.Recipe;
 import com.example.foodtracker.ui.NavBar;
-import com.example.foodtracker.ui.ingredients.IngredientDialog;
-import com.example.foodtracker.ui.ingredients.IngredientRecyclerViewAdapter;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
@@ -22,11 +20,11 @@ import java.util.ArrayList;
  * This class creates an object that is used to represent the main screen for the Recipes
  * This class extends {@link AppCompatActivity}
  */
-public class RecipesMainScreen extends AppCompatActivity implements RecipeRecyclerViewAdapter.RecipeArrayListener {
+public class RecipesMainScreen extends AppCompatActivity implements RecipeRecyclerViewAdapter.RecipeArrayListener, RecyclerViewInterface {
 
     private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
     private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-    private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList);
+    private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList, this);
 
     public RecipesMainScreen() {
         super(R.layout.recipes_main);
@@ -108,5 +106,11 @@ public class RecipesMainScreen extends AppCompatActivity implements RecipeRecycl
                 .setReorderingAllowed(true)
                 .replace(R.id.recipes_nav_bar, navBar)
                 .commit();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(this, RecipeDisplay.class);
+        startActivity(intent);
     }
 }

@@ -32,18 +32,20 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     private final ArrayList<Recipe> recipeArrayList;
     private final Context context;
     private final RecipeRecyclerViewAdapter.RecipeArrayListener recipeListener;
+    private final RecyclerViewInterface recyclerViewInterface;
 
-    RecipeRecyclerViewAdapter(Context context, ArrayList<Recipe> ingredientArrayList) {
+    RecipeRecyclerViewAdapter(Context context, ArrayList<Recipe> ingredientArrayList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.recipeArrayList = ingredientArrayList;
         recipeListener = (RecipeRecyclerViewAdapter.RecipeArrayListener) context;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
     @Override
     public RecipeRecyclerViewAdapter.RecipeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipe_content, parent, false);
-        return new RecipeRecyclerViewAdapter.RecipeHolder(view, recipeListener);
+        return new RecipeRecyclerViewAdapter.RecipeHolder(view, recipeListener, recyclerViewInterface);
     }
 
     /**
@@ -73,9 +75,21 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         protected final TextView servings = itemView.findViewById(R.id.text_recipe_servings);
         protected final TextView category = itemView.findViewById(R.id.text_recipe_category);
 
-        RecipeHolder(View itemView, RecipeRecyclerViewAdapter.RecipeArrayListener recipeListener) {
+        public RecipeHolder(View itemView, RecipeRecyclerViewAdapter.RecipeArrayListener recipeListener, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             // TODO: On click go to view recipe
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recyclerViewInterface != null) {
+                        int pos = getAdapterPosition();
+
+                        if (pos != RecyclerView.NO_POSITION) {
+                            recyclerViewInterface.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 }
