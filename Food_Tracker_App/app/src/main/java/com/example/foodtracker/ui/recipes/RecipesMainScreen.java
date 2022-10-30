@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.Recipe;
 import com.example.foodtracker.ui.NavBar;
@@ -38,6 +39,7 @@ public class RecipesMainScreen extends AppCompatActivity implements RecipeRecycl
         initializeAddRecipeButton();
         initializeBackButton();
         // addRecipe(new Recipe("image", "Chocolate Chip Cookies", 60, 24, "Dessert", "", new ArrayList<Ingredient>()));
+        // addRecipe(new Recipe("image", "Sugar Cookies", 55, 24, "Dessert", "", new ArrayList<Ingredient>()));
         if (savedInstanceState == null) {
             createRecyclerView();
             createNavbar();

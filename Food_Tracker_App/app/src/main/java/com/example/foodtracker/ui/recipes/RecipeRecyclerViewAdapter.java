@@ -34,9 +34,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     private final RecipeRecyclerViewAdapter.RecipeArrayListener recipeListener;
     private final RecyclerViewInterface recyclerViewInterface;
 
-    RecipeRecyclerViewAdapter(Context context, ArrayList<Recipe> ingredientArrayList, RecyclerViewInterface recyclerViewInterface) {
+    RecipeRecyclerViewAdapter(Context context, ArrayList<Recipe> recipeArrayList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
-        this.recipeArrayList = ingredientArrayList;
+        this.recipeArrayList = recipeArrayList;
         recipeListener = (RecipeRecyclerViewAdapter.RecipeArrayListener) context;
         this.recyclerViewInterface = recyclerViewInterface;
     }
