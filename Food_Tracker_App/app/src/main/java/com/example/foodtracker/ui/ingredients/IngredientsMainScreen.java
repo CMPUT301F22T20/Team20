@@ -1,6 +1,7 @@
 package com.example.foodtracker.ui.ingredients;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,11 +15,15 @@ import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
 
-public class IngredientsMainScreen extends AppCompatActivity implements AddIngredientDialog.AddIngredientDialogListener {
+public class IngredientsMainScreen extends AppCompatActivity implements AddIngredientDialog.AddIngredientDialogListener,
+        AddIngredientCategoryDialog.OnCategoryFragmentInteractionListener,
+        AddLocationDialog.OnLocationFragmentInteractionListener{
 
     private final Collection<Ingredient> ingredientsCollection = new Collection<>(Ingredient.class, new Ingredient());
     private IngredientRecyclerViewAdapter adapter;
     private ArrayList<Ingredient> ingredientArrayList;
+    private ArrayList<String> locationArrayList;
+    private ArrayList<String> categoryArrayList;
 
     public IngredientsMainScreen() {
         super(R.layout.ingredient_main);
@@ -51,6 +56,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
         adapter.notifyItemInserted(ingredientArrayList.indexOf(addedIngredient));
     }
 
+
     @Override
     public void onCancel() {
 
@@ -60,8 +66,15 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
      * Initializes the add ingredient button to open the add ingredient dialog on click
      */
     private void initializeAddIngredientButton() {
-        Button addIngredientButton = findViewById(R.id.add_ingredient_button);
-        addIngredientButton.setOnClickListener(ingredientView -> new AddIngredientDialog().show(getSupportFragmentManager(), "Add_ingredient"));
+//        Button addIngredientButton = findViewById(R.id.add_ingredient_button);
+//        addIngredientButton.setOnClickListener(ingredientView -> new AddIngredientDialog().show(getSupportFragmentManager(), "Add_ingredient"));
+        Button addButton = findViewById(R.id.add_ingredient_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddDialog().show(getSupportFragmentManager(), "Add Selection");
+            }
+        });
     }
 
     /**
@@ -79,6 +92,8 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
      */
     private void initializeData() {
         ingredientArrayList = new ArrayList<>();
+        locationArrayList = new ArrayList<>();
+        categoryArrayList = new ArrayList<>();
         Ingredient tuna = new Ingredient("Tuna", 1.0, "Pantry", "Food", 5, "05/02/2022");
         Ingredient apple = new Ingredient("Apple", 1.0, "Pantry", "Food", 5, "05/02/2022");
         Ingredient broccoli = new Ingredient("Broccoli", 1.0, "Pantry", "Food", 5, "05/02/2022");
@@ -91,5 +106,15 @@ public class IngredientsMainScreen extends AppCompatActivity implements AddIngre
 
     private void returnToMainMenu() {
         finish();
+    }
+
+    @Override
+    public void onAddCategoryCreates(String newCategory) {
+        categoryArrayList.add(newCategory);
+    }
+
+    @Override
+    public void onAddLocationCreates(String newLocation) {
+        locationArrayList.add(newLocation);
     }
 }
