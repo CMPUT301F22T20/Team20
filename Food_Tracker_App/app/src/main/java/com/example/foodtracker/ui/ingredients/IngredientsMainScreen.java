@@ -73,11 +73,22 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         addIngredient(addedIngredient);
     }
 
+    @Override
+    public void onIngredientEdit(Ingredient oldIngredient) {
+        editIngredient(oldIngredient);
+    }
+
     /**
      * TODO: Here we would like to open the ingredient dialog with an ingredient
      */
     @Override
     public void onEdit(Ingredient ingredient) {
+        Bundle args = new Bundle();
+        args.putSerializable("ingredient", ingredient);
+
+        IngredientDialog edit_fragment = new IngredientDialog();
+        edit_fragment.setArguments(args);
+        edit_fragment.show(getSupportFragmentManager(), "EDIT_INGREDIENT");
     }
 
     @Override
@@ -95,6 +106,12 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         ingredientArrayList.add(ingredient);
         ingredientsCollection.createDocument(ingredient, () ->
                 adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient)));
+    }
+
+    //edit ingredient
+    private void editIngredient(Ingredient ingredient) {
+        int editIndex = ingredientArrayList.indexOf(ingredient);
+        ingredientsCollection.editDocument(ingredient, () -> adapter.notifyItemChanged(editIndex));
     }
 
     private void removeIngredient(Ingredient ingredient) {
