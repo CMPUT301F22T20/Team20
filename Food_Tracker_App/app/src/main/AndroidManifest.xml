@@ -14,17 +14,20 @@
         android:theme="@style/Theme.FoodTracker"
         tools:targetApi="31">
         <activity
-            android:name=".ui.shoppingCart.ShoppingCartMainScreen"
-            android:label="@string/title_shopping"
+            android:name=".ui.recipes.RecipeDisplay"
             android:exported="false" />
+        <activity
+            android:name=".ui.shoppingCart.ShoppingCartMainScreen"
+            android:exported="false"
+            android:label="@string/title_shopping" />
         <activity
             android:name=".ui.mealPlan.MealPlanMainScreen"
-            android:label="@string/title_meal_plan"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_meal_plan" />
         <activity
             android:name=".ui.recipes.RecipesMainScreen"
-            android:label="@string/title_recipes"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_recipes" />
         <activity
             android:name=".ui.ingredients.IngredientsMainScreen"
             android:exported="false"
