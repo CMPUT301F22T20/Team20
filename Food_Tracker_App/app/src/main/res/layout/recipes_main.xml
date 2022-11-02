@@ -6,31 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.recipes.RecipesMainScreen">
 
-    <!-- TODO: replace with top bar add button -->
-    <Button
-        android:id="@+id/add_recipe_button"
-        style="@style/textButton"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/topBarContainerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="ADD"
-        app:layout_constraintBottom_toTopOf="@id/recipe_list"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/recipe_return_button"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- TODO: replace with top bar back button -->
-    <Button
-        android:id="@+id/recipe_return_button"
-        style="@style/textButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="BACK"
-        app:layout_constraintBottom_toTopOf="@id/recipe_list"
-        app:layout_constraintEnd_toStartOf="@id/add_recipe_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/recipe_list"
+        tools:layout="@layout/top_bar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipe_list"
@@ -39,7 +23,7 @@
         app:layout_constraintBottom_toTopOf="@id/recipes_nav_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_recipe_button" />
+        app:layout_constraintTop_toBottomOf="@id/topBarContainerView" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/recipes_nav_bar"
