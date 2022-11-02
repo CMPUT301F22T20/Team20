@@ -27,7 +27,7 @@ public class Category extends Document {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
-        data.put(FieldNames.LOCATION_NAME, name);
+        data.put(FieldNames.CATEGORY_NAME, name);
         return data;
     }
 
@@ -44,7 +44,7 @@ public class Category extends Document {
      * these must match the names of the class fields and setters
      */
     public static class FieldNames {
-        public static String LOCATION_NAME = "name";
+        public static String CATEGORY_NAME = "name";
     }
 }
 
