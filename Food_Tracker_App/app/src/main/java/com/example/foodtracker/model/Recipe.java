@@ -1,5 +1,7 @@
 package com.example.foodtracker.model;
 
+import com.example.foodtracker.model.ingredient.Ingredient;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
