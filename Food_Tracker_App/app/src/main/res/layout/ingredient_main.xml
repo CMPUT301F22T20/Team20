@@ -6,43 +6,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- TODO: replace with top bar add button -->
-    <Button
-        android:id="@+id/add_ingredient_button"
-        style="@style/textButton"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/topBarContainerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="ADD"
-        app:layout_constraintBottom_toTopOf="@id/ingredient_list"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/return_button"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- TODO: replace with top bar back button -->
-    <Button
-        android:id="@+id/return_button"
-        style="@style/textButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="BACK"
-        app:layout_constraintBottom_toTopOf="@id/ingredient_list"
-        app:layout_constraintEnd_toStartOf="@id/add_ingredient_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/ingredient_list"
+        tools:layout="@layout/top_bar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ingredient_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/fragmentContainerView"
+        app:layout_constraintBottom_toTopOf="@id/navbarContainerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_ingredient_button" />
+        app:layout_constraintTop_toBottomOf="@id/topBarContainerView" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
+        android:id="@+id/navbarContainerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
