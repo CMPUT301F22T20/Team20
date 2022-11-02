@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="textViewDimension">
+    <style name="ingredientViewText" parent="textBody">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/duru_sans</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="ingredientViewButton" parent="textButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
     </style>
 </resources>

@@ -1,7 +1,6 @@
 package com.example.foodtracker.ui.ingredients;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,110 +10,152 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.MenuItem;
+import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
 
-public class IngredientsMainScreen extends AppCompatActivity implements AddIngredientDialog.AddIngredientDialogListener,
-        AddIngredientCategoryDialog.OnCategoryFragmentInteractionListener,
-        AddLocationDialog.OnLocationFragmentInteractionListener{
+/**
+ * This class creates an object that is used to represent the main screen for the Ingredients
+ * This class extends from {@link AppCompatActivity}
+ * THis class implements the {@link IngredientDialog.IngredientDialogListener} from {@link IngredientDialog} class
+ * Implements {@link com.example.foodtracker.ui.TopBar.TopBarListener} to provide callback on add press
+ */
+public class IngredientsMainScreen extends AppCompatActivity implements
+        IngredientDialog.IngredientDialogListener,
+        IngredientRecyclerViewAdapter.IngredientArrayListener,
+        TopBar.TopBarListener {
 
+    /**
+     * This is a private final variable
+     * This holds a collection of {@link Ingredient} objects and is of type {@link Ingredient}
+     */
     private final Collection<Ingredient> ingredientsCollection = new Collection<>(Ingredient.class, new Ingredient());
-    private IngredientRecyclerViewAdapter adapter;
-    private ArrayList<Ingredient> ingredientArrayList;
-    private ArrayList<String> locationArrayList;
-    private ArrayList<String> categoryArrayList;
+    /**
+     * This is a private variable
+     * This holds the adapter for the ingredient list
+     */
+    private final ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
+    /**
+     * This is a private variable
+     * This holds a list of {@link Ingredient} objects and is of type {@link ArrayList<Ingredient>}
+     */
+    private final IngredientRecyclerViewAdapter adapter = new IngredientRecyclerViewAdapter(this, ingredientArrayList);
 
+    /**
+     * This is the constructor for the class
+     */
     public IngredientsMainScreen() {
         super(R.layout.ingredient_main);
     }
 
+    /**
+     * This function is called when a main screen object is created
+     * @param savedInstanceState This is of type {@link Bundle}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ingredient_main);
         initializeData();
-        RecyclerView ingredientsRecyclerView = findViewById(R.id.ingredient_list);
-        ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        adapter = new IngredientRecyclerViewAdapter(getBaseContext(), ingredientArrayList);
-        ingredientsRecyclerView.setAdapter(adapter);
-        adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
-        initializeAddIngredientButton();
-        initializeBackButton();
         if (savedInstanceState == null) {
-            NavBar navBar = NavBar.newInstance(MenuItem.INGREDIENTS);
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.fragmentContainerView, navBar)
-                    .commit();
+            createRecyclerView();
+            createNavbar();
+            createTopBar();
         }
     }
 
+    /**
+     * This is called when an Ingredient is added by clicking on the add button
+     * This is the implementation of a function from {@link IngredientDialog.IngredientDialogListener}
+     * @param addedIngredient This is the Ingredient that is added which is of type {@link Ingredient}
+     */
     @Override
     public void onIngredientAdd(Ingredient addedIngredient) {
-        ingredientArrayList.add(addedIngredient);
-        adapter.notifyItemInserted(ingredientArrayList.indexOf(addedIngredient));
+        addIngredient(addedIngredient);
     }
-
 
     @Override
-    public void onCancel() {
-
+    public void onIngredientEdit(Ingredient oldIngredient) {
+        editIngredient(oldIngredient);
     }
 
     /**
-     * Initializes the add ingredient button to open the add ingredient dialog on click
+     * TODO: Here we would like to open the ingredient dialog with an ingredient
      */
-    private void initializeAddIngredientButton() {
-//        Button addIngredientButton = findViewById(R.id.add_ingredient_button);
-//        addIngredientButton.setOnClickListener(ingredientView -> new AddIngredientDialog().show(getSupportFragmentManager(), "Add_ingredient"));
-        Button addButton = findViewById(R.id.add_ingredient_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AddDialog().show(getSupportFragmentManager(), "Add Selection");
-            }
-        });
+    @Override
+    public void onEdit(Ingredient ingredient) {
+        Bundle args = new Bundle();
+        args.putSerializable("ingredient", ingredient);
+
+        IngredientDialog edit_fragment = new IngredientDialog();
+        edit_fragment.setArguments(args);
+        edit_fragment.show(getSupportFragmentManager(), "EDIT_INGREDIENT");
+    }
+
+    @Override
+    public void onDelete(Ingredient ingredient) {
+        removeIngredient(ingredient);
+    }
+
+    @Override
+    public void onAddClick() {
+        new IngredientDialog().show(getSupportFragmentManager(), "Add_ingredient");
+    }
+
+    private void createRecyclerView() {
+        RecyclerView ingredientsRecyclerView = findViewById(R.id.ingredient_list);
+        ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ingredientsRecyclerView.setAdapter(adapter);
+    }
+
+    private void addIngredient(Ingredient ingredient) {
+        ingredientArrayList.add(ingredient);
+        ingredientsCollection.createDocument(ingredient, () ->
+                adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient)));
+    }
+
+    private void editIngredient(Ingredient ingredient) {
+        int editIndex = ingredientArrayList.indexOf(ingredient);
+        ingredientsCollection.editDocument(ingredient, () -> adapter.notifyItemChanged(editIndex));
+    }
+
+    private void removeIngredient(Ingredient ingredient) {
+        int removedIndex = ingredientArrayList.indexOf(ingredient);
+        ingredientArrayList.remove(removedIndex);
+        ingredientsCollection.delete(ingredient, () ->
+                adapter.notifyItemRemoved(removedIndex));
     }
 
     /**
-     * Initializes the add ingredient button to open the add ingredient dialog on click
+     * Instantiates the navbar fragment for the ingredients menu
      */
-    private void initializeBackButton() {
-        Button backButton = findViewById(R.id.return_button);
-        backButton.setOnClickListener(ingredientView -> {
-            returnToMainMenu();
-        });
+    private void createNavbar() {
+        NavBar navBar = NavBar.newInstance(MenuItem.INGREDIENTS);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.navbarContainerView, navBar)
+                .commit();
+    }
+
+    /**
+     * Instantiates the top bar fragment for the ingredients menu
+     */
+    private void createTopBar() {
+        TopBar topBar = TopBar.newInstance("Ingredients", true);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
+                .commit();
     }
 
     /**
      * Adds some initial data to the list
      */
     private void initializeData() {
-        ingredientArrayList = new ArrayList<>();
-        locationArrayList = new ArrayList<>();
-        categoryArrayList = new ArrayList<>();
-        Ingredient tuna = new Ingredient("Tuna", 1.0, "Pantry", "Food", 5, "05/02/2022");
-        Ingredient apple = new Ingredient("Apple", 1.0, "Pantry", "Food", 5, "05/02/2022");
-        Ingredient broccoli = new Ingredient("Broccoli", 1.0, "Pantry", "Food", 5, "05/02/2022");
-        ingredientArrayList.add(tuna);
-        ingredientArrayList.add(apple);
-        ingredientArrayList.add(broccoli);
-        // todo: figure out why this is not working...
-        ingredientsCollection.createOrUpdateMultiple(ingredientArrayList);
-    }
-
-    private void returnToMainMenu() {
-        finish();
-    }
-
-    @Override
-    public void onAddCategoryCreates(String newCategory) {
-        categoryArrayList.add(newCategory);
-    }
-
-    @Override
-    public void onAddLocationCreates(String newLocation) {
-        locationArrayList.add(newLocation);
+        ingredientsCollection.getAll(list -> {
+            ingredientArrayList.addAll(list);
+            adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
+        });
     }
 }
