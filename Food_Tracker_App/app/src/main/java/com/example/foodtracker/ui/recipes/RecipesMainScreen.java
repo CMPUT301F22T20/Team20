@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import com.example.foodtracker.R;
@@ -49,6 +50,14 @@ public class RecipesMainScreen extends AppCompatActivity implements
             createNavbar();
             createTopBar();
         }
+
+        //get the message from AddRecipeActivity
+        Intent intent = getIntent();
+        if (getIntent().getExtras() != null) {
+            Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
+            addRecipe(received_recipe);
+        }
+
     }
 
     @Override
@@ -69,7 +78,8 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
     @Override
     public void onAddClick() {
-        new RecipeDialog().show(getSupportFragmentManager(), "Add_Recipe");
+        Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+        startActivity(intent);
     }
 
     private void addRecipe(Recipe recipe) {
@@ -77,6 +87,7 @@ public class RecipesMainScreen extends AppCompatActivity implements
         recipesCollection.createDocument(recipe, () ->
                 adapter.notifyItemInserted(recipeArrayList.indexOf(recipe)));
     }
+
 
     /**
      * Adds some initial data to the list

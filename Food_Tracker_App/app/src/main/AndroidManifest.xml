@@ -14,6 +14,9 @@
         android:theme="@style/Theme.FoodTracker"
         tools:targetApi="31">
         <activity
+            android:name=".ui.recipes.AddRecipeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.recipes.RecipeDisplay"
             android:exported="false" />
         <activity
