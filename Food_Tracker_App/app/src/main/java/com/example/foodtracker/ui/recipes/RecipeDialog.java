@@ -1,32 +1,25 @@
 package com.example.foodtracker.ui.recipes;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.Recipe;
-import com.example.foodtracker.ui.ingredients.IngredientDialog;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class RecipeDialog extends DialogFragment {
 

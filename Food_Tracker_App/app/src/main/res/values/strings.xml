@@ -16,30 +16,19 @@
     <string name="ingredient_amount">Amount</string>
     <string name="delete_button">Delete</string>
     <string name="edit_button">Edit</string>
-
-    <string-array name="locationList">
-        <item>Pantry</item>
-        <item>Fridge</item>
-        <item>Freezer</item>
-    </string-array>
-
-    <string-array name="categoryList">
-        <item>Vegetables</item>
-        <item>Fruits</item>
-        <item>Meat</item>
-        <item>Bakery</item>
-        <item>Dairy</item>
-        <item>Egg</item>
-        <item>Seafood</item>
-        <item>Deli</item>
-        <item>Snacks</item>
-        <item>Drinks</item>
-        <item>Frozen</item>
-    </string-array>
     <string name="recipe_name">Recipe Name</string>
     <string name="recipe_servings">Servings</string>
     <string name="recipe_preptime">Prep Time</string>
     <string name="recipe_category">Category</string>
     <string name="add_icon">+</string>
     <string name="back_button_description">Back button that returns to the main menu</string>
+    <string name="singleton_list_add">Add an element to a list</string>
+    <string name="add_ingredient_location">Add Ingredient Location</string>
+    <string name="add_ingredient_category">Add Ingredient Category</string>
+    <string name="description">Description</string>
+    <string name="unit_cost">Unit Cost</string>
+    <string name="quantity">Quantity</string>
+    <string name="set_expiry_date">Set Expiry Date</string>
+    <string name="pick_ingredient_category">Pick ingredient category</string>
+    <string name="pick_ingredient_location">Pick ingredient location</string>
 </resources>

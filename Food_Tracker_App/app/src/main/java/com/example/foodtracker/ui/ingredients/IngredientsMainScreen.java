@@ -1,17 +1,18 @@
 package com.example.foodtracker.ui.ingredients;
 
 import android.os.Bundle;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.MenuItem;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
+import com.example.foodtracker.ui.ingredients.dialogs.AddDialog;
+import com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     /**
      * This function is called when a main screen object is created
+     *
      * @param savedInstanceState This is of type {@link Bundle}
      */
     @Override
@@ -68,6 +70,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
     /**
      * This is called when an Ingredient is added by clicking on the add button
      * This is the implementation of a function from {@link IngredientDialog.IngredientDialogListener}
+     *
      * @param addedIngredient This is the Ingredient that is added which is of type {@link Ingredient}
      */
     @Override
@@ -80,9 +83,6 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         editIngredient(oldIngredient);
     }
 
-    /**
-     * TODO: Here we would like to open the ingredient dialog with an ingredient
-     */
     @Override
     public void onEdit(Ingredient ingredient) {
         Bundle args = new Bundle();
@@ -100,7 +100,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     @Override
     public void onAddClick() {
-        new IngredientDialog().show(getSupportFragmentManager(), "Add_ingredient");
+        new AddDialog().show(getSupportFragmentManager(), "Add_ingredient");
     }
 
     private void createRecyclerView() {

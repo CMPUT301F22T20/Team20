@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
+import com.example.foodtracker.model.ingredient.Ingredient;
 
 import java.util.ArrayList;
 
