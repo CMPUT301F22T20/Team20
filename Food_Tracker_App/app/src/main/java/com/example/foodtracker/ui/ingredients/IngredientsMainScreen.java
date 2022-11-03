@@ -11,6 +11,7 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
@@ -19,10 +20,12 @@ import java.util.ArrayList;
  * This class creates an object that is used to represent the main screen for the Ingredients
  * This class extends from {@link AppCompatActivity}
  * THis class implements the {@link IngredientDialog.IngredientDialogListener} from {@link IngredientDialog} class
+ * Implements {@link com.example.foodtracker.ui.TopBar.TopBarListener} to provide callback on add press
  */
 public class IngredientsMainScreen extends AppCompatActivity implements
         IngredientDialog.IngredientDialogListener,
-        IngredientRecyclerViewAdapter.IngredientArrayListener {
+        IngredientRecyclerViewAdapter.IngredientArrayListener,
+        TopBar.TopBarListener {
 
     /**
      * This is a private final variable
@@ -55,11 +58,10 @@ public class IngredientsMainScreen extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeData();
-        initializeAddIngredientButton();
-        initializeBackButton();
         if (savedInstanceState == null) {
             createRecyclerView();
             createNavbar();
+            createTopBar();
         }
     }
 
@@ -96,6 +98,11 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         removeIngredient(ingredient);
     }
 
+    @Override
+    public void onAddClick() {
+        new IngredientDialog().show(getSupportFragmentManager(), "Add_ingredient");
+    }
+
     private void createRecyclerView() {
         RecyclerView ingredientsRecyclerView = findViewById(R.id.ingredient_list);
         ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -108,7 +115,6 @@ public class IngredientsMainScreen extends AppCompatActivity implements
                 adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient)));
     }
 
-    //edit ingredient
     private void editIngredient(Ingredient ingredient) {
         int editIndex = ingredientArrayList.indexOf(ingredient);
         ingredientsCollection.editDocument(ingredient, () -> adapter.notifyItemChanged(editIndex));
@@ -128,24 +134,19 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         NavBar navBar = NavBar.newInstance(MenuItem.INGREDIENTS);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.fragmentContainerView, navBar)
+                .replace(R.id.navbarContainerView, navBar)
                 .commit();
     }
 
     /**
-     * Initializes the add ingredient button to open the add ingredient dialog on click
+     * Instantiates the top bar fragment for the ingredients menu
      */
-    private void initializeAddIngredientButton() {
-        Button addIngredientButton = findViewById(R.id.add_ingredient_button);
-        addIngredientButton.setOnClickListener(ingredientView -> new IngredientDialog().show(getSupportFragmentManager(), "Add_ingredient"));
-    }
-
-    /**
-     * Initializes the add ingredient button to open the add ingredient dialog on click
-     */
-    private void initializeBackButton() {
-        Button backButton = findViewById(R.id.return_button);
-        backButton.setOnClickListener(ingredientView -> returnToMainMenu());
+    private void createTopBar() {
+        TopBar topBar = TopBar.newInstance("Ingredients", true);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
+                .commit();
     }
 
     /**
@@ -156,12 +157,5 @@ public class IngredientsMainScreen extends AppCompatActivity implements
             ingredientArrayList.addAll(list);
             adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
         });
-    }
-
-    /**
-     * This function helps to return back to main menu
-     */
-    private void returnToMainMenu() {
-        finish();
     }
 }

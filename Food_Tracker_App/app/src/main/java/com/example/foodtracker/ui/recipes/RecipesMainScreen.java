@@ -14,6 +14,7 @@ import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.Recipe;
 import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.ui.ingredients.IngredientDialog;
 import com.example.foodtracker.utils.Collection;
 
@@ -25,7 +26,9 @@ import java.util.ArrayList;
  */
 public class RecipesMainScreen extends AppCompatActivity implements
         RecipeDialog.RecipeDialogListener,
-        RecipeRecyclerViewAdapter.RecipeArrayListener, RecyclerViewInterface {
+        RecipeRecyclerViewAdapter.RecipeArrayListener,
+        RecyclerViewInterface,
+        TopBar.TopBarListener {
 
     private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
     private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
@@ -40,13 +43,12 @@ public class RecipesMainScreen extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipes_main);
         initializeData();
-        initializeAddRecipeButton();
-        initializeBackButton();
         // addRecipe(new Recipe("image", "Chocolate Chip Cookies", 60, 24, "Dessert", "", new ArrayList<Ingredient>()));
         // addRecipe(new Recipe("image", "Sugar Cookies", 55, 24, "Dessert", "", new ArrayList<Ingredient>()));
         if (savedInstanceState == null) {
             createRecyclerView();
             createNavbar();
+            createTopBar();
         }
 
         //get the message from AddRecipeActivity
@@ -73,36 +75,19 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
     }
 
+
+    @Override
+    public void onAddClick() {
+        Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+        startActivity(intent);
+    }
+
     private void addRecipe(Recipe recipe) {
         recipeArrayList.add(recipe);
         recipesCollection.createDocument(recipe, () ->
                 adapter.notifyItemInserted(recipeArrayList.indexOf(recipe)));
     }
 
-    /**
-     * Initializes the add recipe button to open the add recipe dialog on click
-     */
-    private void initializeAddRecipeButton() {
-        Button addRecipeButton = findViewById(R.id.add_recipe_button);
-        // TODO: uncomment when add recipe dialog is implemented
-        addRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //addRecipeButton.setOnClickListener(recipeView -> new RecipeDialog().show(getSupportFragmentManager(), "Add_recipe"));
-    }
-
-    /**
-     * Initializes the recipe back button to go back to the main screen
-     */
-    private void initializeBackButton() {
-        Button backButton = findViewById(R.id.recipe_return_button);
-        backButton.setOnClickListener(recipeView -> returnToMainMenu());
-    }
 
     /**
      * Adds some initial data to the list
@@ -132,6 +117,17 @@ public class RecipesMainScreen extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.recipes_nav_bar, navBar)
+                .commit();
+    }
+
+    /**
+     * Instantiates the top bar fragment for the ingredients menu
+     */
+    private void createTopBar() {
+        TopBar topBar = TopBar.newInstance("Recipes", true);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
                 .commit();
     }
 
