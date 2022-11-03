@@ -121,6 +121,8 @@ public class RecipesMainScreen extends AppCompatActivity implements
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(this, RecipeDisplay.class);
+        Recipe recipe = recipeArrayList.get(position);
+        intent.putExtra("RECIPE", recipe);
         startActivity(intent);
     }
 }

@@ -6,6 +6,118 @@
     android:layout_height="match_parent"
     tools:context=".ui.recipes.RecipeDisplay">
 
+    <TextView
+        android:id="@+id/recipeDisplayTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Recipe Title"
+        style="@style/textHeader1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/recipeDisplayPrepTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Preperation Time"
+        style="@style/textBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeDisplayTitle" />
+
+    <TextView
+        android:id="@+id/recipeDisplayServings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Servings"
+        style="@style/textBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeDisplayPrepTime" />
+
+    <TextView
+        android:id="@+id/recipeDisplayCategory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Category"
+        style="@style/textBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeDisplayServings" />
+
+    <TextView
+        android:id="@+id/recipeDisplayIngredientsHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="Ingredients"
+        style="@style/textBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeDisplayCategory" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipeDisplayIngredientList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/recipeDisplayComment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeDisplayIngredientsHeader" />
+
+    <TextView
+        android:id="@+id/recipeDisplayComment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="Comment"
+        style="@style/textBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeDisplayIngredientList" />
+
+    <Button
+        android:id="@+id/recipeDeleteButton"
+        style="@style/textButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="DELETE"
+        app:layout_constraintBottom_toTopOf="@id/recipe_display_nav_bar"
+        app:layout_constraintEnd_toStartOf="@id/recipeEditButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeDisplayComment" />
+
+    <Button
+        android:id="@+id/recipeEditButton"
+        style="@style/textButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="EDIT"
+        app:layout_constraintBottom_toTopOf="@id/recipe_display_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/recipeDeleteButton"
+        app:layout_constraintTop_toBottomOf="@id/recipeDisplayComment" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/recipe_display_nav_bar"
         android:layout_width="0dp"

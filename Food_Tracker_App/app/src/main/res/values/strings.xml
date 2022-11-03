@@ -40,4 +40,5 @@
     <string name="recipe_servings">Servings</string>
     <string name="recipe_preptime">Prep Time</string>
     <string name="recipe_category">Category</string>
+    <string name="recipe_details">Recipe Details</string>
 </resources>
