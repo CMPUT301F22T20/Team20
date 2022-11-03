@@ -69,31 +69,8 @@ public class AddRecipeActivity extends AppCompatActivity
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Recipe recipe = new Recipe();
 
-                recipe.setImage("");
-                recipe.setTitle(titleField.getText().toString());
-
-                String time_str = timeField.getText().toString();
-                try{
-                    int time_int = Integer.parseInt(time_str);
-                    recipe.setPrepTime(time_int);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-
-                String serving_str = servingsField.getText().toString();
-                try {
-                    int servings_int = Integer.parseInt(serving_str);
-                    recipe.setServings(servings_int);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-
-                recipe.setCategory(categoryField.getText().toString());
-                recipe.setComment(commentsField.getText().toString());
-
-                recipe.setIngredients(arrayList);
+                Recipe recipe = createRecipe();
 
                 //send the recipe to main screen
                 Intent intent = new Intent(getApplicationContext(), RecipesMainScreen.class);
@@ -111,6 +88,36 @@ public class AddRecipeActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private Recipe createRecipe() {
+        Recipe recipe = new Recipe();
+
+        recipe.setImage("");
+        recipe.setTitle(titleField.getText().toString());
+
+        String time_str = timeField.getText().toString();
+        try{
+            int time_int = Integer.parseInt(time_str);
+            recipe.setPrepTime(time_int);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        String serving_str = servingsField.getText().toString();
+        try {
+            int servings_int = Integer.parseInt(serving_str);
+            recipe.setServings(servings_int);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        recipe.setCategory(categoryField.getText().toString());
+        recipe.setComment(commentsField.getText().toString());
+
+        recipe.setIngredients(arrayList);
+
+        return recipe;
     }
 
     @Override
