@@ -42,4 +42,6 @@
     <string name="recipe_category">Category</string>
     <string name="add_icon">+</string>
     <string name="back_button_description">Back button that returns to the main menu</string>
+    <string name="add_recipe_image_description">add_recipe_image</string>
+    <string name="recipe_image_description">Recipe image</string>
 </resources>

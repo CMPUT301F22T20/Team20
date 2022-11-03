@@ -1,100 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
-    <EditText
-        android:id="@+id/recipeTitle"
-        android:layout_width="275dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft = "40dp"
-        android:layout_marginTop = "60dp"
-        android:background="@color/background_dark"
-        android:ems="10"
-        android:hint="title"
-        android:inputType="textPersonName"
-        android:paddingLeft="20dp" />
-
-    <EditText
-        android:id="@+id/recipePrepTime"
-        android:layout_width="275dp"
-        android:layout_height="48dp"
-        android:paddingLeft="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft = "40dp"
-        android:background="@color/background_dark"
-        android:ems="10"
-        android:hint="prepare time (mins)"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/recipeServings"
-        android:layout_width="275dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft = "40dp"
-        android:background="@color/background_dark"
-        android:ems="10"
-        android:hint="servings"
-        android:inputType="number"
-        android:paddingLeft="20dp" />
-
-    <EditText
-        android:id="@+id/recipeCategory"
-        android:layout_width="275dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft = "40dp"
-        android:background="@color/background_dark"
-        android:ems="10"
-        android:hint="catogry"
-        android:inputType="text"
-        android:paddingLeft="20dp" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="139dp"
-            android:layout_height="28dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginLeft = "40dp"
-            android:background="@color/background_dark"
-            android:ems="10"
-            android:paddingLeft="20dp"
-            android:text="Ingredients:" />
+        <ImageView
+            android:id="@+id/recipe_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/recipe_image_description" />
 
-        <Button
-            android:id="@+id/addIngredient"
-            android:layout_marginLeft = "40dp"
-            android:layout_width="74dp"
+        <ImageButton
+            android:id="@+id/recipe_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:background="@drawable/circular_background"
+            android:contentDescription="@string/add_recipe_image_description"
+            android:src="@drawable/ic_baseline_camera_alt_24" />
+
+        <EditText
+            android:id="@+id/recipeTitle"
+            style="@style/inputField"
+            android:hint="Title"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/recipePrepTime"
+            style="@style/inputField"
+            android:hint="Prepare time (mins)"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/recipeServings"
+            style="@style/inputField"
+            android:hint="servings"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/recipeCategory"
+            style="@style/inputField"
+            android:hint="category"
+            android:inputType="text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Add" />
+            android:orientation="horizontal"
+            android:layout_margin="16dp">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Ingredients:" />
+
+            <Button
+                android:id="@+id/addIngredient"
+                style="@style/textButton"
+                android:layout_width="0dp"
+                android:background="@android:color/transparent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:textSize="30sp"
+                android:gravity="end"
+                android:text="@string/add_icon" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <EditText
+            android:id="@+id/recipeComments"
+            style="@style/inputField"
+            android:hint="Comments"
+            android:inputType="text" />
+
     </LinearLayout>
-
-
-    <ListView
-        android:id = "@+id/ingredients"
-        android:layout_marginLeft = "40dp"
-        android:layout_width="275dp"
-        android:layout_height="50dp" />
-
-    <EditText
-        android:id="@+id/recipeComments"
-        android:layout_marginLeft = "40dp"
-        android:layout_width="274dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Comments"
-        android:inputType="text" />
-
-
-</LinearLayout>
+</ScrollView>

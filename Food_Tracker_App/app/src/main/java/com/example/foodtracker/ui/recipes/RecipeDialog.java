@@ -1,32 +1,29 @@
 package com.example.foodtracker.ui.recipes;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.Recipe;
-import com.example.foodtracker.ui.ingredients.IngredientDialog;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class RecipeDialog extends DialogFragment {
 
@@ -37,9 +34,16 @@ public class RecipeDialog extends DialogFragment {
     private ListView ingredientsListField;
     private EditText commentsField;
     private Button addIngredientButton;
-
     private ArrayAdapter<Ingredient> arrayAdapter;
     private ArrayList<Ingredient> arrayList;
+
+    private ImageView recipeImage;
+    private Uri imageURI;
+    private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            uri -> {
+                recipeImage.setImageURI(uri);
+                imageURI = uri;
+            });
 
     private RecipeDialog.RecipeDialogListener listener;
 
@@ -68,7 +72,6 @@ public class RecipeDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.add_recipe_dialog, null);
-
         titleField = view.findViewById(R.id.recipeTitle);
         timeField = view.findViewById(R.id.recipePrepTime);
         servingsField = view.findViewById(R.id.recipeServings);
@@ -76,73 +79,70 @@ public class RecipeDialog extends DialogFragment {
         ingredientsListField = view.findViewById(R.id.ingredients);
         commentsField = view.findViewById(R.id.recipeComments);
         addIngredientButton = view.findViewById(R.id.addIngredient);
+        ImageButton addRecipeImageButton = view.findViewById(R.id.recipe_image_button);
+        recipeImage = view.findViewById(R.id.recipe_image);
 
         arrayList = new ArrayList<>();
         //arrayAdapter = new CustomList(this, arrayList);
 
-        addIngredientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openSmallerIngredientDialog();
-            }
-        });
-
+        addIngredientButton.setOnClickListener(v -> openSmallerIngredientDialog());
+        addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
         return builder
                 .setView(view)
                 .setTitle("Add a recipe")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        addClick();
-                    }
-                }).create();
-
+                .setPositiveButton("ADD", (dialogInterface, i) -> addClick()).create();
     }
 
-    public void openSmallerIngredientDialog() {
+    private void addImageFromGallery() {
+        imageGalleryResultHandler.launch("image/*");
+    }
+
+    private void openSmallerIngredientDialog() {
         new AddIngredient().show(getParentFragmentManager(), "Add_ingredient");
     }
 
-
-    public void addClick() {
-
-        String title = titleField.getText().toString();
-        String time = timeField.getText().toString();
-        int time_min = 0;
-
-        try {
-            time_min = Integer.parseInt(time);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+    /**
+     * Populates the dialog fields from a {@link Recipe} instance
+     * @param recipe to initialize form with
+     */
+    public void initializeRecipe(Recipe recipe) {
+        if (!recipe.getImage().isEmpty()) {
+            imageURI = Uri.parse(recipe.getImage());
+            recipeImage.setImageURI(imageURI);
         }
-
-        String servings = servingsField.getText().toString();
-        int servings_int = 0;
-
-        try {
-            servings_int = Integer.parseInt(servings);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        String category = categoryField.getText().toString();
-        String comments = commentsField.getText().toString();
-
-        Recipe add_recipe = new Recipe();
-        add_recipe.setTitle(title);
-        add_recipe.setPrepTime(time_min);
-        add_recipe.setServings(servings_int);
-        add_recipe.setCategory(category);
-        add_recipe.setComment(comments);
-
-        listener.onRecipeAdd(add_recipe);
     }
 
 
+    private void addClick() {
+        String title = titleField.getText().toString();
+        String time = timeField.getText().toString();
+        int timeMin = 0;
+        try {
+            timeMin = Integer.parseInt(time);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        String servings = servingsField.getText().toString();
+        int servingsInt = 0;
+        try {
+            servingsInt = Integer.parseInt(servings);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        String category = categoryField.getText().toString();
+        String comments = commentsField.getText().toString();
+        Recipe recipe = new Recipe();
+        recipe.setTitle(title);
+        recipe.setPrepTime(timeMin);
+        recipe.setServings(servingsInt);
+        recipe.setCategory(category);
+        recipe.setComment(comments);
+        recipe.setImage(imageURI.toString());
+        listener.onRecipeAdd(recipe);
+    }
 
 
     public interface RecipeDialogListener {
