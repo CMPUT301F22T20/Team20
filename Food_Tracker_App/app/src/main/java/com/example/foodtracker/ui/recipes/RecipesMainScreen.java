@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import com.example.foodtracker.R;
@@ -47,6 +48,14 @@ public class RecipesMainScreen extends AppCompatActivity implements
             createRecyclerView();
             createNavbar();
         }
+
+        //get the message from AddRecipeActivity
+        Intent intent = getIntent();
+        if (getIntent().getExtras() != null) {
+            Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
+            addRecipe(received_recipe);
+        }
+
     }
 
     @Override
@@ -76,7 +85,15 @@ public class RecipesMainScreen extends AppCompatActivity implements
     private void initializeAddRecipeButton() {
         Button addRecipeButton = findViewById(R.id.add_recipe_button);
         // TODO: uncomment when add recipe dialog is implemented
-        addRecipeButton.setOnClickListener(recipeView -> new RecipeDialog().show(getSupportFragmentManager(), "Add_recipe"));
+        addRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //addRecipeButton.setOnClickListener(recipeView -> new RecipeDialog().show(getSupportFragmentManager(), "Add_recipe"));
     }
 
     /**
