@@ -41,4 +41,6 @@
     <string name="recipe_preptime">Prep Time</string>
     <string name="recipe_category">Category</string>
     <string name="recipe_details">Recipe Details</string>
+    <string name="add_icon">+</string>
+    <string name="back_button_description">Back button that returns to the main menu</string>
 </resources>
