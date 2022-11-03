@@ -13,6 +13,14 @@
         <item name="android:layout_marginTop">8dp</item>
     </style>
 
+    <style name="addChoiceButton" parent="textButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:background">@color/background</item>
+        <item name="android:hint">@string/add_ingredient</item>
+    </style>
+
     <style name="inputField" parent="textBody">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
