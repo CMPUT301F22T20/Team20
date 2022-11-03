@@ -36,10 +36,26 @@
         <item>Drinks</item>
         <item>Frozen</item>
     </string-array>
+
+    <string-array name="sortIngredients">
+        <item>Sort by:</item>
+        <item>Description (ASC)</item>
+        <item>Description (DESC)</item>
+        <item>Category (ASC)</item>
+        <item>Category (DESC)</item>
+        <item>Expiry Date (ASC)</item>
+        <item>Expiry Date (DESC)</item>
+        <item>Location (ASC)</item>
+        <item>Location (DESC)</item>
+    </string-array>
+
+
     <string name="recipe_name">Recipe Name</string>
     <string name="recipe_servings">Servings</string>
     <string name="recipe_preptime">Prep Time</string>
     <string name="recipe_category">Category</string>
     <string name="add_icon">+</string>
     <string name="back_button_description">Back button that returns to the main menu</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="sort_ingredient">Sort Ingredient</string>
 </resources>
