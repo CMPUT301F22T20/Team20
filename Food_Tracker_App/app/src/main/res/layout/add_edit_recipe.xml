@@ -35,19 +35,19 @@
         <EditText
             android:id="@+id/recipePrepTime"
             style="@style/inputField"
-            android:hint="Prepare time (mins)"
+            android:hint="Preparation time (mins)"
             android:inputType="number" />
 
         <EditText
             android:id="@+id/recipeServings"
             style="@style/inputField"
-            android:hint="servings"
+            android:hint="Servings"
             android:inputType="number" />
 
         <EditText
             android:id="@+id/recipeCategory"
             style="@style/inputField"
-            android:hint="category"
+            android:hint="Category"
             android:inputType="text" />
 
         <LinearLayout
@@ -80,7 +80,8 @@
         <ListView
             android:id="@+id/ingredients"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"/>
 
         <EditText
             android:id="@+id/recipeComments"
@@ -88,5 +89,31 @@
             android:hint="Comments"
             android:inputType="text" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp">
+
+            <Button
+                style="@style/textButton"
+                android:id="@+id/recipes_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel" />
+
+            <!--Spacer-->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                style="@style/textButton"
+                android:id="@+id/recipes_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm" />
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

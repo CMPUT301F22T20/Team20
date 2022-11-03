@@ -1,5 +1,9 @@
 package com.example.foodtracker.ui.recipes;
 
+import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +29,6 @@ import java.util.ArrayList;
  * This class extends {@link AppCompatActivity}
  */
 public class RecipesMainScreen extends AppCompatActivity implements
-        RecipeDialog.RecipeDialogListener,
         RecipeRecyclerViewAdapter.RecipeArrayListener,
         RecyclerViewInterface,
         TopBar.TopBarListener {
@@ -33,6 +36,12 @@ public class RecipesMainScreen extends AppCompatActivity implements
     private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
     private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
     private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList, this);
+    private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+        if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
+            Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
+            addRecipe(receivedRecipe);
+        }
+    });
 
     public RecipesMainScreen() {
         super(R.layout.recipes_main);
@@ -43,26 +52,18 @@ public class RecipesMainScreen extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipes_main);
         initializeData();
-        // addRecipe(new Recipe("image", "Chocolate Chip Cookies", 60, 24, "Dessert", "", new ArrayList<Ingredient>()));
-        // addRecipe(new Recipe("image", "Sugar Cookies", 55, 24, "Dessert", "", new ArrayList<Ingredient>()));
         if (savedInstanceState == null) {
             createRecyclerView();
             createNavbar();
             createTopBar();
         }
 
-        //get the message from AddRecipeActivity
         Intent intent = getIntent();
         if (getIntent().getExtras() != null) {
             Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
             addRecipe(received_recipe);
         }
 
-    }
-
-    @Override
-    public void onRecipeAdd(Recipe addedRecipe) {
-        addRecipe(addedRecipe);
     }
 
     @Override
@@ -79,7 +80,7 @@ public class RecipesMainScreen extends AppCompatActivity implements
     @Override
     public void onAddClick() {
         Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
-        startActivity(intent);
+        recipeActivityResultLauncher.launch(intent);
     }
 
     private void addRecipe(Recipe recipe) {
