@@ -9,10 +9,15 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.foodtracker.R;
 
 public class AddDialog extends DialogFragment {
+
+    public static final String ADD_INGREDIENT_SELECTION_TAG = "Add_ingredient";
 
     @NonNull
     @Override
@@ -23,9 +28,18 @@ public class AddDialog extends DialogFragment {
         Button categoryButton = view.findViewById(R.id.addIngredientCategorySelectionButton);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        ingredientButton.setOnClickListener(v -> new IngredientDialog().show(getChildFragmentManager(), "Add_ingredient"));
-        locationButton.setOnClickListener(v -> new AddLocationDialog().show(getChildFragmentManager(), "Add_location"));
-        categoryButton.setOnClickListener(v -> new AddCategoryDialog().show(getChildFragmentManager(), "Add_Category"));
+        ingredientButton.setOnClickListener(v -> {
+            dismiss();
+            new IngredientDialog().show(getParentFragmentManager(), "Add_ingredient");
+        });
+        locationButton.setOnClickListener(v -> {
+            dismiss();
+            new AddLocationDialog().show(getParentFragmentManager(), "Add_location");
+        });
+        categoryButton.setOnClickListener(v -> {
+            dismiss();
+            new AddCategoryDialog().show(getParentFragmentManager(), "Add_Category");
+        });
 
         return builder
                 .setView(view)

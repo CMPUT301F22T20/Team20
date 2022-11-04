@@ -1,6 +1,5 @@
 package com.example.foodtracker.ui_test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -79,7 +78,7 @@ public class IngredientTest {
         solo.enterText((EditText) solo.getView(R.id.ingredientCost), "5.60");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
         solo.pressSpinnerItem(0,0);
-        Spinner spinner = (Spinner) solo.getView(Spinner.class, 1);
+        Spinner spinner = solo.getView(Spinner.class, 1);
         spinner.setSelection(0, true);
         solo.setDatePicker(0, 2023, 12, 30);
         solo.clickOnView(solo.getView(android.R.id.button1));
@@ -103,7 +102,7 @@ public class IngredientTest {
         solo.enterText((EditText) solo.getView(R.id.ingredientCost), "1.60");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
         solo.pressSpinnerItem(0,0);
-        Spinner spinner = (Spinner) solo.getView(Spinner.class, 1);
+        Spinner spinner = solo.getView(Spinner.class, 1);
         spinner.setSelection(0, true);
         solo.setDatePicker(0, 2023, 12, 30);
         solo.clickOnView(solo.getView(android.R.id.button1));
@@ -114,14 +113,14 @@ public class IngredientTest {
      * Test to check if the delete button actually deletes the item
      */
     @Test
-    public void clickOnDeleteButton(){
+    public void clickOnDeleteButton() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_ingredients));
         assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         ArrayList<TextView> textViews = solo.clickInRecyclerView(0);
-        String clicked_str = String.valueOf(textViews.get(0).getText());
+        String clickedItemDescription = String.valueOf(textViews.get(0).getText());
         solo.clickOnView(solo.getView(R.id.delete_ingredient));
-        assertFalse(solo.searchText(clicked_str));
+        solo.waitForCondition(() -> !solo.searchText(clickedItemDescription), 2000);
     }
 
     /**
