@@ -27,7 +27,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 /**
- * Class to test the the functionality of Ingredients (Viewing, Adding, Editing and Deleting {@link com.example.foodtracker.model.Ingredient}
+ * Class to test the the functionality of Ingredients (Viewing, Adding, Editing and Deleting {@link com.example.foodtracker.model.ingredient.Ingredient}
  * @version 2.0
  */
 public class IngredientTest {
