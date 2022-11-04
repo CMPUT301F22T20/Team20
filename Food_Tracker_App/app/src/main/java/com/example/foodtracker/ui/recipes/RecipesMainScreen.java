@@ -46,11 +46,11 @@ public class RecipesMainScreen extends AppCompatActivity implements
             createTopBar();
         }
 
-//        Intent intent = getIntent();
-//        if(getIntent().getExtras() != null) {
-//            Recipe received_recipe = (Recipe) intent.getSerializableExtra("DELETED_RECIPE");
-//            deleteRecipe(received_recipe);
-//        }
+        Intent intent = getIntent();
+        if(getIntent().getExtras() != null) {
+            Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
+            addRecipe(received_recipe);
+        }
     }
 
     @Override
