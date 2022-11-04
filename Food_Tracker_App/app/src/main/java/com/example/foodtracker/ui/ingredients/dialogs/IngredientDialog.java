@@ -168,14 +168,14 @@ public class IngredientDialog extends DialogFragment {
         ingredient.setAmount(quantity);
         ingredient.setLocation(location.getSelectedItem().toString());
         ingredient.setCategory(category.getSelectedItem().toString());
-        ingredient.setExpiry(String.format(Locale.CANADA, "%02d-%02d-%d",  expiry.getMonth() + 1, expiry.getDayOfMonth(),expiry.getYear()));
+        ingredient.setExpiry(String.format(Locale.CANADA, "%02d-%02d-%d",  expiry.getDayOfMonth(),expiry.getMonth() + 1, expiry.getYear()));
     }
 
     private void setDatePicker(Ingredient ingredient) {
         String expiry = ingredient.getExpiry();
         Date expiryDate;
         try {
-            expiryDate = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA).parse(expiry);
+            expiryDate = new SimpleDateFormat("dd-MM-yyyy", Locale.CANADA).parse(expiry);
         } catch (ParseException exception) {
             expiryDate = new Date();
         }
