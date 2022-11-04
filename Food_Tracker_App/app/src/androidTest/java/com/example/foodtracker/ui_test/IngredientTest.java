@@ -3,20 +3,17 @@ package com.example.foodtracker.ui_test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import android.app.Activity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.foodtracker.MainActivity;
 import com.example.foodtracker.R;
+import com.example.foodtracker.ui.ingredients.IngredientsMainScreen;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -37,13 +34,8 @@ public class IngredientTest {
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class, true, true);
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp(){
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), activityRule.getActivity());
-    }
-
-    @Test
-    public void start() throws Exception{
-        Activity activity = activityRule.getActivity();
     }
 
     /**
@@ -52,7 +44,8 @@ public class IngredientTest {
     @Test
     public void checkIngredientListExpandOnClick(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickInRecyclerView(0);
         assertTrue(solo.searchText("Quantity"));
         solo.clickInRecyclerView(0);
@@ -65,12 +58,11 @@ public class IngredientTest {
     @Test
     public void checkEditIngredientAndCancelButtons(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickInRecyclerView(0);
-        solo.clickOnText("Edit");
-        solo.sleep(1000);
+        solo.clickOnView(solo.getView(R.id.edit_ingredient));
         solo.clickOnView(solo.getView(android.R.id.button2));
-        solo.sleep(1000);
     }
 
     /**
@@ -79,15 +71,16 @@ public class IngredientTest {
     @Test
     public void addNewIngredient() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
-        solo.clickOnText("+");
-        solo.sleep(2000);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.top_bar_add_button));
+        solo.clickOnView(solo.getView(R.id.addIngredientSelectionButton));
         solo.enterText((EditText) solo.getView(R.id.ingredientDescription), " Frozen Buffalo Wings");
         solo.enterText((EditText) solo.getView(R.id.ingredientCost), "5.60");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
         solo.pressSpinnerItem(0,0);
         Spinner spinner = (Spinner) solo.getView(Spinner.class, 1);
-        spinner.setSelection(3, true);
+        spinner.setSelection(0, true);
         solo.setDatePicker(0, 2023, 12, 30);
         solo.clickOnView(solo.getView(android.R.id.button1));
         assertTrue(solo.waitForText("Frozen Buffalo Wings"));
@@ -99,10 +92,10 @@ public class IngredientTest {
     @Test
     public void editExistingIngredient(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickInRecyclerView(0);
-        solo.clickOnText("Edit");
-        solo.sleep(2000);
+        solo.clickOnView(solo.getView(R.id.edit_ingredient));
         solo.clearEditText(0);
         solo.clearEditText(1);
         solo.clearEditText(2);
@@ -111,7 +104,7 @@ public class IngredientTest {
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
         solo.pressSpinnerItem(0,0);
         Spinner spinner = (Spinner) solo.getView(Spinner.class, 1);
-        spinner.setSelection(8, true);
+        spinner.setSelection(0, true);
         solo.setDatePicker(0, 2023, 12, 30);
         solo.clickOnView(solo.getView(android.R.id.button1));
         assertTrue(solo.waitForText("Oreo Thins"));
@@ -123,12 +116,12 @@ public class IngredientTest {
     @Test
     public void clickOnDeleteButton(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         ArrayList<TextView> textViews = solo.clickInRecyclerView(0);
         String clicked_str = String.valueOf(textViews.get(0).getText());
-        solo.clickOnText("Delete");
-        solo.searchText(clicked_str);
-        solo.sleep(3000);
+        solo.clickOnView(solo.getView(R.id.delete_ingredient));
+        assertFalse(solo.searchText(clicked_str));
     }
 
     /**
@@ -137,14 +130,14 @@ public class IngredientTest {
     @Test
     public void clickOnTopBarAddButton(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
-        solo.clickOnText("+");
-        solo.sleep(1000);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(android.R.id.button2));
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(){
         solo.finishOpenedActivities();
     }
 }

@@ -1,7 +1,10 @@
 package com.example.foodtracker.ui_test;
 
+import static org.junit.Assert.assertTrue;
+
 import android.app.Activity;
 
+import com.example.foodtracker.R;
 import com.example.foodtracker.ui.mealPlan.MealPlanMainScreen;
 import com.example.foodtracker.ui.recipes.RecipesMainScreen;
 import com.example.foodtracker.ui.shoppingCart.ShoppingCartMainScreen;
@@ -29,17 +32,8 @@ public class NavigationBarTest {
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class, true, true);
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp(){
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), activityRule.getActivity());
-    }
-
-    /**
-     * Check if app starts
-     * @throws Exception
-     */
-    @Test
-    public void start() throws Exception{
-        Activity activity = activityRule.getActivity();
     }
 
     /**
@@ -48,22 +42,8 @@ public class NavigationBarTest {
     @Test
     public void clickOnIngredientsIconInNavBar(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
-        solo.assertCurrentActivity("Wrong Activity", IngredientsMainScreen.class);
-        solo.sleep(3000);
-    }
-
-    /**
-     * Check to see if clicking back button in Ingredients Main Screen brings us back to Main Activity
-     */
-
-    @Test
-    public void clickOnBackButtonInIngredientsMain(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
-        solo.assertCurrentActivity("Wrong Activity", IngredientsMainScreen.class);
-        solo.clickOnButton("BACK");
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
     }
 
     /**
@@ -72,8 +52,8 @@ public class NavigationBarTest {
     @Test
     public void clickOnShoppingCartButtonInNavBar(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(1);
-        solo.assertCurrentActivity("Wrong Activity", ShoppingCartMainScreen.class);
+        solo.clickOnView(solo.getView(R.id.navigation_shopping));
+        assertTrue(solo.waitForActivity(ShoppingCartMainScreen.class));
     }
 
     /**
@@ -82,8 +62,8 @@ public class NavigationBarTest {
     @Test
     public void clickOnRecipesButtonInNavBar(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(2);
-        solo.assertCurrentActivity("Wrong Activity", RecipesMainScreen.class);
+        solo.clickOnView(solo.getView(R.id.navigation_recipes));
+        assertTrue(solo.waitForActivity(RecipesMainScreen.class));
     }
 
     /**
@@ -92,24 +72,24 @@ public class NavigationBarTest {
     @Test
     public void clickOnMealPlanButtonInNavBar(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(3);
-        solo.assertCurrentActivity("Wrong Activity", MealPlanMainScreen.class);
+        solo.clickOnView(solo.getView(R.id.navigation_meal_plan));
+        assertTrue(solo.waitForActivity(MealPlanMainScreen.class));
     }
 
     @Test
     public void MoveBetweenActivities(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnImageButton(0);
-        solo.assertCurrentActivity("Wrong Activity", IngredientsMainScreen.class);
-        solo.clickOnImageButton(1);
-        solo.assertCurrentActivity("Wrong Activity", ShoppingCartMainScreen.class);
-        solo.clickOnImageButton(2);
-        solo.assertCurrentActivity("Wrong Activity", RecipesMainScreen.class);
-        solo.clickOnImageButton(3);
-        solo.assertCurrentActivity("Wrong Activity", MealPlanMainScreen.class);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.navigation_shopping));
+        assertTrue(solo.waitForActivity(ShoppingCartMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.navigation_recipes));
+        assertTrue(solo.waitForActivity(RecipesMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.navigation_meal_plan));
+        assertTrue(solo.waitForActivity(MealPlanMainScreen.class));
     }
     @After
-    public void tearDown() throws Exception{
+    public void tearDown(){
         solo.finishOpenedActivities();
     }
 }
