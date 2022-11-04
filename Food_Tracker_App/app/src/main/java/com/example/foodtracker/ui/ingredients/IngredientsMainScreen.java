@@ -173,19 +173,12 @@ public class IngredientsMainScreen extends AppCompatActivity implements
     }
 
     /**
-     * Code and design is reused from category and location spinners in IngredientDialog
-     * @param spinnerDataXML
-     * @return adapter
-     */
-
-    private ArrayAdapter<CharSequence> createAdapter(int spinnerDataXML) {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, spinnerDataXML, android.R.layout.simple_dropdown_item_1line);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        return adapter;
-    }
-
-    /**
-     * https://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event
+     * @see <a href= "https://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event">Stack Overflow</a>
+     * Copyright: CC BY-SA 3.0 (answer edited by Vasily Kabunov)
+     *
+     * @see <a href = "https://developer.android.com/develop/ui/views/components/spinner#java"> Android Developers</a>
+     * Copyright: Apache 2.0
+     *
      * This sorts the ingredients in IngredientArrayList based on the user's chosen field
      * Case numbers refer to the position of the chosen field in the array inside spinner
      * ex. "Sort by: " = index 0, "Description (ASC)" = index 1,...
@@ -194,7 +187,9 @@ public class IngredientsMainScreen extends AppCompatActivity implements
     private void initializeSort(){
 
         Spinner sortSpinner= findViewById(R.id.sort_spinner);
-        ArrayAdapter<CharSequence> sortAdapter = createAdapter(R.array.sortIngredients);
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(this,
+                R.array.sortIngredients, android.R.layout.simple_spinner_item);
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(sortAdapter);
 
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -215,7 +210,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
                             case 4:
                                 return o2.getCategory().compareToIgnoreCase(o1.getCategory());
                             case 5:
-                                DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+                                DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                                 try {
                                     Date date = format.parse(o1.getExpiry());
                                     Date date2 = format.parse(o2.getExpiry());
@@ -224,7 +219,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
                                     e.printStackTrace();
                                 }
                             case 6:
-                                format = new SimpleDateFormat("MM-dd-yyyy");
+                                format = new SimpleDateFormat("dd-MM-yyyy");
                                 try {
                                     Date date = format.parse(o1.getExpiry());
                                     Date date2 = format.parse(o2.getExpiry());
