@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 /**
  * Class to test the the functionality of Ingredients (Viewing, Adding, Editing and Deleting {@link com.example.foodtracker.model.ingredient.Ingredient}
- * @version 2.0
+ * @version 3.0
  */
 public class IngredientTest {
     private Solo solo;
@@ -133,6 +133,55 @@ public class IngredientTest {
         solo.clickOnView(solo.getView(R.id.navigation_ingredients));
         assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
+        solo.clickOnView(solo.getView(android.R.id.button2));
+    }
+
+    @Test
+    public void addIngredientLocation(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.top_bar_add_button));
+        solo.clickOnView(solo.getView(R.id.addIngredientLocationSelectionButton));
+        assertTrue(solo.waitForText("New Location"));
+        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
+        solo.clickOnView(solo.getView(android.R.id.button1));
+
+    }
+
+    @Test
+    public void cancelAddIngredientLocation(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.top_bar_add_button));
+        solo.clickOnView(solo.getView(R.id.addIngredientLocationSelectionButton));
+        assertTrue(solo.waitForText("New Location"));
+        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
+        solo.clickOnView(solo.getView(android.R.id.button2));
+    }
+
+    @Test
+    public void addIngredientCategory(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.top_bar_add_button));
+        solo.clickOnView(solo.getView(R.id.addIngredientCategorySelectionButton));
+        assertTrue(solo.waitForText("New Category"));
+        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Shelf");
+        solo.clickOnView(solo.getView(android.R.id.button1));
+    }
+
+    @Test
+    public void cancelAddIngredientCategory(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
+        solo.clickOnView(solo.getView(R.id.top_bar_add_button));
+        solo.clickOnView(solo.getView(R.id.addIngredientCategorySelectionButton));
+        assertTrue(solo.waitForText("New Category"));
+        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
         solo.clickOnView(solo.getView(android.R.id.button2));
     }
 
