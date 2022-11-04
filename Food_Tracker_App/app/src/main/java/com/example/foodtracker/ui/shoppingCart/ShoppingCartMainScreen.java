@@ -7,8 +7,15 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.ui.NavBar;
 
+/**
+ * This class is used to create an object that will be used to represent the Shopping Cart Main Screen
+ * This class extends from {@link AppCompatActivity}
+ */
 public class ShoppingCartMainScreen extends AppCompatActivity {
 
+    /**
+     * @param savedInstanceState This is of type {@link Bundle}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
