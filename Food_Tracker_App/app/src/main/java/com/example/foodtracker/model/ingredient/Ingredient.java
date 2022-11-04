@@ -1,5 +1,7 @@
-package com.example.foodtracker.model;
+package com.example.foodtracker.model.ingredient;
 
+
+import com.example.foodtracker.model.Document;
 
 import java.io.Serializable;
 import java.util.HashMap;

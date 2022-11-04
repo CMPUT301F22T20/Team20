@@ -1,4 +1,4 @@
-package com.example.foodtracker.ui.ingredients;
+package com.example.foodtracker.ui.ingredients.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,12 +15,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
+import com.example.foodtracker.model.ingredient.Category;
+import com.example.foodtracker.model.ingredient.Ingredient;
+import com.example.foodtracker.model.ingredient.Location;
+import com.example.foodtracker.utils.Collection;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -29,12 +34,20 @@ public class IngredientDialog extends DialogFragment {
     private EditText description;
     private EditText cost;
     private EditText quantity;
-    private Spinner location;
-    private ArrayAdapter<CharSequence> locationAdapter;
-    private Spinner category;
-    private ArrayAdapter<CharSequence> categoryAdapter;
     private DatePicker expiry;
     private Ingredient ingredientToEdit;
+
+    private Spinner location;
+    private ArrayAdapter<String> locationAdapter;
+    private final Collection<Location> locationCollection = new Collection<>(Location.class, new Location());
+    private final List<String> locations = new ArrayList<>();
+
+
+    private Spinner category;
+    private ArrayAdapter<String> categoryAdapter;
+    private final Collection<Category> categoryCollection = new Collection<>(Category.class, new Category());
+    private final List<String> categories = new ArrayList<>();
+
 
     private IngredientDialogListener listener;
 
@@ -54,6 +67,30 @@ public class IngredientDialog extends DialogFragment {
     }
 
     /**
+     * Retrieves locations and categories from firestore and populates a string array with the content
+     */
+    private void getLocationsAndCategories(@Nullable Ingredient ingredient) {
+        categoryCollection.getAll(list -> {
+            for (Category category : list) {
+                categories.add(category.getName());
+                categoryAdapter.notifyDataSetChanged();
+            }
+            if (ingredient != null) {
+                category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
+            }
+        });
+        locationCollection.getAll(list -> {
+            for (Location location : list) {
+                locations.add(location.getName());
+                locationAdapter.notifyDataSetChanged();
+            }
+            if (ingredient != null) {
+                location.setSelection(locationAdapter.getPosition(ingredient.getLocation()));
+            }
+        });
+    }
+
+    /**
      * This function is called when the dialog fragment is created
      *
      * @param savedInstanceState This is of type {@link Bundle}
@@ -67,10 +104,10 @@ public class IngredientDialog extends DialogFragment {
         cost = view.findViewById(R.id.ingredientCost);
         quantity = view.findViewById(R.id.ingredientQuantity);
         location = view.findViewById(R.id.ingredientLocation);
-        locationAdapter = createAdapter(R.array.locationList);
+        locationAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, locations);
         location.setAdapter(locationAdapter);
         category = view.findViewById(R.id.ingredientCategory);
-        categoryAdapter = createAdapter(R.array.categoryList);
+        categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categories);
         category.setAdapter(categoryAdapter);
         expiry = view.findViewById(R.id.datePicker);
 
@@ -80,37 +117,23 @@ public class IngredientDialog extends DialogFragment {
             Bundle selectedBundle = getArguments();
             ingredientToEdit = (Ingredient) selectedBundle.get("ingredient");
             initializeIngredient(ingredientToEdit);
+            getLocationsAndCategories(ingredientToEdit);
             return builder.setView(view).setTitle("Edit ingredient")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
                     .create();
         }
+        getLocationsAndCategories(null);
         return builder.setView(view).setTitle("Add an ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", (dialogInterface, i) -> addClick())
                 .create();
     }
 
-    /**
-     * This method creates an ArrayAdapter for the spinner
-     *
-     * @param spinnerDataXML string-array in xml
-     * @return adapter of type ArrayAdapter<CharSequence>
-     * copyright: Incimo
-     * link: https://blog.csdn.net/qq_41912398/article/details/105548856
-     */
-    public ArrayAdapter<CharSequence> createAdapter(int spinnerDataXML) {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), spinnerDataXML, android.R.layout.simple_dropdown_item_1line);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        return adapter;
-    }
-
     public void initializeIngredient(Ingredient ingredient) {
         description.setText(ingredient.getDescription());
         cost.setText(String.valueOf(ingredient.getCost()));
         quantity.setText(String.valueOf(ingredient.getAmount()));
-        location.setSelection(locationAdapter.getPosition(ingredient.getLocation()));
-        category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
         setDatePicker(ingredient);
     }
 
