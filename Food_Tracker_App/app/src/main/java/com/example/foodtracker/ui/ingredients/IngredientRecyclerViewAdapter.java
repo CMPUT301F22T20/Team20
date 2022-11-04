@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.ArrayListener;
 
 import java.util.ArrayList;
