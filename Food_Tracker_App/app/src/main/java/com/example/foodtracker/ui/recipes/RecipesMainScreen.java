@@ -43,6 +43,9 @@ public class RecipesMainScreen extends AppCompatActivity implements
         super(R.layout.recipes_main);
     }
 
+    /**
+     * @param savedInstanceState This is of type {@link Bundle}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

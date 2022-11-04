@@ -185,12 +185,19 @@ public class IngredientDialog extends DialogFragment {
     }
 
 
+    /**
+     * A listener interface which provides callbacks to interact with events occuring in the dialog
+     */
     public interface IngredientDialogListener {
+
         /**
          * Callback when an ingredient is added within the dialog
          */
         void onIngredientAdd(Ingredient newIngredient);
 
+        /**
+         * Callback when an ingredient is edited within the dialog
+         */
         void onIngredientEdit(Ingredient oldIngredient);
 
     }

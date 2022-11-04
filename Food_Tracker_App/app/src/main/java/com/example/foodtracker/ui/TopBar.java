@@ -14,7 +14,10 @@ import androidx.fragment.app.Fragment;
 import com.example.foodtracker.MainActivity;
 import com.example.foodtracker.R;
 
-
+/**
+ * This class creates an object that is used to represent the top bar
+ * This allows user to move back or add new item
+ */
 public class TopBar extends Fragment {
 
     private static final String SUPPORT_TOP_BAR_ADD_KEY = "add";
