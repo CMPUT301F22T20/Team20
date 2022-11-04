@@ -6,15 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
-import com.example.foodtracker.ui.ingredients.IngredientDialog;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
