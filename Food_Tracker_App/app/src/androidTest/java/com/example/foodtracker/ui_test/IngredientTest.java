@@ -4,9 +4,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -21,10 +24,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 /**
  * Class to test the the functionality of Ingredients (Viewing, Adding, Editing and Deleting {@link com.example.foodtracker.model.Ingredient}
- * @version 1.0
- * TODO: Still have to complete the tests after complete implementation of Ingredients
+ * @version 2.0
  */
 public class IngredientTest {
     private Solo solo;
@@ -54,28 +58,91 @@ public class IngredientTest {
         solo.clickInRecyclerView(0);
     }
 
+    /**
+     * Test to check if the Edit button works
+     * Also checks if the Cancel button works
+     */
     @Test
-    public void editIngredient(){
+    public void checkEditIngredientAndCancelButtons(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnImageButton(0);
         solo.clickInRecyclerView(0);
-        solo.searchText("Quantity: 1");
-        RecyclerView recyclerView = (RecyclerView)solo.getView(R.id.ingredient_list, 1);
-        View view = recyclerView.getChildAt(0);
-        Button button = (Button)view.findViewById(R.id.edit_ingredient);
-        solo.clickOnView(button);
-        //solo.clickOnButton("EDIT");
-        //solo.enterText((EditText) solo.getView(R.id.text_ingredient_amount), "3");
-        //solo.clickOnButton("EDIT");
-        //solo.clickInRecyclerView(0);
+        solo.clickOnText("Edit");
+        solo.sleep(1000);
+        solo.clickOnView(solo.getView(android.R.id.button2));
+        solo.sleep(1000);
     }
 
+    /**
+     * Test to add a new ingredient called Frozen Buffalo Wings and see if it appears in the list
+     */
+    @Test
+    public void addNewIngredient() {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnImageButton(0);
+        solo.clickOnText("+");
+        solo.sleep(2000);
+        solo.enterText((EditText) solo.getView(R.id.ingredientDescription), " Frozen Buffalo Wings");
+        solo.enterText((EditText) solo.getView(R.id.ingredientCost), "5.60");
+        solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
+        solo.pressSpinnerItem(0,0);
+        Spinner spinner = (Spinner) solo.getView(Spinner.class, 1);
+        spinner.setSelection(3, true);
+        solo.setDatePicker(0, 2023, 12, 30);
+        solo.clickOnView(solo.getView(android.R.id.button1));
+        assertTrue(solo.waitForText("Frozen Buffalo Wings"));
+    }
+
+    /**
+     * Test to change the first item in the list to Oreo Thins and see if the change is reflected in the list
+     */
+    @Test
+    public void editExistingIngredient(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnImageButton(0);
+        solo.clickInRecyclerView(0);
+        solo.clickOnText("Edit");
+        solo.sleep(2000);
+        solo.clearEditText(0);
+        solo.clearEditText(1);
+        solo.clearEditText(2);
+        solo.enterText((EditText) solo.getView(R.id.ingredientDescription), "Oreo Thins");
+        solo.enterText((EditText) solo.getView(R.id.ingredientCost), "1.60");
+        solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
+        solo.pressSpinnerItem(0,0);
+        Spinner spinner = (Spinner) solo.getView(Spinner.class, 1);
+        spinner.setSelection(8, true);
+        solo.setDatePicker(0, 2023, 12, 30);
+        solo.clickOnView(solo.getView(android.R.id.button1));
+        assertTrue(solo.waitForText("Oreo Thins"));
+    }
+
+    /**
+     * Test to check if the delete button actually deletes the item
+     */
+    @Test
+    public void clickOnDeleteButton(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnImageButton(0);
+        ArrayList<TextView> textViews = solo.clickInRecyclerView(0);
+        String clicked_str = String.valueOf(textViews.get(0).getText());
+        solo.clickOnText("Delete");
+        solo.searchText(clicked_str);
+        solo.sleep(3000);
+    }
+
+    /**
+     * Test to check if the plus button in the top bar starts the add ingredient dialog fragment
+     */
     @Test
     public void clickOnTopBarAddButton(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnImageButton(0);
-        solo.clickOnImageButton(1);
+        solo.clickOnText("+");
+        solo.sleep(1000);
+        solo.clickOnView(solo.getView(android.R.id.button2));
     }
+
     @After
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
