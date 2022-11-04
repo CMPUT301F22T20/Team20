@@ -6,15 +6,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.Recipe;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 /**
  * This class creates an object that is used to represent the main screen for the Recipes
@@ -39,6 +50,7 @@ public class RecipesMainScreen extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipes_main);
         initializeData();
+        initializeSort();
         // addRecipe(new Recipe("image", "Chocolate Chip Cookies", 60, 24, "Dessert", "", new ArrayList<Ingredient>()));
         // addRecipe(new Recipe("image", "Sugar Cookies", 55, 24, "Dessert", "", new ArrayList<Ingredient>()));
         if (savedInstanceState == null) {
@@ -121,5 +133,62 @@ public class RecipesMainScreen extends AppCompatActivity implements
     public void onItemClick(int position) {
         Intent intent = new Intent(this, RecipeDisplay.class);
         startActivity(intent);
+    }
+
+    /**
+     *
+     * @see <a href= "https://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event">Stack Overflow</a>
+     * Copyright: CC BY-SA 3.0 (answer edited by Vasily Kabunov)
+     *
+     * @see <a href = "https://developer.android.com/develop/ui/views/components/spinner#java"> Android Developers</a>
+     * Copyright: Apache 2.0
+     *
+     */
+    private void initializeSort(){
+
+        Spinner sortSpinnerRecipe= findViewById(R.id.sort_spinnerRecipe);
+        ArrayAdapter<CharSequence> sortAdapterRecipe = ArrayAdapter.createFromResource(this,
+                R.array.sortRecipes, android.R.layout.simple_spinner_item);
+        sortAdapterRecipe.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortSpinnerRecipe.setAdapter(sortAdapterRecipe);
+
+        sortSpinnerRecipe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                Collections.sort(recipeArrayList, new Comparator<Recipe>(){
+                    @Override
+                    public int compare(Recipe o1, Recipe o2) {
+
+                        switch(position) {
+                            case 1:
+                                return o1.getTitle().compareToIgnoreCase(o2.getTitle());
+                            case 2:
+                                return o2.getTitle().compareToIgnoreCase(o1.getTitle());
+                            case 3:
+                                return Integer.compare(o1.getPrepTime(),o2.getPrepTime());
+                            case 4:
+                                return Integer.compare(o2.getPrepTime(),o1.getPrepTime());
+                            case 5:
+                                return Integer.compare(o1.getServings(),o2.getServings());
+                            case 6:
+                                return Integer.compare(o2.getServings(),o1.getServings());
+                            case 7:
+                                return o1.getCategory().compareToIgnoreCase(o2.getCategory());
+                            case 8:
+                                return o2.getCategory().compareToIgnoreCase(o1.getCategory());
+                        }
+                        return 0;
+                    }
+                });
+                adapter.notifyDataSetChanged();
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
     }
 }
