@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.Recipe;
 import com.example.foodtracker.ui.ingredients.IngredientRecyclerViewAdapter;
 

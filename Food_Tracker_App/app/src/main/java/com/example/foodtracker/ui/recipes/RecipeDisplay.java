@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.Recipe;
 import com.example.foodtracker.ui.NavBar;
@@ -66,9 +66,9 @@ public class RecipeDisplay extends AppCompatActivity {
         editRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
-                intent.putExtra("EDIT_RECIPE", recipe);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
+//                intent.putExtra("EDIT_RECIPE", recipe);
+//                startActivity(intent);
             }
         });
 
