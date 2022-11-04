@@ -42,13 +42,18 @@ public class RecipesMainScreen extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipes_main);
         initializeData();
-        // addRecipe(new Recipe("image", "Chocolate Chip Cookies", 60, 24, "Dessert", "", new ArrayList<Ingredient>()));
-        // addRecipe(new Recipe("image", "Sugar Cookies", 55, 24, "Dessert", "", new ArrayList<Ingredient>()));
+
         if (savedInstanceState == null) {
             createRecyclerView();
             createNavbar();
             createTopBar();
         }
+
+//        Intent intent = getIntent();
+//        if(getIntent().getExtras() != null) {
+//            Recipe received_recipe = (Recipe) intent.getSerializableExtra("DELETED_RECIPE");
+//            deleteRecipe(received_recipe);
+//        }
     }
 
     @Override
@@ -76,6 +81,13 @@ public class RecipesMainScreen extends AppCompatActivity implements
         recipeArrayList.add(recipe);
         recipesCollection.createDocument(recipe, () ->
                 adapter.notifyItemInserted(recipeArrayList.indexOf(recipe)));
+    }
+
+    public void deleteRecipe(Recipe recipe) {
+        int index = recipeArrayList.indexOf(recipe);
+        recipeArrayList.remove(index);
+        recipesCollection.delete(recipe, () ->
+                adapter.notifyItemRemoved(index));
     }
 
     /**
@@ -127,4 +139,5 @@ public class RecipesMainScreen extends AppCompatActivity implements
         intent.putExtra("RECIPE", recipe);
         startActivity(intent);
     }
+
 }
