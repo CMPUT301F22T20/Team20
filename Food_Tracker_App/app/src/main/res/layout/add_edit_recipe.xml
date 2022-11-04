@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:importantForAutofill="noExcludeDescendants">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,17 +45,18 @@
             android:hint="Servings"
             android:inputType="number" />
 
-        <EditText
+        <Spinner
             android:id="@+id/recipeCategory"
-            style="@style/inputField"
-            android:hint="Category"
-            android:inputType="text" />
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:hint="@string/pick_recipe_category" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:orientation="horizontal"
-            android:layout_margin="16dp">
+            android:layout_margin="16dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView2"
@@ -68,20 +70,20 @@
                 android:id="@+id/addIngredient"
                 style="@style/textButton"
                 android:layout_width="0dp"
-                android:background="@android:color/transparent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textAlignment="viewEnd"
-                android:textSize="30sp"
+                android:background="@android:color/transparent"
                 android:gravity="end"
-                android:text="@string/add_icon" />
+                android:text="@string/add_icon"
+                android:textAlignment="viewEnd"
+                android:textSize="30sp" />
         </LinearLayout>
 
         <ListView
             android:id="@+id/ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp" />
 
         <EditText
             android:id="@+id/recipeComments"
@@ -95,8 +97,8 @@
             android:layout_margin="16dp">
 
             <Button
-                style="@style/textButton"
                 android:id="@+id/recipes_cancel"
+                style="@style/textButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancel" />
@@ -108,8 +110,8 @@
                 android:layout_weight="1" />
 
             <Button
-                style="@style/textButton"
                 android:id="@+id/recipes_confirm"
+                style="@style/textButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Confirm" />

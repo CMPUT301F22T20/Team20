@@ -13,7 +13,7 @@ import android.os.Bundle;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
-import com.example.foodtracker.model.Recipe;
+import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;

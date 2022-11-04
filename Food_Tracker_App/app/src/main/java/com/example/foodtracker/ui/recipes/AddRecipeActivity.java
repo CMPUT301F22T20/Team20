@@ -9,26 +9,34 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Recipe;
 import com.example.foodtracker.model.ingredient.Ingredient;
+import com.example.foodtracker.model.recipe.Category;
+import com.example.foodtracker.model.recipe.Recipe;
+import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddRecipeActivity extends AppCompatActivity implements AddIngredient.smallIngredientListener {
 
     public static final String RECIPE_KEY = "recipe";
+
+    private final Collection<Category> categoryCollection = new Collection<>(Category.class, new Category());
+    private final List<String> categories = new ArrayList<>();
+    private ArrayAdapter<String> categoryAdapter;
+    private Spinner categoryField;
+
     private EditText titleField;
     private EditText timeField;
     private EditText servingsField;
-    private EditText categoryField;
     private EditText commentsField;
-
     private ImageView recipeImage;
     private Uri imageURI;
     private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
@@ -47,6 +55,9 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         timeField = findViewById(R.id.recipePrepTime);
         servingsField = findViewById(R.id.recipeServings);
         categoryField = findViewById(R.id.recipeCategory);
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
+        categoryField.setAdapter(categoryAdapter);
+        getCategories();
         commentsField = findViewById(R.id.recipeComments);
         Button addIngredientButton = findViewById(R.id.addIngredient);
         Button confirmButton = findViewById(R.id.recipes_confirm);
@@ -89,6 +100,18 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         }
     }
 
+    /**
+     * Retrieves categories from firestore and populates a string array with the content
+     */
+    private void getCategories() {
+        categoryCollection.getAll(list -> {
+            for (Category category : list) {
+                categories.add(category.getName());
+                categoryAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     private void addImageFromGallery() {
         imageGalleryResultHandler.launch("image/*");
     }
@@ -109,7 +132,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        String category = categoryField.getText().toString();
+        String category = categoryField.getSelectedItem().toString();
         String comments = commentsField.getText().toString();
         Recipe recipe = new Recipe();
         recipe.setTitle(title);

@@ -119,7 +119,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     private void editIngredient(Ingredient ingredient) {
         int editIndex = ingredientArrayList.indexOf(ingredient);
-        ingredientsCollection.editDocument(ingredient, () -> adapter.notifyItemChanged(editIndex));
+        ingredientsCollection.updateDocument(ingredient, () -> adapter.notifyItemChanged(editIndex));
     }
 
     private void removeIngredient(Ingredient ingredient) {
