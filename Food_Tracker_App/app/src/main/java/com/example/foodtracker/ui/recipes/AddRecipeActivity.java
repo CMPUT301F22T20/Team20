@@ -15,8 +15,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
 import com.example.foodtracker.model.Recipe;
+import com.example.foodtracker.model.ingredient.Ingredient;
 
 import java.util.ArrayList;
 

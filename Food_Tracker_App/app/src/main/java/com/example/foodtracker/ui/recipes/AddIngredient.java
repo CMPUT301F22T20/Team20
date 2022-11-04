@@ -3,7 +3,6 @@ package com.example.foodtracker.ui.recipes;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -13,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Ingredient;
+import com.example.foodtracker.model.ingredient.Ingredient;
 
 public class AddIngredient extends DialogFragment {
 
@@ -33,8 +32,7 @@ public class AddIngredient extends DialogFragment {
         if (context instanceof smallIngredientListener) {
             listener = (smallIngredientListener) context;
         } else {
-            throw new RuntimeException(context.toString() +
-                    " must implement smallIngredientListener");
+            throw new RuntimeException(context + " must implement smallIngredientListener");
         }
     }
 
@@ -51,12 +49,7 @@ public class AddIngredient extends DialogFragment {
                 .setView(view)
                 .setTitle("Add an ingredient")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        addClick();
-                    }
-                }).create();
+                .setPositiveButton("ADD", (dialogInterface, i) -> addClick()).create();
     }
 
     private void addClick() {
