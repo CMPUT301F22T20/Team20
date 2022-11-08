@@ -26,10 +26,25 @@ public class Location extends Document {
     }
 
     @Override
+    public String getKey() {
+        return getName();
+    }
+
+    @Override
+    public void setKey(String key) {
+        setName(key);
+    }
+
+    @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
         data.put(FieldNames.LOCATION_NAME, name);
         return data;
+    }
+
+    @Override
+    public boolean hasNonDefaultKey() {
+        return true;
     }
 
     public String getName() {

@@ -34,4 +34,6 @@ public abstract class Document {
      * The data in this object that will be saved in the collection
      */
     public abstract Map<String, Object> getData();
+
+    public boolean hasNonDefaultKey() { return false; }
 }

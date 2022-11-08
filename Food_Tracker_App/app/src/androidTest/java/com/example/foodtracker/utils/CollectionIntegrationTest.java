@@ -105,7 +105,7 @@ public class CollectionIntegrationTest {
         collection.createDocument(mockDocument, () -> {
             mockDocument.setField1(editedField1);
             mockDocument.setField2(editedField2);
-            collection.editDocument(mockDocument, () -> collection.getAll(list -> {
+            collection.updateDocument(mockDocument, () -> collection.getAll(list -> {
                 assertEquals(1, list.size());
                 assertEquals(editedField1, list.get(0).getField1());
                 assertEquals(editedField2, list.get(0).isField2());
