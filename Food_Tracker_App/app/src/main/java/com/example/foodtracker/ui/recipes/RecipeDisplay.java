@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.MenuItem;
-import com.example.foodtracker.model.Recipe;
+import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 
 public class RecipeDisplay extends AppCompatActivity {
@@ -75,9 +75,9 @@ public class RecipeDisplay extends AppCompatActivity {
         deleteRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RecipesMainScreen.class);
-                intent.putExtra("DELETED_RECIPE", recipe);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), RecipesMainScreen.class);
+//                intent.putExtra("DELETED_RECIPE", recipe);
+//                startActivity(intent);
             }
         });
     }
