@@ -84,9 +84,6 @@ public class RecipeDisplay extends AppCompatActivity {
         deleteRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), RecipesMainScreen.class);
-//                intent.putExtra("DELETED_RECIPE", recipe);
-//                startActivity(intent);
                 Intent intent = new Intent();
                 intent.putExtra("DELETED_RECIPE", recipe);
                 setResult(RESULT_OK, intent);

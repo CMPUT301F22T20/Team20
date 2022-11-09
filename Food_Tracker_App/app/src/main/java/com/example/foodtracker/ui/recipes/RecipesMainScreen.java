@@ -19,6 +19,7 @@ import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class creates an object that is used to represent the main screen for the Recipes
@@ -36,6 +37,10 @@ public class RecipesMainScreen extends AppCompatActivity implements
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
             addRecipe(receivedRecipe);
+        }
+    });
+    private final ActivityResultLauncher<Intent> recipeDisplayResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+        if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe recipeToDelete = (Recipe) activityResult.getData().getSerializableExtra("DELETED_RECIPE");
             deleteRecipe(recipeToDelete);
         }
@@ -91,10 +96,17 @@ public class RecipesMainScreen extends AppCompatActivity implements
     }
 
     public void deleteRecipe(Recipe recipe) {
-        int index = recipeArrayList.indexOf(recipe);
+        int index = 0;
+        for (index = 0; index < recipeArrayList.size(); index++) {
+            if (Objects.equals(recipeArrayList.get(index).getTitle(), recipe.getTitle())) {
+                break;
+            }
+        }
+        recipe = recipeArrayList.get(index);
         recipeArrayList.remove(index);
+        int finalIndex = index;
         recipesCollection.delete(recipe, () ->
-                adapter.notifyItemRemoved(index));
+                adapter.notifyItemRemoved(finalIndex));
     }
 
     /**
@@ -144,6 +156,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
         Intent intent = new Intent(getApplicationContext(), RecipeDisplay.class);
         Recipe recipe = recipeArrayList.get(position);
         intent.putExtra("RECIPE", recipe);
-        startActivity(intent);
+        recipeDisplayResultLauncher.launch(intent);
     }
 }
