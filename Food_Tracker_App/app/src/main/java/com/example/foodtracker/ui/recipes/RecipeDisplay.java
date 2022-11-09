@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,14 +22,16 @@ import com.example.foodtracker.ui.NavBar;
 
 public class RecipeDisplay extends AppCompatActivity {
 
-    protected TextView recipeTitle;
-    protected TextView recipePrepTime;
-    protected TextView recipeServings;
-    protected TextView recipeCategory;
-    protected TextView recipeComment;
-    protected ListView recipeIngredients;
-    protected Button deleteRecipeButton;
-    protected Button editRecipeButton;
+    private TextView recipeTitle;
+    private TextView recipePrepTime;
+    private TextView recipeServings;
+    private TextView recipeCategory;
+    private TextView recipeComment;
+    private ListView recipeIngredients;
+    private Button deleteRecipeButton;
+    private Button editRecipeButton;
+    private ImageView recipeImage;
+    private Uri imageURI;
 
     private ArrayAdapter<Ingredient> adapter;
     private Recipe recipe;
@@ -50,12 +54,17 @@ public class RecipeDisplay extends AppCompatActivity {
         recipeIngredients = findViewById(R.id.recipeDisplayIngredientList);
         deleteRecipeButton = findViewById(R.id.recipeDeleteButton);
         editRecipeButton = findViewById(R.id.recipeEditButton);
+        recipeImage = findViewById(R.id.recipe_display_image);
 
         recipeTitle.setText(recipe.getTitle());
         recipePrepTime.setText("Preperation Time: " + String.valueOf(recipe.getPrepTime()));
         recipeServings.setText("Servings: " + String.valueOf(recipe.getServings()));
         recipeCategory.setText("Category: " + recipe.getCategory());
         recipeComment.setText("Comment:\n" + recipe.getComment());
+//        if (!recipe.getImage().isEmpty()) {
+//            imageURI = Uri.parse(recipe.getImage());
+//            recipeImage.setImageURI(imageURI);
+//        }
 
         recipeIngredients.setAdapter(adapter);
 
@@ -78,6 +87,10 @@ public class RecipeDisplay extends AppCompatActivity {
 //                Intent intent = new Intent(getApplicationContext(), RecipesMainScreen.class);
 //                intent.putExtra("DELETED_RECIPE", recipe);
 //                startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("DELETED_RECIPE", recipe);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }

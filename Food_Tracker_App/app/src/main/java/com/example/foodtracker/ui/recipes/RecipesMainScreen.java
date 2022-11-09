@@ -36,6 +36,8 @@ public class RecipesMainScreen extends AppCompatActivity implements
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
             addRecipe(receivedRecipe);
+            Recipe recipeToDelete = (Recipe) activityResult.getData().getSerializableExtra("DELETED_RECIPE");
+            deleteRecipe(recipeToDelete);
         }
     });
 
@@ -88,6 +90,12 @@ public class RecipesMainScreen extends AppCompatActivity implements
                 adapter.notifyItemInserted(recipeArrayList.indexOf(recipe)));
     }
 
+    public void deleteRecipe(Recipe recipe) {
+        int index = recipeArrayList.indexOf(recipe);
+        recipeArrayList.remove(index);
+        recipesCollection.delete(recipe, () ->
+                adapter.notifyItemRemoved(index));
+    }
 
     /**
      * Adds some initial data to the list
