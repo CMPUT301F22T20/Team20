@@ -19,6 +19,7 @@ import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.TopBar;
 
 public class RecipeDisplay extends AppCompatActivity {
 
@@ -70,6 +71,7 @@ public class RecipeDisplay extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             createNavbar();
+            createTopBar();
         }
 
         editRecipeButton.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +99,17 @@ public class RecipeDisplay extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.recipe_display_nav_bar, navBar)
+                .commit();
+    }
+
+    /**
+     * Instantiates the top bar fragment for the recipe display menu
+     */
+    private void createTopBar() {
+        TopBar topBar = TopBar.newInstance("Recipe Details", false);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
                 .commit();
     }
 }

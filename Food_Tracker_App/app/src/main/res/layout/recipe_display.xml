@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.recipes.RecipeDisplay">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/topBarContainerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recipeDisplayTitle"
+        tools:layout="@layout/top_bar" />
+
     <TextView
         android:id="@+id/recipeDisplayTitle"
         android:layout_width="wrap_content"
@@ -17,7 +27,7 @@
         style="@style/textHeader1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/topBarContainerView" />
 
     <ImageView
         android:id="@+id/recipe_display_image"
