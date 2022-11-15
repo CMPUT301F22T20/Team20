@@ -1,5 +1,7 @@
 package com.example.foodtracker.ui.ingredients;
 
+import static com.example.foodtracker.ui.ingredients.dialogs.AddDialog.ADD_INGREDIENT_SELECTION_TAG;
+
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -96,9 +98,9 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         Bundle args = new Bundle();
         args.putSerializable("ingredient", ingredient);
 
-        IngredientDialog edit_fragment = new IngredientDialog();
-        edit_fragment.setArguments(args);
-        edit_fragment.show(getSupportFragmentManager(), "EDIT_INGREDIENT");
+        IngredientDialog editFragment = new IngredientDialog();
+        editFragment.setArguments(args);
+        editFragment.show(getSupportFragmentManager(), "EDIT_INGREDIENT");
     }
 
     @Override
@@ -108,7 +110,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     @Override
     public void onAddClick() {
-        new AddDialog().show(getSupportFragmentManager(), "Add_ingredient");
+        new AddDialog().show(getSupportFragmentManager(), ADD_INGREDIENT_SELECTION_TAG);
     }
 
 
@@ -129,7 +131,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     private void editIngredient(Ingredient ingredient) {
         int editIndex = ingredientArrayList.indexOf(ingredient);
-        ingredientsCollection.editDocument(ingredient, () -> adapter.notifyItemChanged(editIndex));
+        ingredientsCollection.updateDocument(ingredient, () -> adapter.notifyItemChanged(editIndex));
     }
 
     private void removeIngredient(Ingredient ingredient) {

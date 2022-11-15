@@ -53,6 +53,11 @@ public class Collection<T extends Document> {
      * @param onComplete callback when creation is done
      */
     public void createDocument(T object, DocumentTask onComplete) {
+        if (object.hasNonDefaultKey()) {
+            // we do not want to use the default key from firestore in this case
+            updateDocument(object, onComplete);
+            return;
+        }
         collection.add(object.getData()).addOnSuccessListener(taskResult -> {
             String firestoreId = taskResult.getId();
             object.setKey(firestoreId);
@@ -66,7 +71,7 @@ public class Collection<T extends Document> {
      * @param object     edited object to modify in the database
      * @param onComplete callback when edit task is complete
      */
-    public void editDocument(T object, DocumentTask onComplete) {
+    public void updateDocument(T object, DocumentTask onComplete) {
         if (object.getKey() != null) {
             collection.document(object.getKey()).set(object.getData()).addOnSuccessListener(taskResult -> onComplete.onComplete());
         }

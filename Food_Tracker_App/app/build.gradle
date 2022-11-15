@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'com.jayway.android.robotium:robotium-solo:5.6.3'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

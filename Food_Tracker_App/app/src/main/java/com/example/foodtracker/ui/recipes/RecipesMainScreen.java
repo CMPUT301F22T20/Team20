@@ -1,5 +1,9 @@
 package com.example.foodtracker.ui.recipes;
 
+import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
-import com.example.foodtracker.model.Recipe;
+import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.Sort;
 import com.example.foodtracker.ui.TopBar;
@@ -21,11 +25,20 @@ import java.util.ArrayList;
  * This class creates an object that is used to represent the main screen for the Recipes
  * This class extends {@link AppCompatActivity}
  */
-public class RecipesMainScreen extends AppCompatActivity implements RecipeDialog.RecipeDialogListener, RecipeRecyclerViewAdapter.RecipeArrayListener, RecyclerViewInterface, TopBar.TopBarListener {
+public class RecipesMainScreen extends AppCompatActivity implements
+        RecipeRecyclerViewAdapter.RecipeArrayListener,
+        RecyclerViewInterface,
+        TopBar.TopBarListener {
 
     private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
     private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
     private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList, this);
+    private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+        if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
+            Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
+            addRecipe(receivedRecipe);
+        }
+    });
 
     /**
      * Allows us to sort by a selected field name and refresh the data in the view
@@ -36,6 +49,9 @@ public class RecipesMainScreen extends AppCompatActivity implements RecipeDialog
         super(R.layout.recipes_main);
     }
 
+    /**
+     * @param savedInstanceState This is of type {@link Bundle}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +63,13 @@ public class RecipesMainScreen extends AppCompatActivity implements RecipeDialog
             createNavbar();
             createTopBar();
         }
-    }
 
-    @Override
-    public void onRecipeAdd(Recipe addedRecipe) {
-        addRecipe(addedRecipe);
+        Intent intent = getIntent();
+        if (getIntent().getExtras() != null) {
+            Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
+            addRecipe(received_recipe);
+        }
+
     }
 
     @Override
@@ -67,7 +85,8 @@ public class RecipesMainScreen extends AppCompatActivity implements RecipeDialog
 
     @Override
     public void onAddClick() {
-        new RecipeDialog().show(getSupportFragmentManager(), "Add_Recipe");
+        Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+        recipeActivityResultLauncher.launch(intent);
     }
 
     @Override
@@ -83,6 +102,7 @@ public class RecipesMainScreen extends AppCompatActivity implements RecipeDialog
             sort.sortByFieldName();
         });
     }
+
 
     /**
      * Adds some initial data to the list

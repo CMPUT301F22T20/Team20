@@ -7,9 +7,16 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.ui.NavBar;
 
-
+/**
+ * This class is used to create an object that is used to represent the main screen for Meal Plan
+ * This class extends from {@link AppCompatActivity}
+ * @version 1.0
+ */
 public class MealPlanMainScreen extends AppCompatActivity {
 
+    /**
+     * @param savedInstanceState this is of type {@link Bundle}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

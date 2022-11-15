@@ -1,46 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:importantForAutofill="noExcludeDescendants"
+    android:orientation="vertical">
+
 
     <EditText
-        android:id="@+id/ingredient_Description"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
-        android:background="@color/background_dark"
-        android:ems="10"
-        android:hint="Description"
-        android:inputType="text"
-        android:paddingLeft="10dp" />
+        android:id="@+id/ingredientDescription"
+        style="@style/inputField"
+        android:hint="@string/description"
+        android:inputType="text" />
 
     <EditText
-        android:id="@+id/ingredient_Quantity"
+        android:id="@+id/ingredientQuantity"
+        style="@style/inputField"
+        android:hint="@string/quantity"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/ingredientCategory"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
-        android:background="@color/background_dark"
-        android:ems="10"
-        android:hint="Amount"
-        android:inputType="number"
-        android:paddingLeft="10dp" />
-
-    <EditText
-        android:id="@+id/ingredient_Category"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
-        android:background="@color/background_dark"
-        android:ems="10"
-        android:hint="Category"
-        android:inputType="text"
-        android:paddingLeft="10dp" />
-
-
-
+        android:layout_margin="16dp"
+        android:hint="@string/pick_ingredient_category" />
 
 </LinearLayout>
