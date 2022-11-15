@@ -121,4 +121,23 @@ public class Collection<T extends Document> {
          */
         void onComplete();
     }
+
+    public void sortCollection (String selectedCol, OnCompleteListener<QuerySnapshot> listener){
+        selectedCol = selectedCol.toLowerCase();
+
+        if (selectedCol.contains("(asc)")){
+            String sortCat = selectedCol.replace(" (asc)","");
+            collection.orderBy(sortCat, Query.Direction.ASCENDING)
+                    .get()
+                    .addOnCompleteListener(listener);
+        }
+
+        if (selectedCol.contains("(desc)")){
+            String sortCat = selectedCol.replace(" (desc)","");
+            collection.orderBy(sortCat, Query.Direction.DESCENDING)
+                    .get()
+                    .addOnCompleteListener(listener);
+        }
+    }
+
 }

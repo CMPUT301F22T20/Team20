@@ -3,7 +3,13 @@ package com.example.foodtracker.ui.ingredients;
 import static com.example.foodtracker.ui.ingredients.dialogs.AddDialog.ADD_INGREDIENT_SELECTION_TAG;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +22,11 @@ import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.ui.ingredients.dialogs.AddDialog;
 import com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog;
 import com.example.foodtracker.utils.Collection;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -66,6 +77,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
             createRecyclerView();
             createNavbar();
             createTopBar();
+            createSortSpinner();
         }
     }
 
@@ -126,7 +138,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         int removedIndex = ingredientArrayList.indexOf(ingredient);
         ingredientArrayList.remove(removedIndex);
         ingredientsCollection.delete(ingredient, () ->
-                adapter.notifyItemRemoved(removedIndex));
+               adapter.notifyItemRemoved(removedIndex));
     }
 
     /**
@@ -160,4 +172,58 @@ public class IngredientsMainScreen extends AppCompatActivity implements
             adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
         });
     }
+
+    /**
+     * Initializes the sort spinner
+     */
+
+    private void createSortSpinner(){
+        Spinner sortSpinner= findViewById(R.id.sort_spinner);
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(this,
+                R.array.sortIngredients, android.R.layout.simple_spinner_item);
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortSpinner.setAdapter(sortAdapter);
+
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedCol = parent.getItemAtPosition(position).toString();
+                sortIngredientQuery(selectedCol);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    /**
+     * Copyright: CC BY-SA 4.0.
+     * Resource: https://stackoverflow.com/questions/53474789/how-to-get-all-documents-from-a-firestore-collection-and-return-them-in-an-array
+     *
+     * Calls ingredientsCollection to do a query and returns the values from the query
+     * If task is successful, iterate through the query and add it ingredientArrayList
+     * then update adapter.
+     * @param sortCategory
+     */
+
+    private void sortIngredientQuery(String sortCategory){
+
+        ingredientsCollection.sortCollection(sortCategory, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    ingredientArrayList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Ingredient newOrderIngredient = document.toObject(Ingredient.class);
+                        ingredientArrayList.add(newOrderIngredient);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
 }
