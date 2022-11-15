@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class Recipe extends Document implements Serializable {
 
     public static final String RECIPES_COLLECTION_NAME = "Recipes";
@@ -67,6 +68,7 @@ public class Recipe extends Document implements Serializable {
         public static String COMMENT = "comment";
         public static String INGREDIENTS = "ingredients";
     }
+
 
     public String getTitle() {
         return title;

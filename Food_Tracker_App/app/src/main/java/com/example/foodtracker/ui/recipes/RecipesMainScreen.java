@@ -98,7 +98,13 @@ public class RecipesMainScreen extends AppCompatActivity implements
     public void deleteRecipe(Recipe recipe) {
         int index = 0;
         for (index = 0; index < recipeArrayList.size(); index++) {
-            if (Objects.equals(recipeArrayList.get(index).getTitle(), recipe.getTitle())) {
+            if (Objects.equals(recipeArrayList.get(index).getTitle(), recipe.getTitle())
+                    && Objects.equals(recipeArrayList.get(index).getPrepTime(), recipe.getPrepTime())
+                    && Objects.equals(recipeArrayList.get(index).getServings(), recipe.getServings())
+                    && Objects.equals(recipeArrayList.get(index).getCategory(), recipe.getCategory())
+                    && Objects.equals(recipeArrayList.get(index).getComment(), recipe.getComment())
+                    && Objects.equals(recipeArrayList.get(index).getImage(), recipe.getImage())
+            ) {
                 break;
             }
         }
@@ -117,13 +123,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
             recipeArrayList.addAll(list);
             adapter.notifyItemRangeInserted(0, recipeArrayList.size());
         });
-    }
-
-    /**
-     * This function closes the activity and returns back to main menu
-     */
-    private void returnToMainMenu() {
-        finish();
     }
 
     private void createRecyclerView() {

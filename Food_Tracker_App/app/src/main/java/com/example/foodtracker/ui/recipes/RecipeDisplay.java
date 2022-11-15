@@ -2,6 +2,8 @@ package com.example.foodtracker.ui.recipes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,13 +30,15 @@ public class RecipeDisplay extends AppCompatActivity {
     private TextView recipeServings;
     private TextView recipeCategory;
     private TextView recipeComment;
-    private ListView recipeIngredients;
+    //private ListView recipeIngredients;
+    private RecyclerView recipeIngredients;
     private Button deleteRecipeButton;
     private Button editRecipeButton;
     private ImageView recipeImage;
     private Uri imageURI;
 
-    private ArrayAdapter<Ingredient> adapter;
+    //private ArrayAdapter<Ingredient> adapter;
+    private RecipeIngredientsRecyclerViewAdapter adapter;
     private Recipe recipe;
 
     @Override
@@ -45,7 +49,8 @@ public class RecipeDisplay extends AppCompatActivity {
         Intent intent = getIntent();
         recipe = (Recipe) intent.getSerializableExtra("RECIPE");
 
-        adapter = new CustomList(this, recipe.getIngredients());
+        //adapter = new CustomList(this, recipe.getIngredients());
+        adapter = new RecipeIngredientsRecyclerViewAdapter(this, recipe.getIngredients());
 
         recipeTitle = findViewById(R.id.recipeDisplayTitle);
         recipePrepTime = findViewById(R.id.recipeDisplayPrepTime);
@@ -61,12 +66,13 @@ public class RecipeDisplay extends AppCompatActivity {
         recipePrepTime.setText("Preperation Time: " + String.valueOf(recipe.getPrepTime()));
         recipeServings.setText("Servings: " + String.valueOf(recipe.getServings()));
         recipeCategory.setText("Category: " + recipe.getCategory());
-        recipeComment.setText("Comment:\n" + recipe.getComment());
+        recipeComment.setText("Comment:\n\n" + recipe.getComment());
 //        if (!recipe.getImage().isEmpty()) {
 //            imageURI = Uri.parse(recipe.getImage());
 //            recipeImage.setImageURI(imageURI);
 //        }
 
+        recipeIngredients.setLayoutManager(new LinearLayoutManager(this));
         recipeIngredients.setAdapter(adapter);
 
         if (savedInstanceState == null) {
