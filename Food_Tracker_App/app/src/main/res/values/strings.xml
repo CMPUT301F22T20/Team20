@@ -33,27 +33,5 @@
     <string name="pick_ingredient_location">Pick ingredient location</string>
     <string name="sort_by">Sort by:</string>
     <string name="sort_ingredient">Sort Ingredient</string>
-    <string-array name="sortIngredients">
-        <item>Sort by:</item>
-        <item>Description (ASC)</item>
-        <item>Description (DESC)</item>
-        <item>Category (ASC)</item>
-        <item>Category (DESC)</item>
-        <item>Expiry Date (ASC)</item>
-        <item>Expiry Date (DESC)</item>
-        <item>Location (ASC)</item>
-        <item>Location (DESC)</item>
-    </string-array>
-    <string-array name="sortRecipes">
-        <item>Sort by:</item>
-        <item>Title (ASC)</item>
-        <item>Title (DESC)</item>
-        <item>Prep Time (ASC)</item>
-        <item>Prep Time (DESC)</item>
-        <item>Servings (ASC)</item>
-        <item>Servings (DESC)</item>
-        <item>Category (ASC)</item>
-        <item>Category (DESC)</item>
-    </string-array>
-
+    <string name="changes_sorting_direction">Changes sorting direction</string>
 </resources>

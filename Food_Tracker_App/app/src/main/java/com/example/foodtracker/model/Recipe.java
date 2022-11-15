@@ -47,24 +47,45 @@ public class Recipe extends Document implements Serializable {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
-        data.put(Recipe.FieldNames.TITLE, this.getTitle());
-        data.put(Recipe.FieldNames.IMAGE, this.getImage());
-        data.put(Recipe.FieldNames.PREPTIME, this.getPrepTime());
-        data.put(Recipe.FieldNames.CATEGORY, this.getCategory());
-        data.put(Recipe.FieldNames.SERVINGS, this.getServings());
-        data.put(Recipe.FieldNames.COMMENT, this.getComment());
-        data.put(FieldNames.INGREDIENTS, this.getIngredients());
+        data.put(Recipe.FieldName.TITLE.getName(), this.getTitle());
+        data.put(Recipe.FieldName.IMAGE.getName(), this.getImage());
+        data.put(Recipe.FieldName.PREPARATION_TIME.getName(), this.getPrepTime());
+        data.put(Recipe.FieldName.CATEGORY.getName(), this.getCategory());
+        data.put(Recipe.FieldName.SERVINGS.getName(), this.getServings());
+        data.put(Recipe.FieldName.COMMENT.getName(), this.getComment());
+        data.put(FieldName.INGREDIENTS.getName(), this.getIngredients());
         return data;
     }
 
-    public static class FieldNames {
-        public static String TITLE = "title";
-        public static String IMAGE = "image";
-        public static String PREPTIME = "prepTime";
-        public static String CATEGORY = "category";
-        public static String SERVINGS = "servings";
-        public static String COMMENT = "comment";
-        public static String INGREDIENTS = "ingredients";
+    /**
+     * Represents the field names in the recipes class
+     */
+    public enum FieldName implements DocumentableFieldName {
+        TITLE("title", true),
+        IMAGE("image", false),
+        PREPARATION_TIME("prepTime", true),
+        CATEGORY("category", true),
+        SERVINGS("servings", false),
+        COMMENT("comment", false),
+        INGREDIENTS("ingredients", false);
+
+        private final String name;
+        private final boolean sortable;
+
+        FieldName(String fieldName, boolean sortable) {
+            this.name = fieldName;
+            this.sortable = sortable;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public boolean sortable() {
+            return sortable;
+        }
     }
 
     public String getTitle() {

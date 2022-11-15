@@ -2,6 +2,7 @@ package com.example.foodtracker.model.ingredient;
 
 
 import com.example.foodtracker.model.Document;
+import com.example.foodtracker.model.DocumentableFieldName;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -85,12 +86,12 @@ public class Ingredient extends Document implements Serializable {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
-        data.put(FieldNames.DESCRIPTION, this.getDescription());
-        data.put(FieldNames.COST, this.getCost());
-        data.put(FieldNames.LOCATION, this.getLocation());
-        data.put(FieldNames.CATEGORY, this.getCategory());
-        data.put(FieldNames.AMOUNT, this.getAmount());
-        data.put(FieldNames.EXPIRY, this.getExpiry());
+        data.put(FieldName.DESCRIPTION.getName(), this.getDescription());
+        data.put(FieldName.COST.getName(), this.getCost());
+        data.put(FieldName.LOCATION.getName(), this.getLocation());
+        data.put(FieldName.CATEGORY.getName(), this.getCategory());
+        data.put(FieldName.AMOUNT.getName(), this.getAmount());
+        data.put(FieldName.EXPIRY.getName(), this.getExpiry());
         return data;
     }
 
@@ -203,16 +204,32 @@ public class Ingredient extends Document implements Serializable {
     }
 
     /**
-     * This is a public static class that contains all the FieldNames that will be used in EditText later
-     * The FieldNames are of type {@link String} and are public and static
+     * Contains the names of the ingredient class fields
      */
-    public static class FieldNames {
-        public static String DESCRIPTION = "description";
-        public static String COST = "cost";
-        public static String LOCATION = "location";
-        public static String CATEGORY = "category";
-        public static String AMOUNT = "amount";
-        public static String EXPIRY = "expiry";
-    }
+    public enum FieldName implements DocumentableFieldName {
+        DESCRIPTION("description", true),
+        COST("cost", false),
+        LOCATION("location", true),
+        CATEGORY("category", true),
+        AMOUNT("amount", false),
+        EXPIRY("expiry", true);
 
+        private final String name;
+        private final boolean sortable;
+
+        FieldName(String fieldName, boolean sortable) {
+            this.name = fieldName;
+            this.sortable = sortable;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public boolean sortable() {
+            return sortable;
+        }
+    }
 }

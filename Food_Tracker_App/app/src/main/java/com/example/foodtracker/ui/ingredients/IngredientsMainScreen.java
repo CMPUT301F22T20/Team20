@@ -1,11 +1,6 @@
 package com.example.foodtracker.ui.ingredients;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,18 +10,13 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.Sort;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.ui.ingredients.dialogs.AddDialog;
 import com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog;
 import com.example.foodtracker.utils.Collection;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
 
 /**
@@ -55,6 +45,11 @@ public class IngredientsMainScreen extends AppCompatActivity implements
      * This holds a list of {@link Ingredient} objects and is of type {@link ArrayList<Ingredient>}
      */
     private final IngredientRecyclerViewAdapter adapter = new IngredientRecyclerViewAdapter(this, ingredientArrayList);
+
+    /**
+     * Allows for sorting of Ingredients by field name
+     */
+    private Sort<Ingredient.FieldName, IngredientRecyclerViewAdapter, Ingredient> sort;
 
     /**
      * This is the constructor for the class
@@ -116,6 +111,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         new AddDialog().show(getSupportFragmentManager(), "Add_ingredient");
     }
 
+
     private void createRecyclerView() {
         RecyclerView ingredientsRecyclerView = findViewById(R.id.ingredient_list);
         ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -124,8 +120,11 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     private void addIngredient(Ingredient ingredient) {
         ingredientArrayList.add(ingredient);
-        ingredientsCollection.createDocument(ingredient, () ->
-                adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient)));
+        ingredientsCollection.createDocument(ingredient, () -> {
+                    adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient));
+                    sort.sortByFieldName();
+                }
+        );
     }
 
     private void editIngredient(Ingredient ingredient) {
@@ -138,6 +137,17 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         ingredientArrayList.remove(removedIndex);
         ingredientsCollection.delete(ingredient, () ->
                 adapter.notifyItemRemoved(removedIndex));
+    }
+
+
+    /**
+     * Adds some initial data to the list
+     */
+    private void initializeData() {
+        ingredientsCollection.getAll(list -> {
+            ingredientArrayList.addAll(list);
+            adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
+        });
     }
 
     /**
@@ -162,91 +172,11 @@ public class IngredientsMainScreen extends AppCompatActivity implements
                 .commit();
     }
 
-    /**
-     * Adds some initial data to the list
-     */
-    private void initializeData() {
-        ingredientsCollection.getAll(list -> {
-            ingredientArrayList.addAll(list);
-            adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
-        });
+    private void initializeSort() {
+        sort = new Sort<>(this.ingredientsCollection, this.adapter, this.ingredientArrayList, Ingredient.FieldName.class);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.sort_spinner, sort)
+                .commit();
     }
-
-    /**
-     * @see <a href= "https://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event">Stack Overflow</a>
-     * Copyright: CC BY-SA 3.0 (answer edited by Vasily Kabunov)
-     *
-     * @see <a href = "https://developer.android.com/develop/ui/views/components/spinner#java"> Android Developers</a>
-     * Copyright: Apache 2.0
-     *
-     * This sorts the ingredients in IngredientArrayList based on the user's chosen field
-     * Case numbers refer to the position of the chosen field in the array inside spinner
-     * ex. "Sort by: " = index 0, "Description (ASC)" = index 1,...
-     */
-
-    private void initializeSort(){
-
-        Spinner sortSpinner= findViewById(R.id.sort_spinner);
-        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(this,
-                R.array.sortIngredients, android.R.layout.simple_spinner_item);
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sortSpinner.setAdapter(sortAdapter);
-
-        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
-                Collections.sort(ingredientArrayList, new Comparator<Ingredient>(){
-                    @Override
-                    public int compare(Ingredient o1, Ingredient o2) {
-
-                        switch(position) {
-                            case 1:
-                                return o1.getDescription().compareToIgnoreCase(o2.getDescription());
-                            case 2:
-                                return o2.getDescription().compareToIgnoreCase(o1.getDescription());
-                            case 3:
-                                return o1.getCategory().compareToIgnoreCase(o2.getCategory());
-                            case 4:
-                                return o2.getCategory().compareToIgnoreCase(o1.getCategory());
-                            case 5:
-                                DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                                try {
-                                    Date date = format.parse(o1.getExpiry());
-                                    Date date2 = format.parse(o2.getExpiry());
-                                    return date.compareTo(date2);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            case 6:
-                                format = new SimpleDateFormat("dd-MM-yyyy");
-                                try {
-                                    Date date = format.parse(o1.getExpiry());
-                                    Date date2 = format.parse(o2.getExpiry());
-                                    return date2.compareTo(date);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            case 7:
-                                return o1.getLocation().compareToIgnoreCase(o2.getLocation());
-                            case 8:
-                                return o2.getLocation().compareToIgnoreCase(o1.getLocation());
-                        }
-                        return 0;
-                    }
-                });
-
-                adapter.notifyDataSetChanged();
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-
-    }
-
-
-
-    }
+}

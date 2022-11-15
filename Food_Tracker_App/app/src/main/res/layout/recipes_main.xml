@@ -16,14 +16,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/top_bar" />
 
-    <Spinner
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/sort_spinnerRecipe"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:popupBackground="@color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/recipe_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topBarContainerView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topBarContainerView"
+        tools:layout="@layout/sort"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipe_list"
