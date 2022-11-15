@@ -74,7 +74,7 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     /**
      * Represents an {@link Ingredient} in our {@link IngredientRecyclerViewAdapter}
      */
-    public class IngredientHolder extends RecyclerView.ViewHolder {
+        public class IngredientHolder extends RecyclerView.ViewHolder {
 
         protected final TextView name = itemView.findViewById(R.id.ingredient_name);
         protected final TextView cost = itemView.findViewById(R.id.text_ingredient_cost);
