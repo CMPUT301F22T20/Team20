@@ -73,27 +73,38 @@ User Interface Mockup and Storyboard (Updated)
 •    Intuitive user interface
 •    Displays understanding of UI mockups and storyboarding
 
-Sprint Planning and Review
-•    Comprehensive
-•    Displays understanding of Scrum
-•    Displays regular and frequent pacing of working software
-•    Each sprint is planned by user story
-•    Riskier requirements are done earlier
-•    Each sprint is reviewed
-•    Members all present at each review
-•    User stories are fully “done done” (implemented, tested, integrated, documented)
-•    Early and frequent integration
-•    Continuous integration actions
+Sprint Planning and Reviews
+• Comprehensive
+• Displays understanding of Scrum
+• Displays regular and frequent pacing of working software
+• Each sprint is planned by user story
+• Riskier requirements are done earlier
+• Each sprint is reviewed
+• Members all present at each review
+• User stories are fully “done done” (implemented, tested, integrated, documented)
+• Early and frequent integration
+• Continuous integration actions
+
 
 Tangible Demo
-•    Demo ability
-•    Clear and coherent
-•    Logically organized by tangible features for user
-•    Realistic data and inputs
+• Demo ability
+• Clear and coherent
+• Logically organized by tangible features
+• Realistic data and inputs
+• All members present
+• Members well coordinated
 
-Tool Practices
-•    All team members contribute to GitHub regularly
-•    Effective use of GitHub features
+Code Base of Prototype
+
+• Excellent quality
+• At least ½ of requirements implemented and fully done
+• Comprehensive connectivity to server
+• Code is clear
+• Readable
+• Useful comments
+• Checks for errors
+• Follows conventions
 
 Relative Quality
-•    Well above average relative quality, overall comprehensiveness, creativity, attractiveness, and innovation
+
+• Well above average relative quality, overall comprehensiveness, creativity, attractiveness, and innovation
