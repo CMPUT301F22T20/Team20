@@ -31,4 +31,7 @@
     <string name="set_expiry_date">Set Expiry Date</string>
     <string name="pick_ingredient_category">Pick ingredient category</string>
     <string name="pick_ingredient_location">Pick ingredient location</string>
+    <string name="add_recipe_image_description">add_recipe_image</string>
+    <string name="recipe_image_description">Recipe image</string>
+    <string name="pick_recipe_category">Pick recipe category</string>
 </resources>

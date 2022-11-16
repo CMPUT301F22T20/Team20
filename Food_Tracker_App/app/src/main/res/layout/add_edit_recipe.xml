@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:importantForAutofill="noExcludeDescendants">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:scrollbars="vertical">
+
+        <ImageView
+            android:id="@+id/recipe_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/recipe_image_description" />
+
+        <ImageButton
+            android:id="@+id/recipe_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:background="@drawable/circular_background"
+            android:contentDescription="@string/add_recipe_image_description"
+            android:src="@drawable/ic_baseline_camera_alt_24" />
+
+        <EditText
+            android:id="@+id/recipeTitle"
+            style="@style/inputField"
+            android:hint="Title"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/recipePrepTime"
+            style="@style/inputField"
+            android:hint="Preparation time (mins)"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/recipeServings"
+            style="@style/inputField"
+            android:hint="Servings"
+            android:inputType="number" />
+
+        <Spinner
+            android:id="@+id/recipeCategory"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:hint="@string/pick_recipe_category" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Ingredients:" />
+
+            <Button
+                android:id="@+id/addIngredient"
+                style="@style/textButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="end"
+                android:text="@string/add_icon"
+                android:textAlignment="viewEnd"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp" />
+
+        <EditText
+            android:id="@+id/recipeComments"
+            style="@style/inputField"
+            android:hint="Comments"
+            android:inputType="text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp">
+
+            <Button
+                android:id="@+id/recipes_cancel"
+                style="@style/textButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel" />
+
+            <!--Spacer-->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/recipes_confirm"
+                style="@style/textButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

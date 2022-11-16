@@ -1,5 +1,6 @@
-package com.example.foodtracker.model;
+package com.example.foodtracker.model.recipe;
 
+import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.ingredient.Ingredient;
 
 import java.io.Serializable;

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.ArrayListener;
-import com.example.foodtracker.model.Recipe;
+import com.example.foodtracker.model.recipe.Recipe;
 
 import java.util.ArrayList;
 
