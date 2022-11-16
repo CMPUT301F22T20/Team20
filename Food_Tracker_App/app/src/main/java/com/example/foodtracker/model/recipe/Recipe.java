@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * @see <a href=https://www.geeksforgeeks.org/overriding-equals-method-in-java/">Geeks for Geeks</a>
+ */
 public class Recipe extends Document implements Serializable {
 
     public static final String RECIPES_COLLECTION_NAME = "Recipes";
@@ -69,6 +71,31 @@ public class Recipe extends Document implements Serializable {
         public static String INGREDIENTS = "ingredients";
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+
+        if(o == null || this == null) {
+            return false;
+        }
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+    /* Check if o is an instance of Recipe or not
+      "null instanceof [type]" also returns false */
+        if (!(o instanceof Recipe)) {
+            return false;
+        }
+
+        // typecast o to Recipe so that we can compare data members
+        Recipe recipe = (Recipe) o;
+
+        // Compare the data members and return accordingly
+        return this.getKey().equals(recipe.getKey());
+    }
 
     public String getTitle() {
         return title;

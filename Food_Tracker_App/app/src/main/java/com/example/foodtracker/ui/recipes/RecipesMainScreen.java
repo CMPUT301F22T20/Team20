@@ -96,23 +96,28 @@ public class RecipesMainScreen extends AppCompatActivity implements
     }
 
     public void deleteRecipe(Recipe recipe) {
-        int index = 0;
-        for (index = 0; index < recipeArrayList.size(); index++) {
-            if (Objects.equals(recipeArrayList.get(index).getTitle(), recipe.getTitle())
-                    && Objects.equals(recipeArrayList.get(index).getPrepTime(), recipe.getPrepTime())
-                    && Objects.equals(recipeArrayList.get(index).getServings(), recipe.getServings())
-                    && Objects.equals(recipeArrayList.get(index).getCategory(), recipe.getCategory())
-                    && Objects.equals(recipeArrayList.get(index).getComment(), recipe.getComment())
-                    && Objects.equals(recipeArrayList.get(index).getImage(), recipe.getImage())
-            ) {
-                break;
-            }
-        }
-        recipe = recipeArrayList.get(index);
-        recipeArrayList.remove(index);
-        int finalIndex = index;
+//        int index = 0;
+//        for (index = 0; index < recipeArrayList.size(); index++) {
+//            if (Objects.equals(recipeArrayList.get(index).getTitle(), recipe.getTitle())
+//                    && Objects.equals(recipeArrayList.get(index).getPrepTime(), recipe.getPrepTime())
+//                    && Objects.equals(recipeArrayList.get(index).getServings(), recipe.getServings())
+//                    && Objects.equals(recipeArrayList.get(index).getCategory(), recipe.getCategory())
+//                    && Objects.equals(recipeArrayList.get(index).getComment(), recipe.getComment())
+//                    && Objects.equals(recipeArrayList.get(index).getImage(), recipe.getImage())
+//            ) {
+//                break;
+//            }
+//        }
+//        recipe = recipeArrayList.get(index);
+//        recipeArrayList.remove(index);
+//        int finalIndex = index;
+//        recipesCollection.delete(recipe, () ->
+//                adapter.notifyItemRemoved(finalIndex));
+        int removedIndex = recipeArrayList.indexOf(recipe);
+        recipeArrayList.remove(removedIndex);
         recipesCollection.delete(recipe, () ->
-                adapter.notifyItemRemoved(finalIndex));
+                adapter.notifyItemRemoved(removedIndex));
+
     }
 
     /**

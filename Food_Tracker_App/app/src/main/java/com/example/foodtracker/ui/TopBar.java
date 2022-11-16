@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.foodtracker.MainActivity;
 import com.example.foodtracker.R;
+import com.example.foodtracker.ui.recipes.RecipeDisplay;
 
 /**
  * This class creates an object that is used to represent the top bar
@@ -43,8 +44,12 @@ public class TopBar extends Fragment {
                 addButton.setOnClickListener(topBarView -> topBarListener.onAddClick());
             }
             backButton.setOnClickListener(topBarView -> {
-                Intent mainMenu = new Intent(view.getContext(), MainActivity.class);
-                startActivity(mainMenu);
+                if (getActivity().getClass() == RecipeDisplay.class) {
+                    getActivity().finish();
+                } else{
+                    Intent mainMenu = new Intent(view.getContext(), MainActivity.class);
+                    startActivity(mainMenu);
+                }
             });
         }
     }
