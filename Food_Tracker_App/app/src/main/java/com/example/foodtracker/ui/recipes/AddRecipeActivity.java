@@ -114,7 +114,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
 
     @Override
     public void editRecipeIngredient(Ingredient edit_ingredient) {
-
+        adapter.notifyDataSetChanged();
     }
 
     /**

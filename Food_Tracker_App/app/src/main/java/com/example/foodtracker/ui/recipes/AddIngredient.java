@@ -60,7 +60,7 @@ public class AddIngredient extends DialogFragment {
         category = view.findViewById(R.id.ingredientCategory);
         categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categories);
         category.setAdapter(categoryAdapter);
-        getCategories();
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -69,13 +69,13 @@ public class AddIngredient extends DialogFragment {
             Ingredient ingredientToEdit = (Ingredient) selectedBundle.get("selected_ingredient");
             initializeIngredient(ingredientToEdit);
 
-            getCategories();
+            getCategories(ingredientToEdit);
             return builder.setView(view).setTitle("Edit ingredient")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
                     .create();
         }
-
+        getCategories(null);
         Ingredient create_ingredient = new Ingredient();
         AlertDialog dialog = builder
                 .setView(view)
@@ -96,21 +96,26 @@ public class AddIngredient extends DialogFragment {
     /**
      * This sets the information of the selected ingredient to the text fields
      * @param ingredient {@link Ingredient}
-     *                                     the selected ingredient
+     *                                     the selected ingredient to be edited
      */
     public void initializeIngredient(Ingredient ingredient) {
         description.setText(ingredient.getDescription());
         quantity.setText(String.valueOf(ingredient.getAmount()));
+        unit.setText(ingredient.getUnit());
+
     }
 
     /**
      * Retrieves categories from firestore and populates a string array with the content
      */
-    private void getCategories() {
+    private void getCategories(@Nullable Ingredient ingredient) {
         categoryCollection.getAll(list -> {
             for (Category category : list) {
                 categories.add(category.getName());
                 categoryAdapter.notifyDataSetChanged();
+            }
+            if (ingredient != null) {
+                category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
             }
         });
     }
