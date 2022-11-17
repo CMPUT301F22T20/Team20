@@ -28,6 +28,7 @@ public class AddIngredient extends DialogFragment {
     private final List<String> categories = new ArrayList<>();
     private EditText description;
     private EditText quantity;
+    private EditText unit;
     private smallIngredientListener listener;
     private Spinner category;
     private ArrayAdapter<String> categoryAdapter;
@@ -49,6 +50,7 @@ public class AddIngredient extends DialogFragment {
         View view = getLayoutInflater().inflate(R.layout.smaller_add_ingredient_dialog, null);
         description = view.findViewById(R.id.ingredientDescription);
         quantity = view.findViewById(R.id.ingredientQuantity);
+        unit = view.findViewById(R.id.ingredientUnit);
         category = view.findViewById(R.id.ingredientCategory);
         categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categories);
         category.setAdapter(categoryAdapter);
@@ -104,6 +106,13 @@ public class AddIngredient extends DialogFragment {
             ingredient.setAmount(addQuantityInt);
         } catch (NumberFormatException e) {
             quantity.setError("Invalid amount");
+            valid = false;
+        }
+
+        String addUnit = unit.getText().toString();
+        ingredient.setUnit(addUnit);
+        if (addUnit.isEmpty()) {
+            unit.setError("Unit must not be empty");
             valid = false;
         }
 

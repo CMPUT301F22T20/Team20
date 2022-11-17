@@ -39,6 +39,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
         Ingredient ingredient = ingredientArrayList.get(position);
         holder.description.setText(ingredient.getDescription());
         holder.amount.setText(String.format("%s", ingredient.getAmount()));
+        holder.unit.setText(ingredient.getUnit());
         holder.category.setText(String.format("%s", ingredient.getCategory()));
     }
 
@@ -54,6 +55,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
 
         protected final TextView description = itemView.findViewById(R.id.Name);
         protected final TextView amount = itemView.findViewById(R.id.Amount);
+        protected final TextView unit = itemView.findViewById(R.id.Unit);
         protected final TextView category = itemView.findViewById(R.id.Category);
 
         public RecipeIngredientHolder(View itemView) {

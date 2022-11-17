@@ -27,7 +27,7 @@ public class Ingredient extends Document implements Serializable {
     /**
      * This variable is private and holds the cost for an ingredient of type {@link Double}
      */
-    private Double cost;
+    private String unit;
     /**
      * This variable is private and holds the location for an ingredient of type {@link String}
      */
@@ -56,10 +56,10 @@ public class Ingredient extends Document implements Serializable {
      *
      * @param description is the description of the Ingredient which is of type {@link String}
      */
-    public Ingredient(String description, Double cost, String location, String category,
+    public Ingredient(String description, String unit, String location, String category,
                       int amount, String expiry) {
         setDescription(description);
-        setCost(cost);
+        setUnit(unit);
         setLocation(location);
         setCategory(category);
         setAmount(amount);
@@ -86,7 +86,7 @@ public class Ingredient extends Document implements Serializable {
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
         data.put(FieldNames.DESCRIPTION, this.getDescription());
-        data.put(FieldNames.COST, this.getCost());
+        data.put(FieldNames.UNIT, this.getUnit());
         data.put(FieldNames.LOCATION, this.getLocation());
         data.put(FieldNames.CATEGORY, this.getCategory());
         data.put(FieldNames.AMOUNT, this.getAmount());
@@ -171,17 +171,17 @@ public class Ingredient extends Document implements Serializable {
      *
      * @return This is the cost which is of type {@link Double}
      */
-    public Double getCost() {
-        return cost;
+    public String getUnit() {
+        return unit;
     }
 
     /**
      * This function sets the cost of the ingredient
      *
-     * @param cost This is the cost which is of type {@link Double}
+     * @param unit This is the cost which is of type {@link String}
      */
-    public void setCost(Double cost) {
-        this.cost = cost;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     /**
@@ -208,7 +208,7 @@ public class Ingredient extends Document implements Serializable {
      */
     public static class FieldNames {
         public static String DESCRIPTION = "description";
-        public static String COST = "cost";
+        public static String UNIT = "unit";
         public static String LOCATION = "location";
         public static String CATEGORY = "category";
         public static String AMOUNT = "amount";
