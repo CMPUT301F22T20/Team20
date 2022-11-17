@@ -54,7 +54,7 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     public void onBindViewHolder(IngredientHolder holder, int position) {
         Ingredient ingredient = ingredientArrayList.get(position);
         holder.name.setText(ingredient.getDescription());
-        holder.cost.setText(String.format("Cost: $%s", ingredient.getCost()));
+        holder.unit.setText(String.format("Unit: %s", ingredient.getUnit()));
         holder.amount.setText(String.format("Quantity: %s", ingredient.getAmount()));
         holder.expiry.setText(String.format("Expiry Date: %s", ingredient.getExpiry()));
         holder.category.setText(String.format("Category: %s", ingredient.getCategory()));
@@ -76,7 +76,7 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     public class IngredientHolder extends RecyclerView.ViewHolder {
 
         protected final TextView name = itemView.findViewById(R.id.ingredient_name);
-        protected final TextView cost = itemView.findViewById(R.id.text_ingredient_cost);
+        protected final TextView unit = itemView.findViewById(R.id.text_ingredient_unit);
         protected final TextView amount = itemView.findViewById(R.id.text_ingredient_amount);
         protected final TextView category = itemView.findViewById(R.id.text_ingredient_category);
         protected final TextView expiry = itemView.findViewById(R.id.text_ingredient_expiry);

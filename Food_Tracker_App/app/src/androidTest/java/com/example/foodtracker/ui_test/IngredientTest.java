@@ -75,7 +75,7 @@ public class IngredientTest {
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientSelectionButton));
         solo.enterText((EditText) solo.getView(R.id.ingredientDescription), " Frozen Buffalo Wings");
-        solo.enterText((EditText) solo.getView(R.id.ingredientCost), "5.60");
+        solo.enterText((EditText) solo.getView(R.id.ingredientUnit), "5.60");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
         solo.pressSpinnerItem(0,0);
         Spinner spinner = solo.getView(Spinner.class, 1);
@@ -99,7 +99,7 @@ public class IngredientTest {
         solo.clearEditText(1);
         solo.clearEditText(2);
         solo.enterText((EditText) solo.getView(R.id.ingredientDescription), "Oreo Thins");
-        solo.enterText((EditText) solo.getView(R.id.ingredientCost), "1.60");
+        solo.enterText((EditText) solo.getView(R.id.ingredientUnit), "1.60");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
         solo.pressSpinnerItem(0,0);
         Spinner spinner = solo.getView(Spinner.class, 1);
