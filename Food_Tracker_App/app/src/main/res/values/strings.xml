@@ -12,7 +12,7 @@
     <string name="ingredient_expiry">Expiry Date</string>
     <string name="ingredient_category">Category</string>
     <string name="ingredient_location">Location</string>
-    <string name="ingredient_cost">Cost</string>
+    <string name="ingredient_unit">Unit</string>
     <string name="ingredient_amount">Amount</string>
     <string name="delete_button">Delete</string>
     <string name="edit_button">Edit</string>
@@ -27,7 +27,7 @@
     <string name="add_ingredient_location">Add Ingredient Location</string>
     <string name="add_ingredient_category">Add Ingredient Category</string>
     <string name="description">Description</string>
-    <string name="unit_cost">Unit Cost</string>
+    <string name="unit">Unit of Measure</string>
     <string name="quantity">Quantity</string>
     <string name="set_expiry_date">Set Expiry Date</string>
     <string name="pick_ingredient_category">Pick ingredient category</string>
