@@ -17,7 +17,7 @@ import java.util.Map;
  * Expiry Date of the Ingredient
  * {@link Document} allows objects to be used as Firebase instances
  */
-public class Ingredient extends Document implements Serializable {
+public class Ingredient extends Document {
 
     public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
     /**
