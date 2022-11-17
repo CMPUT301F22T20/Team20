@@ -17,10 +17,8 @@ jobs:
         with:
           java-version: 11
       - run: chmod +x gradlew
-        working-directory: ./Food_Tracker_App
-      - run: ./gradlew tasks --all
-        working-directory: ./Food_Tracker_App
       - run: ./gradlew build
+      - run: chmod +x gradlew
         working-directory: ./Food_Tracker_App
       - run: ./gradlew test
         working-directory: ./Food_Tracker_App
