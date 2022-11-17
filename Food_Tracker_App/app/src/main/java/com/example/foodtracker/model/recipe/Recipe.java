@@ -3,7 +3,6 @@ package com.example.foodtracker.model.recipe;
 import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.ingredient.Ingredient;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +10,7 @@ import java.util.Map;
 /**
  * @see <a href=https://www.geeksforgeeks.org/overriding-equals-method-in-java/">Geeks for Geeks</a>
  */
-public class Recipe extends Document implements Serializable {
+public class Recipe extends Document {
 
     public static final String RECIPES_COLLECTION_NAME = "Recipes";
     private String image; // TODO: figure out if this should be a String or a different data type
@@ -61,21 +60,9 @@ public class Recipe extends Document implements Serializable {
         return data;
     }
 
-    public static class FieldNames {
-        public static String TITLE = "title";
-        public static String IMAGE = "image";
-        public static String PREPTIME = "prepTime";
-        public static String CATEGORY = "category";
-        public static String SERVINGS = "servings";
-        public static String COMMENT = "comment";
-        public static String INGREDIENTS = "ingredients";
-    }
-
-
     @Override
     public boolean equals(Object o) {
-
-        if(o == null || this == null) {
+        if (o == null) {
             return false;
         }
 
@@ -84,16 +71,14 @@ public class Recipe extends Document implements Serializable {
             return true;
         }
 
-    /* Check if o is an instance of Recipe or not
-      "null instanceof [type]" also returns false */
+        // Check if o is an instance of Recipe or not
         if (!(o instanceof Recipe)) {
             return false;
         }
 
-        // typecast o to Recipe so that we can compare data members
+        // Typecast o to Recipe so that we can compare data members
         Recipe recipe = (Recipe) o;
 
-        // Compare the data members and return accordingly
         return this.getKey().equals(recipe.getKey());
     }
 
@@ -151,5 +136,15 @@ public class Recipe extends Document implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public static class FieldNames {
+        public static String TITLE = "title";
+        public static String IMAGE = "image";
+        public static String PREPTIME = "prepTime";
+        public static String CATEGORY = "category";
+        public static String SERVINGS = "servings";
+        public static String COMMENT = "comment";
+        public static String INGREDIENTS = "ingredients";
     }
 }

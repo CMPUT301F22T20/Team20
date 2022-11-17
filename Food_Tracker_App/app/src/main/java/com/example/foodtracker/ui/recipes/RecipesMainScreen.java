@@ -30,21 +30,24 @@ public class RecipesMainScreen extends AppCompatActivity implements
         RecyclerViewInterface,
         TopBar.TopBarListener {
 
-    private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
-    private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-    private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList, this);
+
     private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
             addRecipe(receivedRecipe);
         }
     });
+
     private final ActivityResultLauncher<Intent> recipeDisplayResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe recipeToDelete = (Recipe) activityResult.getData().getSerializableExtra("DELETED_RECIPE");
             deleteRecipe(recipeToDelete);
         }
     });
+
+    private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
+    private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+    private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList, this);
 
     public RecipesMainScreen() {
         super(R.layout.recipes_main);
@@ -96,23 +99,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
     }
 
     public void deleteRecipe(Recipe recipe) {
-//        int index = 0;
-//        for (index = 0; index < recipeArrayList.size(); index++) {
-//            if (Objects.equals(recipeArrayList.get(index).getTitle(), recipe.getTitle())
-//                    && Objects.equals(recipeArrayList.get(index).getPrepTime(), recipe.getPrepTime())
-//                    && Objects.equals(recipeArrayList.get(index).getServings(), recipe.getServings())
-//                    && Objects.equals(recipeArrayList.get(index).getCategory(), recipe.getCategory())
-//                    && Objects.equals(recipeArrayList.get(index).getComment(), recipe.getComment())
-//                    && Objects.equals(recipeArrayList.get(index).getImage(), recipe.getImage())
-//            ) {
-//                break;
-//            }
-//        }
-//        recipe = recipeArrayList.get(index);
-//        recipeArrayList.remove(index);
-//        int finalIndex = index;
-//        recipesCollection.delete(recipe, () ->
-//                adapter.notifyItemRemoved(finalIndex));
         int removedIndex = recipeArrayList.indexOf(recipe);
         recipeArrayList.remove(removedIndex);
         recipesCollection.delete(recipe, () ->
