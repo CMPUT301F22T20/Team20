@@ -35,6 +35,9 @@ public class IngredientTest {
     @Before
     public void setUp(){
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), activityRule.getActivity());
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
+        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
     }
 
     /**
@@ -42,9 +45,6 @@ public class IngredientTest {
      */
     @Test
     public void checkIngredientListExpandOnClick(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickInRecyclerView(0);
         assertTrue(solo.searchText("Quantity"));
         solo.clickInRecyclerView(0);
@@ -56,9 +56,6 @@ public class IngredientTest {
      */
     @Test
     public void checkEditIngredientAndCancelButtons(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickInRecyclerView(0);
         solo.clickOnView(solo.getView(R.id.edit_ingredient));
         solo.clickOnView(solo.getView(android.R.id.button2));
@@ -69,9 +66,6 @@ public class IngredientTest {
      */
     @Test
     public void addNewIngredient() {
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientSelectionButton));
         solo.enterText((EditText) solo.getView(R.id.ingredientDescription), " Frozen Buffalo Wings");
@@ -90,9 +84,6 @@ public class IngredientTest {
      */
     @Test
     public void editExistingIngredient(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickInRecyclerView(0);
         solo.clickOnView(solo.getView(R.id.edit_ingredient));
         solo.clearEditText(0);
@@ -114,9 +105,6 @@ public class IngredientTest {
      */
     @Test
     public void clickOnDeleteButton() {
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         ArrayList<TextView> textViews = solo.clickInRecyclerView(0);
         String clickedItemDescription = String.valueOf(textViews.get(0).getText());
         solo.clickOnView(solo.getView(R.id.delete_ingredient));
@@ -128,18 +116,12 @@ public class IngredientTest {
      */
     @Test
     public void clickOnTopBarAddButton(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(android.R.id.button2));
     }
 
     @Test
     public void addIngredientLocation(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientLocationSelectionButton));
         assertTrue(solo.waitForText("New Location"));
@@ -150,9 +132,6 @@ public class IngredientTest {
 
     @Test
     public void cancelAddIngredientLocation(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientLocationSelectionButton));
         assertTrue(solo.waitForText("New Location"));
@@ -162,9 +141,6 @@ public class IngredientTest {
 
     @Test
     public void addIngredientCategory(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientCategorySelectionButton));
         assertTrue(solo.waitForText("New Category"));
@@ -174,9 +150,6 @@ public class IngredientTest {
 
     @Test
     public void cancelAddIngredientCategory(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_ingredients));
-        assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientCategorySelectionButton));
         assertTrue(solo.waitForText("New Category"));

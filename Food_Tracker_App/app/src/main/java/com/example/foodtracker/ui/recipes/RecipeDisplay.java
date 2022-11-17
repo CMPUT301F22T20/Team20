@@ -64,7 +64,7 @@ public class RecipeDisplay extends AppCompatActivity {
         recipeImage = findViewById(R.id.recipe_display_image);
 
         recipeTitle.setText(recipe.getTitle());
-        recipePrepTime.setText("Preperation Time: " + String.valueOf(recipe.getPrepTime()));
+        recipePrepTime.setText("Preparation Time: " + String.valueOf(recipe.getPrepTime()));
         recipeServings.setText("Servings: " + String.valueOf(recipe.getServings()));
         recipeCategory.setText("Category: " + recipe.getCategory());
         recipeComment.setText("Comment:\n\n" + recipe.getComment());
