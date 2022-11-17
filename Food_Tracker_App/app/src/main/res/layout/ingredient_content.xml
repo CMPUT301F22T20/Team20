@@ -48,10 +48,10 @@
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/text_ingredient_cost"
+                android:id="@+id/text_ingredient_unit"
                 style="@style/ingredientViewText"
                 android:layout_alignParentEnd="true"
-                android:text="@string/ingredient_cost" />
+                android:text="@string/ingredient_unit" />
 
             <TextView
                 android:id="@+id/text_ingredient_amount"
@@ -69,7 +69,7 @@
             <Button
                 android:id="@+id/edit_ingredient"
                 style="@style/ingredientViewButton"
-                android:layout_below="@+id/text_ingredient_cost"
+                android:layout_below="@+id/text_ingredient_unit"
                 android:layout_alignParentEnd="true"
                 android:backgroundTint="@color/positive"
                 android:text="@string/edit_button" />

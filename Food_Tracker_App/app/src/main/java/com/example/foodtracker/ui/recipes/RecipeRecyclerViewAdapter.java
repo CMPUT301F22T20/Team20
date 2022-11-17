@@ -13,6 +13,7 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.ArrayListener;
 import com.example.foodtracker.model.recipe.Recipe;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
 
 /**
@@ -77,7 +78,6 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
         public RecipeHolder(View itemView, RecipeRecyclerViewAdapter.RecipeArrayListener recipeListener, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
-            // TODO: On click go to view recipe
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
