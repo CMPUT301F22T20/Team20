@@ -16,8 +16,8 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 11
-      - run: cd ./Food_Tracker_App
+      - run: cd Food_Tracker_App
       - run: chmod +x gradlew
-      - run: chmod +x ./Food_Tracker_App/gradlew
+      - run: ./gradlew tasks --all
       - run: ./gradlew build
       - run: ./gradlew test
