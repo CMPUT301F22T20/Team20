@@ -111,10 +111,6 @@ public class AddIngredient extends DialogFragment {
 
         String addUnit = unit.getText().toString();
         ingredient.setUnit(addUnit);
-        if (addUnit.isEmpty()) {
-            unit.setError("Unit must not be empty");
-            valid = false;
-        }
 
         if (category.getSelectedItem() == null) {
             valid = false;

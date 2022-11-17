@@ -2,6 +2,7 @@ package com.example.foodtracker.ui.recipes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -112,7 +113,7 @@ public class RecipeDisplay extends AppCompatActivity {
      * Instantiates the top bar fragment for the recipe display menu
      */
     private void createTopBar() {
-        TopBar topBar = TopBar.newInstance("Recipe Details", false);
+        TopBar topBar = TopBar.newInstance("Recipe Details", false, true);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.topBarContainerView, topBar)
