@@ -84,7 +84,10 @@ public class RecipeDisplay extends AppCompatActivity {
         editRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
+                /** changed here
+                 * AddRecipeActivity.class
+                 */
+                Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
                 intent.putExtra("EDIT_RECIPE", recipe);
                 startActivity(intent);
                 finish();

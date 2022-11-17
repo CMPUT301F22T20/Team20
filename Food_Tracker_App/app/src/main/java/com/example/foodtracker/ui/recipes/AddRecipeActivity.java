@@ -3,6 +3,8 @@ package com.example.foodtracker.ui.recipes;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AddRecipeActivity extends AppCompatActivity implements AddIngredient.smallIngredientListener {
 
@@ -39,6 +42,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     private EditText commentsField;
     private ImageView recipeImage;
     private Uri imageURI;
+    private  ListView ingredientsListField;
     private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
         recipeImage.setImageURI(uri);
         imageURI = uri;
@@ -64,7 +68,19 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         Button confirmButton = findViewById(R.id.recipes_confirm);
         Button cancelButton = findViewById(R.id.recipes_cancel);
 
-        ListView ingredientsListField = findViewById(R.id.ingredients);
+        ingredientsListField = findViewById(R.id.ingredients);
+        ingredientsListField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Ingredient selected_ingredient = (Ingredient) ingredientsListField.getItemAtPosition(i);
+                Bundle args = new Bundle();
+                args.putSerializable("selected_ingredient", selected_ingredient);
+                AddIngredient editFrag = new AddIngredient();
+                editFrag.setArguments(args);
+                editFrag.show(getSupportFragmentManager(), "EDIT_INGREDIENT_IN_RECIPE");
+            }
+        });
+
         ingredientList = new ArrayList<>();
         adapter = new CustomList(this, ingredientList);
         ingredientsListField.setAdapter(adapter);
@@ -73,6 +89,13 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         ImageButton addRecipeImageButton = findViewById(R.id.recipe_image_button);
         recipeImage = findViewById(R.id.recipe_image);
         addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
+
+        if (getIntent().getExtras() != null) {
+            //Receive the Recipe object from RecipesMainScreen
+            Intent intent1 = getIntent();
+            Recipe edit_recipe = (Recipe) intent1.getSerializableExtra("EDIT_RECIPE");
+            initializeEditRecipe(edit_recipe);
+        }
 
         confirmButton.setOnClickListener(view -> {
             Intent intent = new Intent();
@@ -104,6 +127,28 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
             imageURI = Uri.parse(recipe.getImage());
             recipeImage.setImageURI(imageURI);
         }
+    }
+
+    /**
+     * Populates the dialog fields from a {@link Recipe} instance
+     *
+     * @param recipe to initialize form with
+     */
+    public void initializeEditRecipe(Recipe recipe) {
+        if (!recipe.getImage().isEmpty()) {
+            imageURI = Uri.parse(recipe.getImage());
+            recipeImage.setImageURI(imageURI);
+        }
+
+        titleField.setText(recipe.getTitle());
+        timeField.setText(String.valueOf(recipe.getPrepTime()));
+        servingsField.setText(String.valueOf(recipe.getServings()));
+        commentsField.setText(recipe.getComment());
+
+        ArrayList<Ingredient> arrayList = recipe.getIngredients();
+        adapter = new CustomList(this, arrayList);
+        ingredientsListField.setAdapter(adapter);
+
     }
 
     /**
