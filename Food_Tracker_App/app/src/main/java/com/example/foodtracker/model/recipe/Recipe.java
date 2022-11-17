@@ -1,16 +1,15 @@
 package com.example.foodtracker.model.recipe;
 
 import com.example.foodtracker.model.Document;
+import com.example.foodtracker.model.DocumentableFieldName;
 import com.example.foodtracker.model.ingredient.Ingredient;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @see <a href=https://www.geeksforgeeks.org/overriding-equals-method-in-java/">Geeks for Geeks</a>
- */
-public class Recipe extends Document {
+public class Recipe extends Document implements Serializable {
 
     public static final String RECIPES_COLLECTION_NAME = "Recipes";
     private String image; // TODO: figure out if this should be a String or a different data type
@@ -50,36 +49,45 @@ public class Recipe extends Document {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
-        data.put(Recipe.FieldNames.TITLE, this.getTitle());
-        data.put(Recipe.FieldNames.IMAGE, this.getImage());
-        data.put(Recipe.FieldNames.PREPTIME, this.getPrepTime());
-        data.put(Recipe.FieldNames.CATEGORY, this.getCategory());
-        data.put(Recipe.FieldNames.SERVINGS, this.getServings());
-        data.put(Recipe.FieldNames.COMMENT, this.getComment());
-        data.put(FieldNames.INGREDIENTS, this.getIngredients());
+        data.put(Recipe.FieldName.TITLE.getName(), this.getTitle());
+        data.put(Recipe.FieldName.IMAGE.getName(), this.getImage());
+        data.put(Recipe.FieldName.PREPARATION_TIME.getName(), this.getPrepTime());
+        data.put(Recipe.FieldName.CATEGORY.getName(), this.getCategory());
+        data.put(Recipe.FieldName.SERVINGS.getName(), this.getServings());
+        data.put(Recipe.FieldName.COMMENT.getName(), this.getComment());
+        data.put(FieldName.INGREDIENTS.getName(), this.getIngredients());
         return data;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
+    /**
+     * Represents the field names in the recipes class
+     */
+    public enum FieldName implements DocumentableFieldName {
+        TITLE("title", true),
+        IMAGE("image", false),
+        PREPARATION_TIME("prepTime", true),
+        CATEGORY("category", true),
+        SERVINGS("servings", false),
+        COMMENT("comment", false),
+        INGREDIENTS("ingredients", false);
+
+        private final String name;
+        private final boolean sortable;
+
+        FieldName(String fieldName, boolean sortable) {
+            this.name = fieldName;
+            this.sortable = sortable;
         }
 
-        // If the object is compared with itself then return true
-        if (o == this) {
-            return true;
+        @Override
+        public String getName() {
+            return name;
         }
 
-        // Check if o is an instance of Recipe or not
-        if (!(o instanceof Recipe)) {
-            return false;
+        @Override
+        public boolean sortable() {
+            return sortable;
         }
-
-        // Typecast o to Recipe so that we can compare data members
-        Recipe recipe = (Recipe) o;
-
-        return this.getKey().equals(recipe.getKey());
     }
 
     public String getTitle() {
@@ -136,15 +144,5 @@ public class Recipe extends Document {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public static class FieldNames {
-        public static String TITLE = "title";
-        public static String IMAGE = "image";
-        public static String PREPTIME = "prepTime";
-        public static String CATEGORY = "category";
-        public static String SERVINGS = "servings";
-        public static String COMMENT = "comment";
-        public static String INGREDIENTS = "ingredients";
     }
 }

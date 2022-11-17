@@ -1,7 +1,10 @@
 package com.example.foodtracker.model.ingredient;
 
 
+import android.os.Parcelable;
+
 import com.example.foodtracker.model.Document;
+import com.example.foodtracker.model.DocumentableFieldName;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -17,7 +20,7 @@ import java.util.Map;
  * Expiry Date of the Ingredient
  * {@link Document} allows objects to be used as Firebase instances
  */
-public class Ingredient extends Document {
+public class Ingredient extends Document implements Serializable {
 
     public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
     /**
@@ -25,7 +28,7 @@ public class Ingredient extends Document {
      */
     private String description;
     /**
-     * This variable is private and holds the cost for an ingredient of type {@link Double}
+     * Represents what quantity unit we have of this ingredient (i.e. kg, bags)
      */
     private String unit;
     /**
@@ -85,12 +88,12 @@ public class Ingredient extends Document {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
-        data.put(FieldNames.DESCRIPTION, this.getDescription());
-        data.put(FieldNames.UNIT, this.getUnit());
-        data.put(FieldNames.LOCATION, this.getLocation());
-        data.put(FieldNames.CATEGORY, this.getCategory());
-        data.put(FieldNames.AMOUNT, this.getAmount());
-        data.put(FieldNames.EXPIRY, this.getExpiry());
+        data.put(FieldName.DESCRIPTION.getName(), this.getDescription());
+        data.put(FieldName.UNIT.getName(), this.getUnit());
+        data.put(FieldName.LOCATION.getName(), this.getLocation());
+        data.put(FieldName.CATEGORY.getName(), this.getCategory());
+        data.put(FieldName.AMOUNT.getName(), this.getAmount());
+        data.put(FieldName.EXPIRY.getName(), this.getExpiry());
         return data;
     }
 
@@ -167,21 +170,17 @@ public class Ingredient extends Document {
     }
 
     /**
-     * This function returns the cost of the ingredient
-     *
-     * @return This is the cost which is of type {@link Double}
+     * This function returns the unit of the ingredient
      */
     public String getUnit() {
         return unit;
     }
 
     /**
-     * This function sets the cost of the ingredient
-     *
-     * @param unit This is the cost which is of type {@link String}
+     * This function sets the unit of the ingredient
      */
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setUnit(String cost) {
+        this.unit = cost;
     }
 
     /**
@@ -203,16 +202,32 @@ public class Ingredient extends Document {
     }
 
     /**
-     * This is a public static class that contains all the FieldNames that will be used in EditText later
-     * The FieldNames are of type {@link String} and are public and static
+     * Contains the names of the ingredient class fields
      */
-    public static class FieldNames {
-        public static String DESCRIPTION = "description";
-        public static String UNIT = "unit";
-        public static String LOCATION = "location";
-        public static String CATEGORY = "category";
-        public static String AMOUNT = "amount";
-        public static String EXPIRY = "expiry";
-    }
+    public enum FieldName implements DocumentableFieldName {
+        DESCRIPTION("description", true),
+        UNIT("unit", false),
+        LOCATION("location", true),
+        CATEGORY("category", true),
+        AMOUNT("amount", false),
+        EXPIRY("expiry", true);
 
+        private final String name;
+        private final boolean sortable;
+
+        FieldName(String fieldName, boolean sortable) {
+            this.name = fieldName;
+            this.sortable = sortable;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public boolean sortable() {
+            return sortable;
+        }
+    }
 }
