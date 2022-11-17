@@ -17,6 +17,7 @@ jobs:
         with:
           java-version: 11
       - run: cd Food_Tracker_App
+      - run: pwd
       - run: chmod +x gradlew
       - run: ./gradlew tasks --all
       - run: ./gradlew build
