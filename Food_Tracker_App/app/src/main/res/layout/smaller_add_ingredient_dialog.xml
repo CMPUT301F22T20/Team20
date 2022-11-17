@@ -18,6 +18,12 @@
         android:hint="@string/quantity"
         android:inputType="number" />
 
+    <EditText
+        android:id="@+id/ingredientUnit"
+        style="@style/inputField"
+        android:hint="@string/unit"
+        android:inputType="text" />
+
     <Spinner
         android:id="@+id/ingredientCategory"
         android:layout_width="match_parent"

@@ -18,7 +18,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.recipes.RecipeDisplay"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/recipe_details"/>
         <activity
             android:name=".ui.shoppingCart.ShoppingCartMainScreen"
             android:exported="false"

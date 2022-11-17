@@ -19,6 +19,7 @@ import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class creates an object that is used to represent the main screen for the Recipes
@@ -29,15 +30,24 @@ public class RecipesMainScreen extends AppCompatActivity implements
         RecyclerViewInterface,
         TopBar.TopBarListener {
 
-    private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
-    private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-    private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList, this);
+
     private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
             addRecipe(receivedRecipe);
         }
     });
+
+    private final ActivityResultLauncher<Intent> recipeDisplayResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+        if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
+            Recipe recipeToDelete = (Recipe) activityResult.getData().getSerializableExtra("DELETED_RECIPE");
+            deleteRecipe(recipeToDelete);
+        }
+    });
+
+    private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
+    private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+    private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList, this);
 
     public RecipesMainScreen() {
         super(R.layout.recipes_main);
@@ -88,6 +98,13 @@ public class RecipesMainScreen extends AppCompatActivity implements
                 adapter.notifyItemInserted(recipeArrayList.indexOf(recipe)));
     }
 
+    public void deleteRecipe(Recipe recipe) {
+        int removedIndex = recipeArrayList.indexOf(recipe);
+        recipeArrayList.remove(removedIndex);
+        recipesCollection.delete(recipe, () ->
+                adapter.notifyItemRemoved(removedIndex));
+
+    }
 
     /**
      * Adds some initial data to the list
@@ -97,13 +114,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
             recipeArrayList.addAll(list);
             adapter.notifyItemRangeInserted(0, recipeArrayList.size());
         });
-    }
-
-    /**
-     * This function closes the activity and returns back to main menu
-     */
-    private void returnToMainMenu() {
-        finish();
     }
 
     private void createRecyclerView() {
@@ -124,7 +134,7 @@ public class RecipesMainScreen extends AppCompatActivity implements
      * Instantiates the top bar fragment for the ingredients menu
      */
     private void createTopBar() {
-        TopBar topBar = TopBar.newInstance("Recipes", true);
+        TopBar topBar = TopBar.newInstance("Recipes", true, false);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.topBarContainerView, topBar)
@@ -133,7 +143,9 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(this, RecipeDisplay.class);
-        startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), RecipeDisplay.class);
+        Recipe recipe = recipeArrayList.get(position);
+        intent.putExtra("RECIPE", recipe);
+        recipeDisplayResultLauncher.launch(intent);
     }
 }
