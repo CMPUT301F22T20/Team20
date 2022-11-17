@@ -24,7 +24,6 @@ import java.util.ArrayList;
  * @see <a href=https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example">Stack Overflow</a>
  */
 public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.IngredientHolder> {
-
     /**
      * See {@link ArrayListener}
      * @implNote For safe type casting
