@@ -167,7 +167,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
      * Instantiates the top bar fragment for the ingredients menu
      */
     private void createTopBar() {
-        TopBar topBar = TopBar.newInstance("Ingredients", true);
+        TopBar topBar = TopBar.newInstance("Ingredients", true, false);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.topBarContainerView, topBar)

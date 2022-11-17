@@ -45,6 +45,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     });
 
     private ArrayAdapter<Ingredient> adapter;
+    private ArrayList<Ingredient> ingredientList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,8 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         Button cancelButton = findViewById(R.id.recipes_cancel);
 
         ListView ingredientsListField = findViewById(R.id.ingredients);
-        ArrayList<Ingredient> arrayList = new ArrayList<>();
-        adapter = new CustomList(this, arrayList);
+        ingredientList = new ArrayList<>();
+        adapter = new CustomList(this, ingredientList);
         ingredientsListField.setAdapter(adapter);
         addIngredientButton.setOnClickListener(view -> new AddIngredient().show(getSupportFragmentManager(), "Add_ingredient"));
 
@@ -140,6 +141,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         recipe.setServings(servingsInt);
         recipe.setCategory(category);
         recipe.setComment(comments);
+        recipe.setIngredients(ingredientList);
         if (imageURI != null) {
             recipe.setImage(imageURI.toString());
         }

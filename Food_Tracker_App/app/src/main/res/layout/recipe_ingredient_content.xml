@@ -3,32 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:weightSum="4">
 
 
     <TextView
         android:id="@+id/Name"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.4"
         android:padding = "10dp"
         android:text="name" />
 
     <TextView
         android:id="@+id/Amount"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
         android:padding = "10dp"
         android:text="amount" />
 
     <TextView
+        android:id="@+id/Unit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:padding = "10dp"
+        android:text="unit" />
+
+    <TextView
         android:id="@+id/Category"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding = "10dp"
         android:text="category" />
-
 
 </LinearLayout>
