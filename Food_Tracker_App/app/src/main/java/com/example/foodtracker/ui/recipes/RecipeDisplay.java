@@ -24,6 +24,10 @@ import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
 
+/**
+ * An object of this class is used to represent an activity which is opened when a recipe is clicked
+ * This class extends from {@link AppCompatActivity}
+ */
 public class RecipeDisplay extends AppCompatActivity {
 
     private TextView recipeTitle;

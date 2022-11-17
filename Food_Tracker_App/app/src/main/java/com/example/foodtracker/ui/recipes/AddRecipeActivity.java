@@ -24,6 +24,11 @@ import com.example.foodtracker.utils.Collection;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An object of this class is used to represent the activity used to add a Recipe
+ * This class extends from {@link AppCompatActivity}
+ * This class also implements {@link AddIngredient.smallIngredientListener} interface
+ */
 public class AddRecipeActivity extends AppCompatActivity implements AddIngredient.smallIngredientListener {
 
     public static final String RECIPE_KEY = "recipe";
