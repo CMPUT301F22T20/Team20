@@ -1,5 +1,6 @@
 package com.example.foodtracker.ui.recipes;
 
+import static androidx.fragment.app.FragmentManager.TAG;
 import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;

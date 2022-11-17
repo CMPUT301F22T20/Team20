@@ -1,8 +1,11 @@
 package com.example.foodtracker.ui.recipes;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -95,16 +98,38 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
             Intent intent1 = getIntent();
             Recipe edit_recipe = (Recipe) intent1.getSerializableExtra("EDIT_RECIPE");
             initializeEditRecipe(edit_recipe);
+
+            confirmButton.setOnClickListener(view -> {
+                Intent intent = new Intent();
+                Boolean valid = createRecipe(edit_recipe);
+                Log.d(TAG, "line 105 onCreate: " + edit_recipe.getTitle());
+
+                if (valid) {
+                    Log.d(TAG, "line 106 onCreate: " + edit_recipe.getComment());
+                    intent.putExtra("EDIT_RECIPE", edit_recipe);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
+            });
         }
 
-        confirmButton.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.putExtra(RECIPE_KEY, createRecipe());
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        else {
+            confirmButton.setOnClickListener(view -> {
+                Intent intent = new Intent();
+                Recipe recipe = new Recipe();
+                Boolean valid = createRecipe(recipe);
+                if (valid) {
+                    intent.putExtra(RECIPE_KEY, recipe);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
+            });
+        }
 
         cancelButton.setOnClickListener(view -> finish());
+
     }
 
     @Override
@@ -167,8 +192,21 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         imageGalleryResultHandler.launch("image/*");
     }
 
-    private Recipe createRecipe() {
+    /**
+     * Creating a recipe with the details in the fields
+     * @return {@link Recipe} recipe the created recipe
+     */
+    private Boolean createRecipe(Recipe recipe) {
+
+        Boolean valid = true;
+
         String title = titleField.getText().toString();
+        recipe.setTitle(title);
+        if (title.isEmpty()) {
+            titleField.setError("Title must not be empty");
+            valid = false;
+        }
+
         String time = timeField.getText().toString();
         int timeMin = 0;
         try {
@@ -185,8 +223,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         }
         String category = categoryField.getSelectedItem().toString();
         String comments = commentsField.getText().toString();
-        Recipe recipe = new Recipe();
-        recipe.setTitle(title);
+
         recipe.setPrepTime(timeMin);
         recipe.setServings(servingsInt);
         recipe.setCategory(category);
@@ -195,6 +232,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         if (imageURI != null) {
             recipe.setImage(imageURI.toString());
         }
-        return recipe;
+        return valid;
     }
 }
