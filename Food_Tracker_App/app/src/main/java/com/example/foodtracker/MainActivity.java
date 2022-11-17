@@ -34,18 +34,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         recipesButton.setOnClickListener(view -> {
-                Intent recipesIntent = new Intent(view.getContext(), RecipesMainScreen.class);
-                startActivity(recipesIntent);
+            Intent recipesIntent = new Intent(view.getContext(), RecipesMainScreen.class);
+            startActivity(recipesIntent);
         });
 
         mealPlanButton.setOnClickListener(view -> {
-                Intent mealPlanIntent = new Intent(view.getContext(), MealPlanMainScreen.class);
-                startActivity(mealPlanIntent);
+            Intent mealPlanIntent = new Intent(view.getContext(), MealPlanMainScreen.class);
+            startActivity(mealPlanIntent);
         });
 
         shoppingCartButton.setOnClickListener(view -> {
-                Intent shoppingCartIntent = new Intent(view.getContext(), ShoppingCartMainScreen.class);
-                startActivity(shoppingCartIntent);
+            Intent shoppingCartIntent = new Intent(view.getContext(), ShoppingCartMainScreen.class);
+            startActivity(shoppingCartIntent);
         });
     }
 }
