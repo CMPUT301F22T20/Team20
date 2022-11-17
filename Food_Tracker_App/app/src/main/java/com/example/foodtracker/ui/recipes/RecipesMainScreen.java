@@ -1,5 +1,6 @@
 package com.example.foodtracker.ui.recipes;
 
+import static androidx.fragment.app.FragmentManager.TAG;
 import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
@@ -45,7 +47,14 @@ public class RecipesMainScreen extends AppCompatActivity implements
             deleteRecipe(recipeToDelete);
         }
     });
-
+/*
+    private final ActivityResultLauncher<Intent> editRecipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+        if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
+            Recipe recipeToEdit = (Recipe) activityResult.getData().getSerializableExtra("EDIT_RECIPE");
+            editRecipe(recipeToEdit);
+        }
+    } );
+*/
     public RecipesMainScreen() {
         super(R.layout.recipes_main);
     }
@@ -64,11 +73,17 @@ public class RecipesMainScreen extends AppCompatActivity implements
             createTopBar();
         }
 
+
         Intent intent = getIntent();
-        if (getIntent().getExtras() != null) {
-            Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
-            addRecipe(received_recipe);
+
+
+        if (intent.getExtras() != null) {
+            Recipe edited_recipe = (Recipe) intent.getSerializableExtra("EDIT_RECIPE");
+            deleteRecipe(edited_recipe);
         }
+
+
+
 
     }
 
@@ -108,6 +123,7 @@ public class RecipesMainScreen extends AppCompatActivity implements
         recipesCollection.delete(recipe, () ->
                 adapter.notifyItemRemoved(finalIndex));
     }
+
 
     /**
      * Adds some initial data to the list

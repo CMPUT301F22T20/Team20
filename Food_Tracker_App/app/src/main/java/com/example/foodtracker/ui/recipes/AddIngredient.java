@@ -1,9 +1,12 @@
 package com.example.foodtracker.ui.recipes;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +25,9 @@ import com.example.foodtracker.utils.Collection;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is the dialog fragment class for adding an ingredient to a recipe
+ */
 public class AddIngredient extends DialogFragment {
 
     private final Collection<Category> categoryCollection = new Collection<>(Category.class, new Category());
@@ -55,6 +61,20 @@ public class AddIngredient extends DialogFragment {
         getCategories();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        if (getArguments() != null) {
+            Bundle selectedBundle = getArguments();
+            Ingredient ingredientToEdit = (Ingredient) selectedBundle.get("selected_ingredient");
+            initializeIngredient(ingredientToEdit);
+
+            getCategories();
+            return builder.setView(view).setTitle("Edit ingredient")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
+                    .create();
+        }
+
+        Ingredient create_ingredient = new Ingredient();
         AlertDialog dialog = builder
                 .setView(view)
                 .setTitle("Add an ingredient")
@@ -63,12 +83,22 @@ public class AddIngredient extends DialogFragment {
         dialog.setOnShowListener(dialogInterface -> {
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(v -> {
-                if (addClick()) {
+                if (addClick(create_ingredient)) {
                     dialog.dismiss();
                 }
             });
         });
         return dialog;
+    }
+
+    /**
+     * This sets the information of the selected ingredient to the text fields
+     * @param ingredient {@link Ingredient}
+     *                                     the selected ingredient
+     */
+    public void initializeIngredient(Ingredient ingredient) {
+        description.setText(ingredient.getDescription());
+        quantity.setText(String.valueOf(ingredient.getAmount()));
     }
 
     /**
@@ -84,11 +114,14 @@ public class AddIngredient extends DialogFragment {
     }
 
     /**
-     * Add an ingredient to a recipe, returns true if the added ingredient is valid
+     * Set the fields of an ingredient, returns true if the added ingredient is valid
      * and false otherwise
+     * @param ingredient {@link Ingredient}
+     *                                     the ingredient to be added to a recipe
+     * @return true if the added ingredient is valid, false otherwise
      */
-    private boolean addClick() {
-        Ingredient ingredient = new Ingredient();
+    private boolean setFileds(Ingredient ingredient) {
+        //Ingredient ingredient = new Ingredient();
         boolean valid = true;
 
         String addDescription = description.getText().toString();
@@ -114,13 +147,45 @@ public class AddIngredient extends DialogFragment {
             ingredient.setCategory(addCategory);
         }
 
+        return valid;
+    }
+
+    /**
+     * Adds an ingredient to a recipe, returns true if the added ingredient is valid
+     * and false otherwise
+     * @param ingredient {@link Ingredient}
+     *                                     the ingredient to be added to a recipe
+     * @return true if the added ingredient is valid, false otherwise
+     */
+    private boolean addClick(Ingredient ingredient) {
+        boolean valid = setFileds(ingredient);
         if (valid) {
             listener.addRecipeIngredient(ingredient);
         }
         return valid;
     }
 
+    /**
+     * Edits an ingredient in a recipe, returns true if the added ingredient is valid
+     * and false otherwise
+     * @param ingredient {@link Ingredient}
+     *                                     the ingredient to be added to a recipe
+     * @return true if the added ingredient is valid, false otherwise
+     */
+    private boolean editClick(Ingredient ingredient) {
+        boolean valid = setFileds(ingredient);
+        if (valid) {
+            listener.editRecipeIngredient(ingredient);
+        }
+        return valid;
+    }
+
+
+    /**
+     * A listener interface which provides callbacks to interact with events occuring in the dialog
+     */
     public interface smallIngredientListener {
         void addRecipeIngredient(Ingredient new_ingredient);
+        void editRecipeIngredient(Ingredient edit_ingredient);
     }
 }

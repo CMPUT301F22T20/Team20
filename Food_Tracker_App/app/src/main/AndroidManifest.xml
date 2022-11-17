@@ -14,12 +14,17 @@
         android:theme="@style/Theme.FoodTracker"
         tools:targetApi="31">
         <activity
+            android:name=".ui.recipes.EditRecipeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit_recipe"
+            android:theme="@style/Theme.FoodTracker.NoActionBar" />
+        <activity
             android:name=".ui.recipes.AddRecipeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.recipes.RecipeDisplay"
             android:exported="false"
-            android:label="@string/recipe_details"/>
+            android:label="@string/recipe_details" />
         <activity
             android:name=".ui.shoppingCart.ShoppingCartMainScreen"
             android:exported="false"
