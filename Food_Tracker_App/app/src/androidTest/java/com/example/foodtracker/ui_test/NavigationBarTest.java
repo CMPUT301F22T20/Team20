@@ -2,8 +2,6 @@ package com.example.foodtracker.ui_test;
 
 import static org.junit.Assert.assertTrue;
 
-import android.app.Activity;
-
 import com.example.foodtracker.R;
 import com.example.foodtracker.ui.mealPlan.MealPlanMainScreen;
 import com.example.foodtracker.ui.recipes.RecipesMainScreen;
@@ -23,7 +21,7 @@ import org.junit.Test;
 
 /**
  * Class to test the functionality of the navigation bar at the bottom of the screen
- * @version 1.0
+ * @version 2.0
  */
 public class NavigationBarTest {
     private Solo solo;
@@ -88,6 +86,47 @@ public class NavigationBarTest {
         solo.clickOnView(solo.getView(R.id.navigation_meal_plan));
         assertTrue(solo.waitForActivity(MealPlanMainScreen.class));
     }
+
+    @Test
+    public void clickOnBackButtonInIngredients(){
+        clickOnIngredientsIconInNavBar();
+        solo.clickOnView(solo.getView(R.id.top_bar_back_button));
+    }
+
+    @Test
+    public void clickOnBackButtonInRecipes(){
+        clickOnRecipesButtonInNavBar();
+        solo.clickOnView(solo.getView(R.id.top_bar_back_button));
+    }
+
+    @Test
+    public void clickOnIngredientsIconInMainActivity(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.MainActivityIngredientButton));
+        solo.assertCurrentActivity("Wrong Activity", IngredientsMainScreen.class);
+    }
+
+    @Test
+    public void clickOnRecipesIconInMainActivity(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.mainActivityRecipeButton));
+        solo.assertCurrentActivity("Wrong Activity", RecipesMainScreen.class);
+    }
+
+    @Test
+    public void clickOnShoppingCartIconInMainActivity(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.mainActivityShoppingListButton));
+        solo.assertCurrentActivity("Wrong Activity", ShoppingCartMainScreen.class);
+    }
+
+    @Test
+    public void clickOnMealPlanIconInMainActivity(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.mainActivityMealplanButton));
+        solo.assertCurrentActivity("Wrong Activity", MealPlanMainScreen.class);
+    }
+
     @After
     public void tearDown(){
         solo.finishOpenedActivities();
