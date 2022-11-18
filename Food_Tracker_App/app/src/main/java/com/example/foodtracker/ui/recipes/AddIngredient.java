@@ -102,7 +102,6 @@ public class AddIngredient extends DialogFragment {
         description.setText(ingredient.getDescription());
         quantity.setText(String.valueOf(ingredient.getAmount()));
         unit.setText(ingredient.getUnit());
-
     }
 
     /**

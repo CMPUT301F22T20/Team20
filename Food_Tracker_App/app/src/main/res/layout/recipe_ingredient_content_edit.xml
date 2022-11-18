@@ -39,5 +39,13 @@
         android:padding = "10dp"
         android:text="category" />
 
+    <Button
+        android:id="@+id/delete_Button"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="X"
+        android:focusable="false"/>
+
 
 </LinearLayout>

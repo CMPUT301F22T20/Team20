@@ -34,7 +34,7 @@ public class CustomList extends ArrayAdapter<Ingredient> {
 
         View view = convertView;
         if(view == null){
-            view = LayoutInflater.from(context).inflate(R.layout.recipe_ingredient_content, parent,false);
+            view = LayoutInflater.from(context).inflate(R.layout.recipe_ingredient_content_edit, parent,false);
         }
         Ingredient ingredient = ingredients.get(position);
 

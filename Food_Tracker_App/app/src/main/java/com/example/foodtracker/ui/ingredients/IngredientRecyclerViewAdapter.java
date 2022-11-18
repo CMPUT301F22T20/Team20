@@ -24,7 +24,6 @@ import java.util.ArrayList;
  * @see <a href=https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example">Stack Overflow</a>
  */
 public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.IngredientHolder> {
-
     /**
      * See {@link ArrayListener}
      * @implNote For safe type casting
@@ -50,6 +49,14 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
 
     /**
      * Populates the view with Ingredient information
+     *
+     * @see <a href="https://stackoverflow.com/questions/28408826/textview-visible-invisible-using-one-button-in-android">
+     *     Setting textview to visible and invisible </a>
+     *  Copyright:  CC BY-SA 3.0 (Pramod Yadav)
+     *
+     * @see <a href="https://mobikul.com/what-is-expandable-recyclerview-in-android/">Expandable recyclerview </a>
+     * Copyright: © Copyright 2010-2022, Webkul Software (Registered in India/USA). All rights reserved.
+     * (Ashwani Yadav)
      */
     @Override
     public void onBindViewHolder(IngredientHolder holder, int position) {

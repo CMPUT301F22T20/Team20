@@ -18,6 +18,7 @@ import android.widget.Spinner;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodtracker.R;
@@ -65,7 +66,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         categoryField = findViewById(R.id.recipeCategory);
         categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
         categoryField.setAdapter(categoryAdapter);
-        getCategories();
         commentsField = findViewById(R.id.recipeComments);
         Button addIngredientButton = findViewById(R.id.addIngredient);
         Button confirmButton = findViewById(R.id.recipes_confirm);
@@ -93,16 +93,19 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         recipeImage = findViewById(R.id.recipe_image);
         addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
 
+        /*
+        Edit a recipe
+         */
         if (getIntent().getExtras() != null) {
             //Receive the Recipe object from RecipesMainScreen
             Intent intent1 = getIntent();
             Recipe edit_recipe = (Recipe) intent1.getSerializableExtra("EDIT_RECIPE");
+            getCategories(edit_recipe);
             initializeEditRecipe(edit_recipe);
 
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 Boolean valid = createRecipe(edit_recipe);
-
 
                 if (valid) {
                     intent.putExtra("EDIT_RECIPE", edit_recipe);
@@ -113,10 +116,14 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
             });
         }
 
+        /*
+        Edit a recipe
+         */
         else {
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 Recipe recipe = new Recipe();
+                getCategories(null);
                 Boolean valid = createRecipe(recipe);
                 if (valid) {
                     intent.putExtra(RECIPE_KEY, recipe);
@@ -169,20 +176,22 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         servingsField.setText(String.valueOf(recipe.getServings()));
         commentsField.setText(recipe.getComment());
 
-        ArrayList<Ingredient> arrayList = recipe.getIngredients();
-        adapter = new CustomList(this, arrayList);
+        ingredientList = recipe.getIngredients();
+        adapter = new CustomList(this, ingredientList);
         ingredientsListField.setAdapter(adapter);
-
     }
 
     /**
      * Retrieves categories from firestore and populates a string array with the content
      */
-    private void getCategories() {
+    private void getCategories(@Nullable Recipe recipe) {
         categoryCollection.getAll(list -> {
-            for (Category category : list) {
+            for (com.example.foodtracker.model.recipe.Category category : list) {
                 categories.add(category.getName());
                 categoryAdapter.notifyDataSetChanged();
+            }
+            if (recipe != null) {
+                categoryField.setSelection(categoryAdapter.getPosition(recipe.getCategory()));
             }
         });
     }
