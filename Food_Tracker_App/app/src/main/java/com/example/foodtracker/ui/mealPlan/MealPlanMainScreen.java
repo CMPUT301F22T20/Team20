@@ -18,6 +18,9 @@ import com.example.foodtracker.ui.TopBar;
  */
 public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopBarListener {
 
+
+
+
     /**
      * @param savedInstanceState this is of type {@link Bundle}
      */
@@ -25,6 +28,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_main);
+
 
         if (savedInstanceState == null) {
             createNavBar();
@@ -50,4 +54,6 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     public void onAddClick() {
         new AddMealPlanDialog().show(getSupportFragmentManager(), CREATE_MEAL_PLAN_TAG);
     }
+
+
 }

@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,8 +30,7 @@ public class createMealPlanDialog extends DialogFragment {
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", (dialog, i) -> {
                     String y = String.valueOf(picker.getYear());
-                    Toast.makeText(getContext(),y, Toast.LENGTH_LONG).show();
-
+                    //Toast.makeText(getContext(),y, Toast.LENGTH_LONG).show();
                 })
                 .create();
     }

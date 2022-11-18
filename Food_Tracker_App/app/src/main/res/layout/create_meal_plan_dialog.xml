@@ -42,19 +42,13 @@
         android:endYear="2100"
         android:startYear="2022" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text= "How many meals a day?"
-        android:textColor="@color/primary_dark" />
-
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/editTextNumber"
+        style = "@style/inputField"
         android:layout_gravity="center_horizontal"
-
-        />
+        android:ems="10"
+        android:hint="Enter the number of meals"
+        android:inputType="number" />
 
 
 </LinearLayout>
