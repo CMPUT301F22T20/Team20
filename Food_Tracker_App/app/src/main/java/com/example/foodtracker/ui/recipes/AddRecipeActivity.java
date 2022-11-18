@@ -66,6 +66,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         categoryField = findViewById(R.id.recipeCategory);
         categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
         categoryField.setAdapter(categoryAdapter);
+        getCategories(null);
         commentsField = findViewById(R.id.recipeComments);
         Button addIngredientButton = findViewById(R.id.addIngredient);
         Button confirmButton = findViewById(R.id.recipes_confirm);
