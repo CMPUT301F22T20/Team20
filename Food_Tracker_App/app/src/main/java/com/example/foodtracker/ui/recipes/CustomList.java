@@ -39,11 +39,13 @@ public class CustomList extends ArrayAdapter<Ingredient> {
 
         TextView description = view.findViewById(R.id.Name);
         TextView amount = view.findViewById(R.id.Amount);
+        TextView unit = view.findViewById(R.id.Unit);
         TextView category = view.findViewById(R.id.Category);
 
         description.setText(ingredient.getDescription());
         String amount_str = String.valueOf(ingredient.getAmount());
         amount.setText(amount_str);
+        unit.setText(ingredient.getUnit());
         category.setText(ingredient.getCategory());
         return view;
 

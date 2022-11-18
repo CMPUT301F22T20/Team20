@@ -1,6 +1,8 @@
 package com.example.foodtracker.model.ingredient;
 
 
+import android.os.Parcelable;
+
 import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.DocumentableFieldName;
 
@@ -26,9 +28,9 @@ public class Ingredient extends Document implements Serializable {
      */
     private String description;
     /**
-     * This variable is private and holds the cost for an ingredient of type {@link Double}
+     * Represents what quantity unit we have of this ingredient (i.e. kg, bags)
      */
-    private Double cost;
+    private String unit;
     /**
      * This variable is private and holds the location for an ingredient of type {@link String}
      */
@@ -57,10 +59,10 @@ public class Ingredient extends Document implements Serializable {
      *
      * @param description is the description of the Ingredient which is of type {@link String}
      */
-    public Ingredient(String description, Double cost, String location, String category,
+    public Ingredient(String description, String unit, String location, String category,
                       int amount, String expiry) {
         setDescription(description);
-        setCost(cost);
+        setUnit(unit);
         setLocation(location);
         setCategory(category);
         setAmount(amount);
@@ -87,7 +89,7 @@ public class Ingredient extends Document implements Serializable {
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
         data.put(FieldName.DESCRIPTION.getName(), this.getDescription());
-        data.put(FieldName.COST.getName(), this.getCost());
+        data.put(FieldName.UNIT.getName(), this.getUnit());
         data.put(FieldName.LOCATION.getName(), this.getLocation());
         data.put(FieldName.CATEGORY.getName(), this.getCategory());
         data.put(FieldName.AMOUNT.getName(), this.getAmount());
@@ -168,21 +170,17 @@ public class Ingredient extends Document implements Serializable {
     }
 
     /**
-     * This function returns the cost of the ingredient
-     *
-     * @return This is the cost which is of type {@link Double}
+     * This function returns the unit of the ingredient
      */
-    public Double getCost() {
-        return cost;
+    public String getUnit() {
+        return unit;
     }
 
     /**
-     * This function sets the cost of the ingredient
-     *
-     * @param cost This is the cost which is of type {@link Double}
+     * This function sets the unit of the ingredient
      */
-    public void setCost(Double cost) {
-        this.cost = cost;
+    public void setUnit(String cost) {
+        this.unit = cost;
     }
 
     /**
@@ -208,7 +206,7 @@ public class Ingredient extends Document implements Serializable {
      */
     public enum FieldName implements DocumentableFieldName {
         DESCRIPTION("description", true),
-        COST("cost", false),
+        UNIT("unit", false),
         LOCATION("location", true),
         CATEGORY("category", true),
         AMOUNT("amount", false),

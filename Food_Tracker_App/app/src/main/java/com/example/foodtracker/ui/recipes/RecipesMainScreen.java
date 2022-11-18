@@ -2,11 +2,11 @@ package com.example.foodtracker.ui.recipes;
 
 import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,20 +30,26 @@ public class RecipesMainScreen extends AppCompatActivity implements
         RecyclerViewInterface,
         TopBar.TopBarListener {
 
+
     private final Collection<Recipe> recipesCollection = new Collection<>(Recipe.class, new Recipe());
     private final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
     private final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(this, recipeArrayList, this);
+    private final ActivityResultLauncher<Intent> recipeDisplayResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+        if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
+            Recipe recipeToDelete = (Recipe) activityResult.getData().getSerializableExtra("DELETED_RECIPE");
+            deleteRecipe(recipeToDelete);
+        }
+    });
+    /**
+     * Allows us to sort by a selected field name and refresh the data in the view
+     */
+    private Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort;
     private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
             addRecipe(receivedRecipe);
         }
     });
-
-    /**
-     * Allows us to sort by a selected field name and refresh the data in the view
-     */
-    private Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort;
 
     public RecipesMainScreen() {
         super(R.layout.recipes_main);
@@ -56,7 +62,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipes_main);
-        initializeData();
         initializeSort();
         if (savedInstanceState == null) {
             createRecyclerView();
@@ -91,8 +96,18 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(this, RecipeDisplay.class);
-        startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), RecipeDisplay.class);
+        Recipe recipe = recipeArrayList.get(position);
+        intent.putExtra("RECIPE", recipe);
+        recipeDisplayResultLauncher.launch(intent);
+    }
+
+    public void deleteRecipe(Recipe recipe) {
+        int removedIndex = recipeArrayList.indexOf(recipe);
+        recipeArrayList.remove(removedIndex);
+        recipesCollection.delete(recipe, () ->
+                adapter.notifyItemRemoved(removedIndex));
+
     }
 
     private void addRecipe(Recipe recipe) {
@@ -100,17 +115,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
         recipesCollection.createDocument(recipe, () -> {
             adapter.notifyItemInserted(recipeArrayList.indexOf(recipe));
             sort.sortByFieldName();
-        });
-    }
-
-
-    /**
-     * Adds some initial data to the list
-     */
-    private void initializeData() {
-        recipesCollection.getAll(list -> {
-            recipeArrayList.addAll(list);
-            adapter.notifyItemRangeInserted(0, recipeArrayList.size());
         });
     }
 
@@ -129,12 +133,15 @@ public class RecipesMainScreen extends AppCompatActivity implements
      * Instantiates the top bar fragment for the ingredients menu
      */
     private void createTopBar() {
-        TopBar topBar = TopBar.newInstance("Recipes", true);
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.topBarContainerView, topBar).commit();
+        TopBar topBar = TopBar.newInstance("Recipes", true, false);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
+                .commit();
     }
 
     private void initializeSort() {
-        Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort = new Sort<>(this.recipesCollection, this.adapter, this.recipeArrayList, Recipe.FieldName.class);
+        sort = new Sort<>(this.recipesCollection, this.adapter, this.recipeArrayList, Recipe.FieldName.class);
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.sort_spinnerRecipe, sort).commit();
     }
 }

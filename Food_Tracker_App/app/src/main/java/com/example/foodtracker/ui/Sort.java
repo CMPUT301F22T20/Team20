@@ -110,7 +110,7 @@ public class Sort<E extends Enum<E> & DocumentableFieldName, A extends RecyclerV
         List<String> fieldNames = new ArrayList<>();
         for (E fieldName : this.fieldNameEnum) {
             if (fieldName.sortable()) {
-                fieldNames.add(StringUtils.capitalize(fieldName.getName()));
+                fieldNames.add(fieldName.getName());
             }
         }
         return fieldNames;
@@ -121,8 +121,7 @@ public class Sort<E extends Enum<E> & DocumentableFieldName, A extends RecyclerV
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView toSort = view.findViewById(android.R.id.text1);
-                // must text convert back to lowercase to match field name
-                sortingFieldName = toSort.getText().toString().toLowerCase(Locale.ROOT);
+                sortingFieldName = toSort.getText().toString();
                 sortByFieldName();
             }
 

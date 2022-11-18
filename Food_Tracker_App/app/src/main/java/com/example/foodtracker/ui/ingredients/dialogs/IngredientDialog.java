@@ -32,7 +32,7 @@ import java.util.Objects;
 public class IngredientDialog extends DialogFragment {
 
     private EditText description;
-    private EditText cost;
+    private EditText unit;
     private EditText quantity;
     private DatePicker expiry;
     private Ingredient ingredientToEdit;
@@ -101,7 +101,7 @@ public class IngredientDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.add_ingredient_dialog, null);
         description = view.findViewById(R.id.ingredientDescription);
-        cost = view.findViewById(R.id.ingredientCost);
+        unit = view.findViewById(R.id.ingredientUnit);
         quantity = view.findViewById(R.id.ingredientQuantity);
         location = view.findViewById(R.id.ingredientLocation);
         locationAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, locations);
@@ -132,7 +132,7 @@ public class IngredientDialog extends DialogFragment {
 
     public void initializeIngredient(Ingredient ingredient) {
         description.setText(ingredient.getDescription());
-        cost.setText(String.valueOf(ingredient.getCost()));
+        unit.setText(ingredient.getUnit());
         quantity.setText(String.valueOf(ingredient.getAmount()));
         setDatePicker(ingredient);
     }
@@ -150,14 +150,7 @@ public class IngredientDialog extends DialogFragment {
 
     private void setIngredientFields(Ingredient ingredient) {
         ingredient.setDescription(description.getText().toString());
-        String costString = cost.getText().toString();
-        double cost = 0.0;
-        try {
-            cost = Double.parseDouble(costString);
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-        }
-        ingredient.setCost(cost);
+        ingredient.setUnit(unit.getText().toString());
         String quantityString = quantity.getText().toString();
         int quantity = 1;
         try {

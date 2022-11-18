@@ -1,12 +1,13 @@
 package com.example.foodtracker.model;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Objects that extend the {@link Document} interface are able to be
  * represented as {@link com.google.firebase.firestore.FirebaseFirestore} instances
  */
-public abstract class Document {
+public abstract class Document implements Serializable {
 
     private String firestoreId;
 

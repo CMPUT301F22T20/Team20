@@ -68,7 +68,6 @@ public class IngredientsMainScreen extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeData();
         initializeSort();
         if (savedInstanceState == null) {
             createRecyclerView();
@@ -141,17 +140,6 @@ public class IngredientsMainScreen extends AppCompatActivity implements
                 adapter.notifyItemRemoved(removedIndex));
     }
 
-
-    /**
-     * Adds some initial data to the list
-     */
-    private void initializeData() {
-        ingredientsCollection.getAll(list -> {
-            ingredientArrayList.addAll(list);
-            adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
-        });
-    }
-
     /**
      * Instantiates the navbar fragment for the ingredients menu
      */
@@ -167,7 +155,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
      * Instantiates the top bar fragment for the ingredients menu
      */
     private void createTopBar() {
-        TopBar topBar = TopBar.newInstance("Ingredients", true);
+        TopBar topBar = TopBar.newInstance("Ingredients", true, false);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.topBarContainerView, topBar)
