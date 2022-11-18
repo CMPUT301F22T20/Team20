@@ -71,8 +71,8 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
         Intent intent = getIntent();
         if (getIntent().getExtras() != null) {
-            Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
-            addRecipe(received_recipe);
+            Recipe received_recipe = (Recipe) intent.getSerializableExtra("EDITED_RECIPE");
+            editRecipe(received_recipe);
         }
 
     }
@@ -98,6 +98,11 @@ public class RecipesMainScreen extends AppCompatActivity implements
         recipeArrayList.add(recipe);
         recipesCollection.createDocument(recipe, () ->
                 adapter.notifyItemInserted(recipeArrayList.indexOf(recipe)));
+    }
+
+    public void editRecipe(Recipe recipe) {
+        int editIndex = recipeArrayList.indexOf(recipe);
+        recipesCollection.updateDocument(recipe, () -> adapter.notifyItemChanged(editIndex));
     }
 
     public void deleteRecipe(Recipe recipe) {

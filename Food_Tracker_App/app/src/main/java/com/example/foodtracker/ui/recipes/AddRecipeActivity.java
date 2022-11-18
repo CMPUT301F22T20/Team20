@@ -102,10 +102,9 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 Boolean valid = createRecipe(edit_recipe);
-                Log.d(TAG, "line 105 onCreate: " + edit_recipe.getTitle());
+
 
                 if (valid) {
-                    Log.d(TAG, "line 106 onCreate: " + edit_recipe.getComment());
                     intent.putExtra("EDIT_RECIPE", edit_recipe);
                     setResult(RESULT_OK, intent);
                     finish();

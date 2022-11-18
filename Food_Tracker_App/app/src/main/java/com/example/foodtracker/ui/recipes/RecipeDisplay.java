@@ -35,8 +35,9 @@ public class RecipeDisplay extends AppCompatActivity {
     private final ActivityResultLauncher<Intent> editRecipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra("EDIT_RECIPE");
-            Log.d(TAG, "recipe display received recipe comment: " + receivedRecipe.getComment());
-            //addRecipe(receivedRecipe);
+            Intent intent = new Intent(getApplicationContext(), RecipesMainScreen.class);
+            intent.putExtra("EDITED_RECIPE", receivedRecipe);
+            startActivity(intent);
         }
     });
 
