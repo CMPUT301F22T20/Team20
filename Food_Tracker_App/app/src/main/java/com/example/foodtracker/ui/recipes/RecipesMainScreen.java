@@ -62,7 +62,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipes_main);
-        initializeData();
         initializeSort();
         if (savedInstanceState == null) {
             createRecyclerView();
@@ -119,16 +118,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
         });
     }
 
-    /**
-     * Adds some initial data to the list
-     */
-    private void initializeData() {
-        recipesCollection.getAll(list -> {
-            recipeArrayList.addAll(list);
-            adapter.notifyItemRangeInserted(0, recipeArrayList.size());
-        });
-    }
-
     private void createRecyclerView() {
         RecyclerView recipeRecyclerView = findViewById(R.id.recipe_list);
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -152,7 +141,7 @@ public class RecipesMainScreen extends AppCompatActivity implements
     }
 
     private void initializeSort() {
-        Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort = new Sort<>(this.recipesCollection, this.adapter, this.recipeArrayList, Recipe.FieldName.class);
+        sort = new Sort<>(this.recipesCollection, this.adapter, this.recipeArrayList, Recipe.FieldName.class);
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.sort_spinnerRecipe, sort).commit();
     }
 }
