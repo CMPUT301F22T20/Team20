@@ -117,7 +117,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         }
 
         /*
-        Edit a recipe
+        Add a recipe
          */
         else {
             confirmButton.setOnClickListener(view -> {

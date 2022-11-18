@@ -30,6 +30,31 @@ public class Recipe extends Document implements Serializable {
         ingredients = new ArrayList<>();
     }
 
+    /**
+     * @see <a href=https://www.geeksforgeeks.org/overriding-equals-method-in-java/%22%3EGeeks for Geeks</a>
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        // Check if o is an instance of Recipe or not
+        if (!(o instanceof Recipe)) {
+            return false;
+        }
+
+        // Typecast o to Recipe so that we can compare data members
+        Recipe recipe = (Recipe) o;
+
+        return this.getKey().equals(recipe.getKey());
+    }
+
     public Recipe(String image, String title, int prepTime, int servings, String category, String comment, ArrayList<Ingredient> ingredients) {
         this.image = image;
         this.title = title;

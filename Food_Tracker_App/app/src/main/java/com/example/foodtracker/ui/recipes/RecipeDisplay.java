@@ -96,6 +96,7 @@ public class RecipeDisplay extends AppCompatActivity {
             createTopBar();
         }
 
+
         editRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
