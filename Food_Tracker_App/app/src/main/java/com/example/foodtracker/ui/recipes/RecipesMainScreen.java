@@ -40,10 +40,12 @@ public class RecipesMainScreen extends AppCompatActivity implements
             deleteRecipe(recipeToDelete);
         }
     });
+
     /**
      * Allows us to sort by a selected field name and refresh the data in the view
      */
     private Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort;
+
     private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
@@ -152,7 +154,7 @@ public class RecipesMainScreen extends AppCompatActivity implements
     }
 
     private void initializeSort() {
-        Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort = new Sort<>(this.recipesCollection, this.adapter, this.recipeArrayList, Recipe.FieldName.class);
+        sort = new Sort<>(this.recipesCollection, this.adapter, this.recipeArrayList, Recipe.FieldName.class);
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.sort_spinnerRecipe, sort).commit();
     }
 }

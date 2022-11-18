@@ -23,6 +23,7 @@ import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
+import com.example.foodtracker.utils.BitmapUtil;
 
 public class RecipeDisplay extends AppCompatActivity {
 
@@ -68,10 +69,9 @@ public class RecipeDisplay extends AppCompatActivity {
         recipeServings.setText("Servings: " + String.valueOf(recipe.getServings()));
         recipeCategory.setText("Category: " + recipe.getCategory());
         recipeComment.setText("Comment:\n\n" + recipe.getComment());
-//        if (!recipe.getImage().isEmpty()) {
-//            imageURI = Uri.parse(recipe.getImage());
-//            recipeImage.setImageURI(imageURI);
-//        }
+        if (!recipe.getImage().isEmpty()) {
+            recipeImage.setImageBitmap(BitmapUtil.fromString(recipe.getImage()));
+        }
 
         recipeIngredients.setLayoutManager(new LinearLayoutManager(this));
         recipeIngredients.setAdapter(adapter);

@@ -1,8 +1,9 @@
 package com.example.foodtracker.ui.recipes;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +20,10 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.Category;
 import com.example.foodtracker.model.recipe.Recipe;
+import com.example.foodtracker.utils.BitmapUtil;
 import com.example.foodtracker.utils.Collection;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +41,15 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     private EditText servingsField;
     private EditText commentsField;
     private ImageView recipeImage;
-    private Uri imageURI;
+    private Bitmap bitmap;
+
     private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
         recipeImage.setImageURI(uri);
-        imageURI = uri;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     });
 
     private ArrayAdapter<Ingredient> adapter;
@@ -69,7 +77,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         adapter = new CustomList(this, ingredientList);
         ingredientsListField.setAdapter(adapter);
         addIngredientButton.setOnClickListener(view -> new AddIngredient().show(getSupportFragmentManager(), "Add_ingredient"));
-
         ImageButton addRecipeImageButton = findViewById(R.id.recipe_image_button);
         recipeImage = findViewById(R.id.recipe_image);
         addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
@@ -89,15 +96,10 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         adapter.add(new_ingredient);
     }
 
-    /**
-     * Populates the dialog fields from a {@link Recipe} instance
-     *
-     * @param recipe to initialize form with
-     */
-    public void initializeRecipe(Recipe recipe) {
+
+    public void setImage(Recipe recipe) {
         if (!recipe.getImage().isEmpty()) {
-            imageURI = Uri.parse(recipe.getImage());
-            recipeImage.setImageURI(imageURI);
+            recipeImage.setImageBitmap(BitmapUtil.fromString(recipe.getImage()));
         }
     }
 
@@ -142,8 +144,8 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         recipe.setCategory(category);
         recipe.setComment(comments);
         recipe.setIngredients(ingredientList);
-        if (imageURI != null) {
-            recipe.setImage(imageURI.toString());
+        if (bitmap != null) {
+            recipe.setImage(BitmapUtil.toString(bitmap));
         }
         return recipe;
     }
