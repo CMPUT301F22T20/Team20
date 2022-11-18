@@ -68,7 +68,6 @@ public class IngredientsMainScreen extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeData();
         initializeSort();
         if (savedInstanceState == null) {
             createRecyclerView();
@@ -139,17 +138,6 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         ingredientArrayList.remove(removedIndex);
         ingredientsCollection.delete(ingredient, () ->
                 adapter.notifyItemRemoved(removedIndex));
-    }
-
-
-    /**
-     * Adds some initial data to the list
-     */
-    private void initializeData() {
-        ingredientsCollection.getAll(list -> {
-            ingredientArrayList.addAll(list);
-            adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
-        });
     }
 
     /**

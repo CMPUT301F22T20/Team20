@@ -81,13 +81,10 @@ public class RecipeDisplay extends AppCompatActivity {
             createTopBar();
         }
 
-        editRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        editRecipeButton.setOnClickListener(v -> {
 //                Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
 //                intent.putExtra("EDIT_RECIPE", recipe);
 //                startActivity(intent);
-            }
         });
 
         deleteRecipeButton.setOnClickListener(new View.OnClickListener() {
