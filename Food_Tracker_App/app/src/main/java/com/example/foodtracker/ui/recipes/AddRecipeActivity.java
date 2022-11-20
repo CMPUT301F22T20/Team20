@@ -16,7 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.ingredient.Ingredient;
+import com.example.foodtracker.model.ingredient.SimpleIngredient;
 import com.example.foodtracker.model.recipe.Category;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.utils.Collection;
@@ -44,8 +44,8 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         imageURI = uri;
     });
 
-    private ArrayAdapter<Ingredient> adapter;
-    private ArrayList<Ingredient> ingredientList;
+    private ArrayAdapter<SimpleIngredient> adapter;
+    private ArrayList<SimpleIngredient> ingredientList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,20 +85,8 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     }
 
     @Override
-    public void addRecipeIngredient(Ingredient new_ingredient) {
-        adapter.add(new_ingredient);
-    }
-
-    /**
-     * Populates the dialog fields from a {@link Recipe} instance
-     *
-     * @param recipe to initialize form with
-     */
-    public void initializeRecipe(Recipe recipe) {
-        if (!recipe.getImage().isEmpty()) {
-            imageURI = Uri.parse(recipe.getImage());
-            recipeImage.setImageURI(imageURI);
-        }
+    public void addRecipeIngredient(SimpleIngredient ingredient) {
+        adapter.add(ingredient);
     }
 
     /**

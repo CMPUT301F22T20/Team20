@@ -2,23 +2,22 @@ package com.example.foodtracker.model.recipe;
 
 import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.DocumentableFieldName;
-import com.example.foodtracker.model.ingredient.Ingredient;
+import com.example.foodtracker.model.ingredient.SimpleIngredient;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Recipe extends Document implements Serializable {
+public class Recipe extends Document {
 
-    public static final String RECIPES_COLLECTION_NAME = "Recipes";
-    private String image; // TODO: figure out if this should be a String or a different data type
+    public static final String RECIPES_COLLECTION_NAME = "Recipes-IAN-TEST";
+    private String image;
     private String title;
     private int prepTime;
     private int servings;
     private String category;
     private String comment;
-    private ArrayList<Ingredient> ingredients;
+    private ArrayList<SimpleIngredient> ingredients;
 
     public Recipe() {
         image = "";
@@ -55,7 +54,7 @@ public class Recipe extends Document implements Serializable {
         return this.getKey().equals(recipe.getKey());
     }
 
-    public Recipe(String image, String title, int prepTime, int servings, String category, String comment, ArrayList<Ingredient> ingredients) {
+    public Recipe(String image, String title, int prepTime, int servings, String category, String comment, ArrayList<SimpleIngredient> ingredients) {
         this.image = image;
         this.title = title;
         this.prepTime = prepTime;
@@ -155,11 +154,11 @@ public class Recipe extends Document implements Serializable {
         this.comment = comment;
     }
 
-    public ArrayList<Ingredient> getIngredients() {
+    public ArrayList<SimpleIngredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
+    public void setIngredients(ArrayList<SimpleIngredient> ingredients) {
         this.ingredients = ingredients;
     }
 

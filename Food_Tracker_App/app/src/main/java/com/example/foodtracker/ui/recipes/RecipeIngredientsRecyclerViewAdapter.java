@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Ingredient;
+import com.example.foodtracker.model.ingredient.SimpleIngredient;
 
 import java.util.ArrayList;
 
 public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder> {
-    private final ArrayList<Ingredient> ingredientArrayList;
+    private final ArrayList<SimpleIngredient> ingredientArrayList;
     private final Context context;
 
-    RecipeIngredientsRecyclerViewAdapter(Context context, ArrayList<Ingredient> ingredientArrayList) {
+    RecipeIngredientsRecyclerViewAdapter(Context context, ArrayList<SimpleIngredient> ingredientArrayList) {
         this.context = context;
         this.ingredientArrayList = ingredientArrayList;
     }
@@ -28,7 +29,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
     @Override
     public RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipe_ingredient_content, parent, false);
-        return new RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder(view);
+        return new RecipeIngredientHolder(view);
     }
 
     /**
@@ -36,7 +37,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
      */
     @Override
     public void onBindViewHolder(RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder holder, int position) {
-        Ingredient ingredient = ingredientArrayList.get(position);
+        SimpleIngredient ingredient = ingredientArrayList.get(position);
         holder.description.setText(ingredient.getDescription());
         holder.amount.setText(String.format("%s", ingredient.getAmount()));
         holder.unit.setText(ingredient.getUnit());
@@ -51,7 +52,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
     /**
      * Represents an {@link Ingredient} in our {@link RecipeIngredientsRecyclerViewAdapter}
      */
-    public class RecipeIngredientHolder extends RecyclerView.ViewHolder {
+    public static class RecipeIngredientHolder extends RecyclerView.ViewHolder {
 
         protected final TextView description = itemView.findViewById(R.id.Name);
         protected final TextView amount = itemView.findViewById(R.id.Amount);

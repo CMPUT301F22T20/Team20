@@ -11,16 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.ingredient.Ingredient;
+import com.example.foodtracker.model.ingredient.SimpleIngredient;
 
 import java.util.ArrayList;
 
-public class CustomList extends ArrayAdapter<Ingredient> {
+public class CustomList extends ArrayAdapter<SimpleIngredient> {
 
-    private ArrayList<Ingredient> ingredients;
-    private Context context;
+    private final ArrayList<SimpleIngredient> ingredients;
+    private final Context context;
 
-    public CustomList(Context context, ArrayList<Ingredient> ingredients){
+    public CustomList(Context context, ArrayList<SimpleIngredient> ingredients){
         super(context,0, ingredients);
         this.ingredients = ingredients;
         this.context = context;
@@ -29,13 +29,11 @@ public class CustomList extends ArrayAdapter<Ingredient> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //return super.getView(position, convertView, parent);
-
         View view = convertView;
         if(view == null){
             view = LayoutInflater.from(context).inflate(R.layout.recipe_ingredient_content, parent,false);
         }
-        Ingredient ingredient = ingredients.get(position);
+        SimpleIngredient ingredient = ingredients.get(position);
 
         TextView description = view.findViewById(R.id.Name);
         TextView amount = view.findViewById(R.id.Amount);

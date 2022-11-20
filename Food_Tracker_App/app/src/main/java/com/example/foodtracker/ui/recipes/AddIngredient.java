@@ -16,7 +16,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Category;
-import com.example.foodtracker.model.ingredient.Ingredient;
+import com.example.foodtracker.model.ingredient.SimpleIngredient;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class AddIngredient extends DialogFragment {
      * and false otherwise
      */
     private boolean addClick() {
-        Ingredient ingredient = new Ingredient();
+        SimpleIngredient ingredient = new SimpleIngredient();
         boolean valid = true;
 
         String addDescription = description.getText().toString();
@@ -126,6 +126,6 @@ public class AddIngredient extends DialogFragment {
     }
 
     public interface smallIngredientListener {
-        void addRecipeIngredient(Ingredient new_ingredient);
+        void addRecipeIngredient(SimpleIngredient ingredient);
     }
 }

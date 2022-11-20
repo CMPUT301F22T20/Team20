@@ -54,6 +54,13 @@ public class Ingredient extends Document implements Serializable {
     public Ingredient() {
     }
 
+    public Ingredient(SimpleIngredient simpleIngredient) {
+        setDescription(simpleIngredient.getDescription());
+        setUnit(simpleIngredient.getUnit());
+        setAmount(simpleIngredient.getAmount());
+        setCategory(simpleIngredient.getCategory());
+    }
+
     /**
      * This is a constructor to instantiate a {@link Ingredient} object
      *
