@@ -44,7 +44,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
                 .commit();
     }
     private void createTopBar(){
-        TopBar topBar = TopBar.newInstance("Meal Plan", true);
+        TopBar topBar = TopBar.newInstance("Meal Plan", true, false);
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.topBarContainerView, topBar).commit();
 
     }
