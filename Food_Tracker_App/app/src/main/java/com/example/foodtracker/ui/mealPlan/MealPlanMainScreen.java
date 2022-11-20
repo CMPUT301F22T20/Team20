@@ -69,7 +69,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         ingredientArrayList.add(new Ingredient("apple", "", "pantry", "snack", 2, ""));
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         recipeArrayList.add(new Recipe("", "Soup", 90, 6, "Dinner", "", ingredientArrayList));
-        MealPlanDay mealPlanDay = new MealPlanDay(1, ingredientArrayList, recipeArrayList);
+        MealPlanDay mealPlanDay = new MealPlanDay("11-20-2022", ingredientArrayList, recipeArrayList);
         mealPlanDayArrayList.add(mealPlanDay);
         mealPlanDaysCollection.createDocument(mealPlanDay, () -> {
             adapter.notifyItemInserted(mealPlanDayArrayList.indexOf(mealPlanDay));

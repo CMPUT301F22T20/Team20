@@ -13,17 +13,17 @@ import java.util.Map;
 public class MealPlanDay extends Document implements Serializable {
 
     public static final String MEALPLAN_COLLECTION_NAME = "MealPlan";
-    private int day;
+    private String day;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<Recipe> recipes;
 
     public MealPlanDay() {
-        day = 0;
+        day = "";
         ingredients = new ArrayList<>();
         recipes = new ArrayList<>();
     }
 
-    public MealPlanDay(int day, ArrayList<Ingredient> ingredients, ArrayList<Recipe> recipes) {
+    public MealPlanDay(String day, ArrayList<Ingredient> ingredients, ArrayList<Recipe> recipes) {
         this.day = day;
         this.ingredients = ingredients;
         this.recipes = recipes;
@@ -52,11 +52,11 @@ public class MealPlanDay extends Document implements Serializable {
         public static String RECIPES = "recipes";
     }
 
-    public int getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(String day) {
         this.day = day;
     }
 

@@ -44,7 +44,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
     @Override
     public void onBindViewHolder(MealPlanDayRecyclerViewAdapter.MealPlanDayHolder holder, int position) {
         MealPlanDay mealPlanDay = mealPlanDayArrayList.get(position);
-        holder.day.setText(String.format("Day %s",mealPlanDay.getDay()));
+        holder.day.setText(mealPlanDay.getDay());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 holder.mealPlanDayIngredientsList.getContext(),
