@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cardView="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
+    android:orientation="horizontal"
     cardView:cardBackgroundColor="@color/background_light"
     cardView:cardCornerRadius="20dp"
     cardView:contentPadding="16dp">
@@ -14,30 +15,29 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/meal_name"
+            android:id="@+id/mealPlanIngredientName"
             style="@style/ingredientViewText"
-            android:text = "Meal Name"
+            android:text="@string/ingredient_name"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/text_meal_category"
+            android:id="@+id/mealPlanIngredientCategory"
             style="@style/ingredientViewText"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="132dp"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/meal_name"
-            android:text="Meal category" />
+            android:layout_below="@id/mealPlanIngredientName"
+            android:text="@string/ingredient_category" />
 
         <TextView
-            android:id="@+id/text_meal_servings"
+            android:id="@+id/mealPlanIngredientAmount"
             style="@style/ingredientViewText"
-            android:layout_below="@id/text_meal_category"
-            android:text="@string/recipe_servings" />
+            android:layout_below="@id/mealPlanIngredientCategory"
+            android:text="@string/ingredient_amount" />
 
         <TextView
-            android:id="@+id/text_meal"
+            android:id="@+id/mealPlanIngredientUnit"
             style="@style/ingredientViewText"
-            android:layout_below="@id/text_meal_servings"
-            android:text="Type of Meal" />
+            android:layout_marginLeft="32dp"
+            android:layout_below="@id/mealPlanIngredientCategory"
+            android:layout_toRightOf="@id/mealPlanIngredientAmount"
+            android:text="@string/ingredient_unit" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
