@@ -126,7 +126,7 @@ public class AddIngredient extends DialogFragment {
      *                                     the ingredient to be added to a recipe
      * @return true if the added ingredient is valid, false otherwise
      */
-    private boolean setFileds(Ingredient ingredient) {
+    private boolean setFields(Ingredient ingredient) {
         //Ingredient ingredient = new Ingredient();
         boolean valid = true;
 
@@ -167,7 +167,7 @@ public class AddIngredient extends DialogFragment {
      * @return true if the added ingredient is valid, false otherwise
      */
     private boolean addClick(Ingredient ingredient) {
-        boolean valid = setFileds(ingredient);
+        boolean valid = setFields(ingredient);
         if (valid) {
             listener.addRecipeIngredient(ingredient);
         }
@@ -182,7 +182,7 @@ public class AddIngredient extends DialogFragment {
      * @return true if the added ingredient is valid, false otherwise
      */
     private boolean editClick(Ingredient ingredient) {
-        boolean valid = setFileds(ingredient);
+        boolean valid = setFields(ingredient);
         if (valid) {
             listener.editRecipeIngredient(ingredient);
         }

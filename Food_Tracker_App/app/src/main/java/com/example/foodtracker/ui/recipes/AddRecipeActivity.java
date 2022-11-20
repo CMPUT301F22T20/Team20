@@ -85,9 +85,9 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
             }
         });
 
-        ingredientList = new ArrayList<>();
-        adapter = new CustomList(this, ingredientList);
-        ingredientsListField.setAdapter(adapter);
+//        ingredientList = new ArrayList<>();
+//        adapter = new CustomList(this, ingredientList);
+//        ingredientsListField.setAdapter(adapter);
         addIngredientButton.setOnClickListener(view -> new AddIngredient().show(getSupportFragmentManager(), "Add_ingredient"));
 
         ImageButton addRecipeImageButton = findViewById(R.id.recipe_image_button);
@@ -106,7 +106,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
 
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
-                Boolean valid = createRecipe(edit_recipe);
+                Boolean valid = setRecipeFields(edit_recipe);
 
                 if (valid) {
                     intent.putExtra("EDIT_RECIPE", edit_recipe);
@@ -121,11 +121,15 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         Add a recipe
          */
         else {
+            ingredientList = new ArrayList<>();
+            adapter = new CustomList(this, ingredientList);
+            ingredientsListField.setAdapter(adapter);
+
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 Recipe recipe = new Recipe();
                 getCategories(null);
-                Boolean valid = createRecipe(recipe);
+                Boolean valid = setRecipeFields(recipe);
                 if (valid) {
                     intent.putExtra(RECIPE_KEY, recipe);
                     setResult(RESULT_OK, intent);
@@ -202,10 +206,11 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     }
 
     /**
-     * Creating a recipe with the details in the fields
-     * @return {@link Recipe} recipe the created recipe
+     * Setting the details of a recipe.
+     * Return true if the title is not empty; otherwise, return false;
+     * @return {@link Boolean} valid
      */
-    private Boolean createRecipe(Recipe recipe) {
+    private Boolean setRecipeFields(Recipe recipe) {
 
         Boolean valid = true;
 
