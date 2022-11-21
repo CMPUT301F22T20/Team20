@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/mealPlanDay"
+        style="@style/textHeader1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Day"
         app:layout_constraintBottom_toTopOf="@id/mealPlanAddButtons"
-        style="@style/textHeader1"
-        android:text="Day" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageButton
@@ -23,17 +23,17 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48" />
 
     <LinearLayout
         android:id="@+id/mealPlanAddButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mealPlanDay"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toBottomOf="@id/mealPlanDay">
 
         <Button
             android:id="@+id/mealPlanAddIngredientButton"
@@ -78,10 +78,10 @@
         android:id="@+id/mealPlanIngredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ingredientText"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/recipeText"
-        android:orientation="horizontal">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ingredientText">
 
         <!--Child RecyclerView Ingredients-->
         <androidx.recyclerview.widget.RecyclerView
@@ -107,9 +107,9 @@
         android:id="@+id/mealPlanRecipes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recipeText"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toBottomOf="@id/recipeText">
 
         <!--Child RecyclerView Recipes-->
         <androidx.recyclerview.widget.RecyclerView
@@ -118,7 +118,6 @@
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_nav_bar" />
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
