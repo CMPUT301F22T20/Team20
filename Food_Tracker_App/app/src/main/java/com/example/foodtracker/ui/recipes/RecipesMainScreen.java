@@ -26,7 +26,6 @@ import java.util.Objects;
  * This class extends {@link AppCompatActivity}
  */
 public class RecipesMainScreen extends AppCompatActivity implements
-        RecipeRecyclerViewAdapter.RecipeArrayListener,
         RecyclerViewInterface,
         TopBar.TopBarListener {
 
@@ -40,10 +39,12 @@ public class RecipesMainScreen extends AppCompatActivity implements
             deleteRecipe(recipeToDelete);
         }
     });
+
     /**
      * Allows us to sort by a selected field name and refresh the data in the view
      */
     private Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort;
+
     private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
@@ -74,17 +75,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
             Recipe received_recipe = (Recipe) intent.getSerializableExtra("EDITED_RECIPE");
             editRecipe(received_recipe);
         }
-
-    }
-
-    @Override
-    public void onEdit(Recipe object) {
-
-    }
-
-    @Override
-    public void onDelete(Recipe object) {
-
     }
 
 

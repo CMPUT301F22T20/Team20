@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="4">
@@ -11,16 +9,16 @@
         android:id="@+id/Name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.4"
-        android:padding = "10dp"
+        android:layout_weight="1.5"
+        android:padding="10dp"
         android:text="name" />
 
     <TextView
         android:id="@+id/AmountandUnit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.8"
-        android:padding = "10dp"
+        android:layout_weight="1"
+        android:padding="10dp"
         android:text="amount+unit" />
 
 
@@ -29,7 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding = "10dp"
+        android:padding="10dp"
         android:text="category" />
 
     <Button
@@ -37,10 +35,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
+        android:background="@android:color/transparent"
+        android:focusable="false"
         android:text="X"
-        android:backgroundTint="@android:color/transparent"
-        android:textColor = "@color/negative"
-        android:focusable="false"/>
+        android:textAlignment="viewEnd"
+        android:textColor="@color/secondary_dark" />
 
 
 </LinearLayout>

@@ -28,7 +28,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
     @Override
     public RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipe_ingredient_content, parent, false);
-        return new RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder(view);
+        return new RecipeIngredientHolder(view);
     }
 
     /**
@@ -51,7 +51,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
     /**
      * Represents an {@link Ingredient} in our {@link RecipeIngredientsRecyclerViewAdapter}
      */
-    public class RecipeIngredientHolder extends RecyclerView.ViewHolder {
+    public static class RecipeIngredientHolder extends RecyclerView.ViewHolder {
 
         protected final TextView description = itemView.findViewById(R.id.Name);
         protected final TextView amount = itemView.findViewById(R.id.Amount);
