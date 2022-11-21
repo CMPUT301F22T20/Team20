@@ -1,7 +1,6 @@
 package com.example.foodtracker.ui.recipes;
 
 import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;

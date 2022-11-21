@@ -107,6 +107,10 @@ public class Ingredient extends Document {
         return this.ingredientAmount.getUnit().toString();
     }
 
+    public String getUnitAbbreviation() {
+        return this.ingredientAmount.getUnit().getUnitAbbreviation();
+    }
+
     public void setUnit(String unit) {
         this.ingredientAmount.setUnit(IngredientUnit.valueOf(unit));
     }

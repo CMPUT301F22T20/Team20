@@ -45,7 +45,7 @@ public class CustomList extends ArrayAdapter<Ingredient> {
 
         description.setText(ingredient.getDescription());
         String amount_str = String.valueOf(ingredient.getAmount());
-        String amount_unit = amount_str + ingredient.getUnit();
+        String amount_unit = amount_str + ingredient.getUnitAbbreviation();
         amountUnit.setText(amount_unit);
         category.setText(ingredient.getCategory());
 
