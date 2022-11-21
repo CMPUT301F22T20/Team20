@@ -1,12 +1,9 @@
 package com.example.foodtracker.ui.recipes;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.utils.Collection;
@@ -34,10 +32,15 @@ public class AddIngredient extends DialogFragment {
     private final List<String> categories = new ArrayList<>();
     private EditText description;
     private EditText quantity;
-    private EditText unit;
-    private smallIngredientListener listener;
+
     private Spinner category;
     private ArrayAdapter<String> categoryAdapter;
+
+    private Spinner unit;
+    private ArrayAdapter<String> unitAdapter;
+    private final List<String> ingredientUnits = new ArrayList<>();
+
+    private smallIngredientListener listener;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -56,7 +59,11 @@ public class AddIngredient extends DialogFragment {
         View view = getLayoutInflater().inflate(R.layout.smaller_add_ingredient_dialog, null);
         description = view.findViewById(R.id.ingredientDescription);
         quantity = view.findViewById(R.id.ingredientQuantity);
+
         unit = view.findViewById(R.id.ingredientUnit);
+        unitAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, ingredientUnits);
+        unit.setAdapter(unitAdapter);
+
         category = view.findViewById(R.id.ingredientCategory);
         categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categories);
         category.setAdapter(categoryAdapter);
@@ -69,13 +76,13 @@ public class AddIngredient extends DialogFragment {
             Ingredient ingredientToEdit = (Ingredient) selectedBundle.get("selected_ingredient");
             initializeIngredient(ingredientToEdit);
 
-            getCategories(ingredientToEdit);
+            initializeDropdowns(ingredientToEdit);
             return builder.setView(view).setTitle("Edit ingredient")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
                     .create();
         }
-        getCategories(null);
+        initializeDropdowns(null);
         Ingredient create_ingredient = new Ingredient();
         AlertDialog dialog = builder
                 .setView(view)
@@ -101,22 +108,30 @@ public class AddIngredient extends DialogFragment {
     public void initializeIngredient(Ingredient ingredient) {
         description.setText(ingredient.getDescription());
         quantity.setText(String.valueOf(ingredient.getAmount()));
-        unit.setText(ingredient.getUnit());
     }
 
     /**
-     * Retrieves categories from firestore and populates a string array with the content
+     * Retrieves categories from firestore and populates a string array with the content,
+     * initializes the unit dropdown from {@link com.example.foodtracker.model.IngredientUnit.IngredientUnit} values
      */
-    private void getCategories(@Nullable Ingredient ingredient) {
+    private void initializeDropdowns(@Nullable Ingredient ingredient) {
         categoryCollection.getAll(list -> {
             for (Category category : list) {
-                categories.add(category.getName());
+                categories.add(category.getName().toUpperCase());
                 categoryAdapter.notifyDataSetChanged();
             }
             if (ingredient != null) {
                 category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
             }
         });
+
+        for (IngredientUnit ingredientUnit : IngredientUnit.values()) {
+            ingredientUnits.add(ingredientUnit.name());
+        }
+        unitAdapter.notifyDataSetChanged();
+        if (ingredient != null) {
+            unit.setSelection(unitAdapter.getPosition(ingredient.getUnit()));
+        }
     }
 
     /**
@@ -146,8 +161,11 @@ public class AddIngredient extends DialogFragment {
             valid = false;
         }
 
-        String addUnit = unit.getText().toString();
-        ingredient.setUnit(addUnit);
+        if (unit.getSelectedItem() == null) {
+            valid = false;
+        } else {
+            ingredient.setUnit(unit.getSelectedItem().toString());
+        }
 
         if (category.getSelectedItem() == null) {
             valid = false;

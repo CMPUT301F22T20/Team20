@@ -11,23 +11,16 @@ import java.util.Map;
 
 public class Recipe extends Document implements Serializable {
 
-    public static final String RECIPES_COLLECTION_NAME = "Recipes";
-    private String image; // TODO: figure out if this should be a String or a different data type
+    public static final String RECIPES_COLLECTION_NAME = "Recipes-IAN-TEST-UNITS";
+    private String image = "";
     private String title;
-    private int prepTime;
-    private int servings;
-    private String category;
-    private String comment;
-    private ArrayList<Ingredient> ingredients;
+    private int prepTime = 0;
+    private int servings = 0;
+    private Category category = new Category();
+    private String comment = "";
+    private ArrayList<Ingredient> ingredients = new ArrayList<>();
 
     public Recipe() {
-        image = "";
-        title = "";
-        prepTime = 0;
-        servings = 0;
-        category = "";
-        comment = "";
-        ingredients = new ArrayList<>();
     }
 
     /**
@@ -55,16 +48,6 @@ public class Recipe extends Document implements Serializable {
         return this.getKey().equals(recipe.getKey());
     }
 
-    public Recipe(String image, String title, int prepTime, int servings, String category, String comment, ArrayList<Ingredient> ingredients) {
-        this.image = image;
-        this.title = title;
-        this.prepTime = prepTime;
-        this.servings = servings;
-        this.category = category;
-        this.comment = comment;
-        this.ingredients = ingredients;
-    }
-
 
     @Override
     public String getCollectionName() {
@@ -82,6 +65,62 @@ public class Recipe extends Document implements Serializable {
         data.put(Recipe.FieldName.COMMENT.getName(), this.getComment());
         data.put(FieldName.INGREDIENTS.getName(), this.getIngredients());
         return data;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getPrepTime() {
+        return prepTime;
+    }
+
+    public void setPrepTime(int prepTime) {
+        this.prepTime = prepTime;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
+    public String getCategory() {
+        return category.getName();
+    }
+
+    public void setCategory(String category) {
+        this.category = new Category(category);
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public ArrayList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     /**
@@ -113,61 +152,5 @@ public class Recipe extends Document implements Serializable {
         public boolean sortable() {
             return sortable;
         }
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getPrepTime() {
-        return prepTime;
-    }
-
-    public void setPrepTime(int prepTime) {
-        this.prepTime = prepTime;
-    }
-
-    public int getServings() {
-        return servings;
-    }
-
-    public void setServings(int servings) {
-        this.servings = servings;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public ArrayList<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 }

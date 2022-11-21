@@ -1,13 +1,17 @@
 package com.example.foodtracker.model.IngredientUnit;
 
+import java.io.Serializable;
+
 /**
  * Represents an ingredient quantity
  * i.e. 3 KG, or 500 g
  */
-public class IngredientAmount {
+public class IngredientAmount implements Serializable {
 
     double amount;
     IngredientUnit unit;
+
+    public IngredientAmount() {}
 
     public IngredientAmount(IngredientUnit unit, double amount) {
         this.setUnit(unit);
