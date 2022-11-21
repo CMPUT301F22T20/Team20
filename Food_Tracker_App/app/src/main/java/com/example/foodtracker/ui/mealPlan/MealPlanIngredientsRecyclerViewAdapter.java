@@ -4,21 +4,29 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.ArrayListener;
 import com.example.foodtracker.model.ingredient.Ingredient;
 
 import java.util.ArrayList;
 
-public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanIngredientsRecyclerViewAdapter.MealPlanIngredientHolder> {
+public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanIngredientsRecyclerViewAdapter.MealPlanIngredientHolder>{
     private final ArrayList<Ingredient> ingredientArrayList;
+    private final Context context;
 
-    MealPlanIngredientsRecyclerViewAdapter(ArrayList<Ingredient> ingredientArrayList) {
+    public interface MealPlanIngredientArrayListener extends ArrayListener<Ingredient> {}
+
+
+    MealPlanIngredientsRecyclerViewAdapter(ArrayList<Ingredient> ingredientArrayList, Context context) {
         this.ingredientArrayList = ingredientArrayList;
+        this.context = context;
     }
 
 
@@ -39,12 +47,14 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
         holder.category.setText(String.format("%s", ingredient.getCategory()));
         holder.amount.setText(String.format("Quantity: %s", ingredient.getAmount()));
         holder.unit.setText(ingredient.getUnit());
+
     }
 
     @Override
     public int getItemCount() {
         return ingredientArrayList.size();
     }
+
 
     /**
      * Represents an {@link Ingredient} in our {@link MealPlanIngredientsRecyclerViewAdapter}
@@ -56,8 +66,22 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
         protected final TextView amount = itemView.findViewById(R.id.mealPlanIngredientAmount);
         protected final TextView unit = itemView.findViewById(R.id.mealPlanIngredientUnit);
 
+
+        protected final ImageButton deleteIngredient = itemView.findViewById(R.id.deleteMealPlanIngredient);
+
+
+
         public MealPlanIngredientHolder(View itemView) {
             super(itemView);
+
+            deleteIngredient.setOnClickListener(onClick -> {
+                Ingredient ingredient = ingredientArrayList.get(getAdapterPosition());
+                //ingredientListener.onDelete(ingredient);
+
+                Toast.makeText(context, "Success"+ingredient.getDescription(), Toast.LENGTH_LONG).show();
+            });
+
+
         }
     }
 }

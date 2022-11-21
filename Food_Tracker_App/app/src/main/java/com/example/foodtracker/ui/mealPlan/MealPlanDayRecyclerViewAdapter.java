@@ -67,13 +67,14 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         layoutManager.setInitialPrefetchItemCount(mealPlanDay.getIngredients().size());
         layoutManager2.setInitialPrefetchItemCount(mealPlanDay.getRecipes().size());
 
-        MealPlanIngredientsRecyclerViewAdapter childItemAdapter = new MealPlanIngredientsRecyclerViewAdapter(mealPlanDay.getIngredients());
+        MealPlanIngredientsRecyclerViewAdapter childItemAdapter = new MealPlanIngredientsRecyclerViewAdapter(mealPlanDay.getIngredients(), context);
         holder.mealPlanDayIngredientsList.setLayoutManager(layoutManager2);
         holder.mealPlanDayIngredientsList.setAdapter(childItemAdapter);
 
         MealPlanRecipesRecyclerViewAdapter childItemAdapter2 = new MealPlanRecipesRecyclerViewAdapter(mealPlanDay.getRecipes());
         holder.mealPlanDayRecipesList.setLayoutManager(layoutManager);
         holder.mealPlanDayRecipesList.setAdapter(childItemAdapter2);
+
     }
 
     @Override
@@ -97,7 +98,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
                 MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
                 mealPlanListener.onDelete(mealPlan);
             });
-
+            
         }
     }
 }

@@ -20,6 +20,16 @@
             android:text="@string/recipe_name"
             android:textSize="20sp" />
 
+        <ImageButton
+            android:id="@+id/deleteMealPLanRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/mealPlanRecipeTitle"
+            android:background="@android:color/transparent"
+            cardView:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48" />
+
+
         <TextView
             android:id="@+id/mealPlanRecipeCategory"
             style="@style/ingredientViewText"

@@ -3,6 +3,8 @@ package com.example.foodtracker.ui.mealPlan;
 import static com.example.foodtracker.ui.mealPlan.AddMealPlanDialog.CREATE_MEAL_PLAN_TAG;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,11 +28,14 @@ import java.util.ArrayList;
  * @see <a href=https://www.geeksforgeeks.org/how-to-create-a-nested-recyclerview-in-android</a>
  */
 public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopBarListener,
-        MealPlanDayRecyclerViewAdapter.MealPlanDayArrayListener{
+        MealPlanDayRecyclerViewAdapter.MealPlanDayArrayListener
+{
     private final Collection<MealPlanDay> mealPlanDaysCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
 
+
+    private final ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
 
     public MealPlanMainScreen() {
         super(R.layout.meal_plan_main);
@@ -79,6 +84,8 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         RecyclerView mealPlanRecyclerView = findViewById(R.id.mealPlanDays);
         mealPlanRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mealPlanRecyclerView.setAdapter(adapter);
+
+
     }
 
     private void createNavBar(){
@@ -113,6 +120,19 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     public void onAddClick() {
         new AddMealPlanDialog().show(getSupportFragmentManager(), CREATE_MEAL_PLAN_TAG);
     }
+
+    public void deleteIngredient(int integer){
+
+        ImageButton deleteIngredient = findViewById(R.id.deleteMealPlanIngredient);
+
+        ingredientArrayList.add(new Ingredient("apple", "", "pantry", "snack", 2, ""));
+        int removedIndex = integer;
+        deleteIngredient.setOnClickListener(onClick -> {
+            Toast.makeText(getApplicationContext(), "Success!"+integer, Toast.LENGTH_LONG).show();
+        });
+
+    };
+
 
 
 }
