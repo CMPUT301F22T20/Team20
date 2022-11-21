@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,20 +34,28 @@ public class CustomList extends ArrayAdapter<Ingredient> {
 
         View view = convertView;
         if(view == null){
-            view = LayoutInflater.from(context).inflate(R.layout.recipe_ingredient_content, parent,false);
+            view = LayoutInflater.from(context).inflate(R.layout.recipe_ingredient_content_edit, parent,false);
         }
         Ingredient ingredient = ingredients.get(position);
 
         TextView description = view.findViewById(R.id.Name);
-        TextView amount = view.findViewById(R.id.Amount);
-        TextView unit = view.findViewById(R.id.Unit);
+        TextView amountUnit = view.findViewById(R.id.AmountandUnit);
         TextView category = view.findViewById(R.id.Category);
+        Button deleteButton = view.findViewById(R.id.delete_Button);
 
         description.setText(ingredient.getDescription());
         String amount_str = String.valueOf(ingredient.getAmount());
-        amount.setText(amount_str);
-        unit.setText(ingredient.getUnit());
+        String amount_unit = amount_str + ingredient.getUnit();
+        amountUnit.setText(amount_unit);
         category.setText(ingredient.getCategory());
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ingredients.remove(position);
+                notifyDataSetChanged();
+            }
+        });
         return view;
 
     }
