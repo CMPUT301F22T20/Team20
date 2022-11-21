@@ -38,4 +38,13 @@
     <string name="add_recipe_image_description">add_recipe_image</string>
     <string name="recipe_image_description">Recipe image</string>
     <string name="pick_recipe_category">Pick recipe category</string>
+    <string name="title_activity_edit_recipe">EditRecipeActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

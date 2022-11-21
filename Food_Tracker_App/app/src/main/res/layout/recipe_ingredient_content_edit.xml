@@ -16,20 +16,13 @@
         android:text="name" />
 
     <TextView
-        android:id="@+id/Amount"
+        android:id="@+id/AmountandUnit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
         android:padding = "10dp"
-        android:text="amount" />
+        android:text="amount+unit" />
 
-    <TextView
-        android:id="@+id/Unit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.8"
-        android:padding = "10dp"
-        android:text="unit" />
 
     <TextView
         android:id="@+id/Category"
@@ -38,6 +31,16 @@
         android:layout_weight="1"
         android:padding = "10dp"
         android:text="category" />
+
+    <Button
+        android:id="@+id/delete_Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:text="X"
+        android:backgroundTint="@android:color/transparent"
+        android:textColor = "@color/negative"
+        android:focusable="false"/>
 
 
 </LinearLayout>

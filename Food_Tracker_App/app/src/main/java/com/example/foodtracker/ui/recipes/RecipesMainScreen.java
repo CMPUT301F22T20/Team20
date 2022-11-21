@@ -2,14 +2,14 @@ package com.example.foodtracker.ui.recipes;
 
 import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
@@ -20,6 +20,7 @@ import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class creates an object that is used to represent the main screen for the Recipes
@@ -71,8 +72,8 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
         Intent intent = getIntent();
         if (getIntent().getExtras() != null) {
-            Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
-            addRecipe(received_recipe);
+            Recipe received_recipe = (Recipe) intent.getSerializableExtra("EDITED_RECIPE");
+            editRecipe(received_recipe);
         }
 
     }
@@ -100,6 +101,11 @@ public class RecipesMainScreen extends AppCompatActivity implements
         Recipe recipe = recipeArrayList.get(position);
         intent.putExtra("RECIPE", recipe);
         recipeDisplayResultLauncher.launch(intent);
+    }
+
+    public void editRecipe(Recipe recipe) {
+        int editIndex = recipeArrayList.indexOf(recipe);
+        recipesCollection.updateDocument(recipe, () -> adapter.notifyItemChanged(editIndex));
     }
 
     public void deleteRecipe(Recipe recipe) {

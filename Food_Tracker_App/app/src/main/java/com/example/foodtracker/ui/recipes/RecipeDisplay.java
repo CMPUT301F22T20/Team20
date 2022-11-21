@@ -2,10 +2,13 @@ package com.example.foodtracker.ui.recipes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +23,14 @@ import java.util.Locale;
 
 public class RecipeDisplay extends AppCompatActivity {
 
+    private final ActivityResultLauncher<Intent> editRecipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+        if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
+            Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra("EDIT_RECIPE");
+            Intent intent = new Intent(getApplicationContext(), RecipesMainScreen.class);
+            intent.putExtra("EDITED_RECIPE", receivedRecipe);
+            startActivity(intent);
+        }
+    });
     private Recipe recipe;
 
     @Override
@@ -56,10 +67,14 @@ public class RecipeDisplay extends AppCompatActivity {
             createTopBar();
         }
 
-        editRecipeButton.setOnClickListener(v -> {
-//                Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
-//                intent.putExtra("EDIT_RECIPE", recipe);
-//                startActivity(intent);
+
+        editRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                intent.putExtra("EDIT_RECIPE", recipe);
+                editRecipeActivityResultLauncher.launch(intent);
+            }
         });
 
         deleteRecipeButton.setOnClickListener(v -> {
