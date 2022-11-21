@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodtracker.R;
@@ -42,16 +43,15 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     private EditText commentsField;
     private ImageView recipeImage;
     private Bitmap bitmap;
-
     private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-        recipeImage.setImageURI(uri);
         try {
             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            recipeImage.setImageBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
     });
-
+    private ListView ingredientsListField;
     private ArrayAdapter<Ingredient> adapter;
     private ArrayList<Ingredient> ingredientList;
 
@@ -66,34 +66,74 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         categoryField = findViewById(R.id.recipeCategory);
         categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
         categoryField.setAdapter(categoryAdapter);
-        getCategories();
+        getCategories(null);
         commentsField = findViewById(R.id.recipeComments);
         Button addIngredientButton = findViewById(R.id.addIngredient);
         Button confirmButton = findViewById(R.id.recipes_confirm);
         Button cancelButton = findViewById(R.id.recipes_cancel);
 
-        ListView ingredientsListField = findViewById(R.id.ingredients);
-        ingredientList = new ArrayList<>();
-        adapter = new CustomList(this, ingredientList);
-        ingredientsListField.setAdapter(adapter);
+        ingredientsListField = findViewById(R.id.ingredients);
+        ingredientsListField.setOnItemClickListener((adapterView, view, i, l) -> {
+            Ingredient selected_ingredient = (Ingredient) ingredientsListField.getItemAtPosition(i);
+            Bundle args = new Bundle();
+            args.putSerializable("selected_ingredient", selected_ingredient);
+            AddIngredient editFrag = new AddIngredient();
+            editFrag.setArguments(args);
+            editFrag.show(getSupportFragmentManager(), "EDIT_INGREDIENT_IN_RECIPE");
+        });
+
         addIngredientButton.setOnClickListener(view -> new AddIngredient().show(getSupportFragmentManager(), "Add_ingredient"));
         ImageButton addRecipeImageButton = findViewById(R.id.recipe_image_button);
         recipeImage = findViewById(R.id.recipe_image);
         addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
 
-        confirmButton.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.putExtra(RECIPE_KEY, createRecipe());
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        if (getIntent().getExtras() != null) {
+            Recipe edit_recipe = (Recipe) getIntent().getSerializableExtra("EDIT_RECIPE");
+            getCategories(edit_recipe);
+            initializeEditRecipe(edit_recipe);
+
+            confirmButton.setOnClickListener(view -> {
+                Intent intent = new Intent();
+                boolean valid = setRecipeFields(edit_recipe);
+
+                if (valid) {
+                    intent.putExtra("EDIT_RECIPE", edit_recipe);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
+            });
+        } else {
+            ingredientList = new ArrayList<>();
+            adapter = new CustomList(this, ingredientList);
+            ingredientsListField.setAdapter(adapter);
+
+            confirmButton.setOnClickListener(view -> {
+                Intent intent = new Intent();
+                Recipe recipe = new Recipe();
+                getCategories(null);
+                boolean valid = setRecipeFields(recipe);
+                if (valid) {
+                    intent.putExtra(RECIPE_KEY, recipe);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
+            });
+        }
 
         cancelButton.setOnClickListener(view -> finish());
+
     }
 
     @Override
     public void addRecipeIngredient(Ingredient new_ingredient) {
         adapter.add(new_ingredient);
+    }
+
+    @Override
+    public void editRecipeIngredient(Ingredient edit_ingredient) {
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -104,13 +144,33 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     }
 
     /**
+     * Populates the dialog fields from a {@link Recipe} instance
+     *
+     * @param recipe to initialize form with
+     */
+    public void initializeEditRecipe(Recipe recipe) {
+        setImage(recipe);
+        titleField.setText(recipe.getTitle());
+        timeField.setText(String.valueOf(recipe.getPrepTime()));
+        servingsField.setText(String.valueOf(recipe.getServings()));
+        commentsField.setText(recipe.getComment());
+
+        ingredientList = recipe.getIngredients();
+        adapter = new CustomList(this, ingredientList);
+        ingredientsListField.setAdapter(adapter);
+    }
+
+    /**
      * Retrieves categories from firestore and populates a string array with the content
      */
-    private void getCategories() {
+    private void getCategories(@Nullable Recipe recipe) {
         categoryCollection.getAll(list -> {
             for (Category category : list) {
                 categories.add(category.getName());
                 categoryAdapter.notifyDataSetChanged();
+            }
+            if (recipe != null) {
+                categoryField.setSelection(categoryAdapter.getPosition(recipe.getCategory()));
             }
         });
     }
@@ -119,8 +179,20 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         imageGalleryResultHandler.launch("image/*");
     }
 
-    private Recipe createRecipe() {
+    /**
+     * Setting the details of a recipe.
+     * Return true if the title is not empty; otherwise, return false;
+     */
+    private boolean setRecipeFields(Recipe recipe) {
+        boolean valid = true;
+
         String title = titleField.getText().toString();
+        recipe.setTitle(title);
+        if (title.isEmpty()) {
+            titleField.setError("Title must not be empty");
+            valid = false;
+        }
+
         String time = timeField.getText().toString();
         int timeMin = 0;
         try {
@@ -137,8 +209,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         }
         String category = categoryField.getSelectedItem().toString();
         String comments = commentsField.getText().toString();
-        Recipe recipe = new Recipe();
-        recipe.setTitle(title);
+
         recipe.setPrepTime(timeMin);
         recipe.setServings(servingsInt);
         recipe.setCategory(category);
@@ -147,6 +218,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         if (bitmap != null) {
             recipe.setImage(BitmapUtil.toString(bitmap));
         }
-        return recipe;
+        return valid;
     }
 }

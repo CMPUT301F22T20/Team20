@@ -1,5 +1,10 @@
 package com.example.foodtracker.ui.recipes;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -10,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +32,15 @@ import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.BitmapUtil;
 
 public class RecipeDisplay extends AppCompatActivity {
+
+    private final ActivityResultLauncher<Intent> editRecipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+        if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
+            Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra("EDIT_RECIPE");
+            Intent intent = new Intent(getApplicationContext(), RecipesMainScreen.class);
+            intent.putExtra("EDITED_RECIPE", receivedRecipe);
+            startActivity(intent);
+        }
+    });
 
     private TextView recipeTitle;
     private TextView recipePrepTime;
@@ -81,12 +96,13 @@ public class RecipeDisplay extends AppCompatActivity {
             createTopBar();
         }
 
+
         editRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
-//                intent.putExtra("EDIT_RECIPE", recipe);
-//                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+                intent.putExtra("EDIT_RECIPE", recipe);
+                editRecipeActivityResultLauncher.launch(intent);
             }
         });
 
