@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    cardView:cardBackgroundColor="@color/background_light"
+    cardView:cardCornerRadius="20dp"
+    cardView:contentPadding="16dp">
+
+    <RelativeLayout
+        android:id="@+id/shopping_item_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/shopping_item_name"
+            style="@style/ingredientViewText"
+            android:text="Name"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/shopping_item_count"
+            style="@style/ingredientViewText"
+            android:layout_toLeftOf="@+id/shopping_item_x"
+            android:text="Count"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/shopping_item_x"
+            style="@style/ingredientViewText"
+            android:layout_toLeftOf="@+id/shopping_item_unit"
+            android:text="  x   "
+            android:textSize="20sp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/shopping_item_unit"
+            style="@style/ingredientViewText"
+            android:layout_toLeftOf="@+id/checkBox_shopping"
+            android:text="Unit"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"/>
+
+        <CheckBox
+            android:id="@+id/checkBox_shopping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+             />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

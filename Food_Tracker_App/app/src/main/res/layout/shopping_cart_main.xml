@@ -7,6 +7,36 @@
     tools:context=".ui.shoppingCart.ShoppingCartMainScreen">
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/topBarContainerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/sort_spinner_shopping"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/top_bar" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/sort_spinner_shopping"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:popupBackground="@color/background_light"
+        app:layout_constraintBottom_toTopOf="@+id/shoppinglist_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topBarContainerView"
+        tools:layout="@layout/sort"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/shoppinglist_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/shopping_cart_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sort_spinner_shopping" />
+
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/shopping_cart_nav_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
