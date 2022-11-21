@@ -3,7 +3,6 @@ package com.example.foodtracker.ui.mealPlan;
 import static com.example.foodtracker.ui.mealPlan.AddMealPlanDialog.CREATE_MEAL_PLAN_TAG;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
-import com.example.foodtracker.ui.recipes.RecipeRecyclerViewAdapter;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
@@ -27,7 +25,8 @@ import java.util.ArrayList;
  * @version 1.0
  * @see <a href=https://www.geeksforgeeks.org/how-to-create-a-nested-recyclerview-in-android</a>
  */
-public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopBarListener {
+public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopBarListener,
+        MealPlanDayRecyclerViewAdapter.MealPlanDayArrayListener{
     private final Collection<MealPlanDay> mealPlanDaysCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
@@ -94,7 +93,21 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.topBarContainerView, topBar).commit();
 
     }
+    private void removeMealPlan(MealPlanDay mealPlanDay) {
+        int removedIndex = mealPlanDayArrayList.indexOf(mealPlanDay);
+        mealPlanDayArrayList.remove(removedIndex);
+        mealPlanDaysCollection.delete(mealPlanDay, () ->
+        adapter.notifyItemRemoved(removedIndex));
+    }
 
+    @Override
+    public void onEdit(MealPlanDay object) {
+
+    }
+
+    public void onDelete(MealPlanDay mealPlanDay) {
+        removeMealPlan(mealPlanDay);
+    }
 
     @Override
     public void onAddClick() {

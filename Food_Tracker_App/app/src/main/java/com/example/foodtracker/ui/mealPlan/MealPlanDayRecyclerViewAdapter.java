@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.ArrayListener;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 
 import java.util.ArrayList;
@@ -21,13 +23,19 @@ import java.util.ArrayList;
  *
  * @see <a href=https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example">Stack Overflow</a>
  */
-public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanDayRecyclerViewAdapter.MealPlanDayHolder> {
+public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanDayRecyclerViewAdapter.MealPlanDayHolder>{
+
+    public interface MealPlanDayArrayListener extends ArrayListener<MealPlanDay> {}
+
     private final ArrayList<MealPlanDay> mealPlanDayArrayList;
     private final Context context;
+    private final MealPlanDayArrayListener mealPlanListener;
+
 
     MealPlanDayRecyclerViewAdapter(Context context, ArrayList<MealPlanDay> mealPlanDayArrayList) {
         this.context = context;
         this.mealPlanDayArrayList = mealPlanDayArrayList;
+        mealPlanListener= (MealPlanDayArrayListener) context;
     }
 
 
@@ -81,9 +89,15 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         protected final TextView day = itemView.findViewById(R.id.mealPlanDay);
         protected RecyclerView mealPlanDayIngredientsList = itemView.findViewById(R.id.mealPlanIngredientsList);
         protected RecyclerView mealPlanDayRecipesList = itemView.findViewById(R.id.mealPlanRecipesList);
+        protected ImageButton mealPlanDayDelete = itemView.findViewById(R.id.mealPlanDeleteDayButton);
 
         public MealPlanDayHolder(View itemView) {
             super(itemView);
+            mealPlanDayDelete.setOnClickListener(onClick -> {
+                MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
+                mealPlanListener.onDelete(mealPlan);
+            });
+
         }
     }
 }
