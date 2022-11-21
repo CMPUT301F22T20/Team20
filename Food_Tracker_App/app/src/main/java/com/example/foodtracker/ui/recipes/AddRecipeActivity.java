@@ -1,13 +1,9 @@
 package com.example.foodtracker.ui.recipes;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
+import android.provider.MediaStore;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,11 +21,12 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.Category;
 import com.example.foodtracker.model.recipe.Recipe;
+import com.example.foodtracker.utils.BitmapUtil;
 import com.example.foodtracker.utils.Collection;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class AddRecipeActivity extends AppCompatActivity implements AddIngredient.smallIngredientListener {
 
@@ -45,13 +42,16 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     private EditText servingsField;
     private EditText commentsField;
     private ImageView recipeImage;
-    private Uri imageURI;
-    private  ListView ingredientsListField;
+    private Bitmap bitmap;
     private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-        recipeImage.setImageURI(uri);
-        imageURI = uri;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            recipeImage.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     });
-
+    private ListView ingredientsListField;
     private ArrayAdapter<Ingredient> adapter;
     private ArrayList<Ingredient> ingredientList;
 
@@ -73,40 +73,28 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         Button cancelButton = findViewById(R.id.recipes_cancel);
 
         ingredientsListField = findViewById(R.id.ingredients);
-        ingredientsListField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Ingredient selected_ingredient = (Ingredient) ingredientsListField.getItemAtPosition(i);
-                Bundle args = new Bundle();
-                args.putSerializable("selected_ingredient", selected_ingredient);
-                AddIngredient editFrag = new AddIngredient();
-                editFrag.setArguments(args);
-                editFrag.show(getSupportFragmentManager(), "EDIT_INGREDIENT_IN_RECIPE");
-            }
+        ingredientsListField.setOnItemClickListener((adapterView, view, i, l) -> {
+            Ingredient selected_ingredient = (Ingredient) ingredientsListField.getItemAtPosition(i);
+            Bundle args = new Bundle();
+            args.putSerializable("selected_ingredient", selected_ingredient);
+            AddIngredient editFrag = new AddIngredient();
+            editFrag.setArguments(args);
+            editFrag.show(getSupportFragmentManager(), "EDIT_INGREDIENT_IN_RECIPE");
         });
 
-//        ingredientList = new ArrayList<>();
-//        adapter = new CustomList(this, ingredientList);
-//        ingredientsListField.setAdapter(adapter);
         addIngredientButton.setOnClickListener(view -> new AddIngredient().show(getSupportFragmentManager(), "Add_ingredient"));
-
         ImageButton addRecipeImageButton = findViewById(R.id.recipe_image_button);
         recipeImage = findViewById(R.id.recipe_image);
         addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
 
-        /*
-        Edit a recipe
-         */
         if (getIntent().getExtras() != null) {
-            //Receive the Recipe object from RecipesMainScreen
-            Intent intent1 = getIntent();
-            Recipe edit_recipe = (Recipe) intent1.getSerializableExtra("EDIT_RECIPE");
+            Recipe edit_recipe = (Recipe) getIntent().getSerializableExtra("EDIT_RECIPE");
             getCategories(edit_recipe);
             initializeEditRecipe(edit_recipe);
 
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
-                Boolean valid = setRecipeFields(edit_recipe);
+                boolean valid = setRecipeFields(edit_recipe);
 
                 if (valid) {
                     intent.putExtra("EDIT_RECIPE", edit_recipe);
@@ -115,12 +103,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
                 }
 
             });
-        }
-
-        /*
-        Add a recipe
-         */
-        else {
+        } else {
             ingredientList = new ArrayList<>();
             adapter = new CustomList(this, ingredientList);
             ingredientsListField.setAdapter(adapter);
@@ -129,7 +112,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
                 Intent intent = new Intent();
                 Recipe recipe = new Recipe();
                 getCategories(null);
-                Boolean valid = setRecipeFields(recipe);
+                boolean valid = setRecipeFields(recipe);
                 if (valid) {
                     intent.putExtra(RECIPE_KEY, recipe);
                     setResult(RESULT_OK, intent);
@@ -153,15 +136,10 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         adapter.notifyDataSetChanged();
     }
 
-    /**
-     * Populates the dialog fields from a {@link Recipe} instance
-     *
-     * @param recipe to initialize form with
-     */
-    public void initializeRecipe(Recipe recipe) {
+
+    public void setImage(Recipe recipe) {
         if (!recipe.getImage().isEmpty()) {
-            imageURI = Uri.parse(recipe.getImage());
-            recipeImage.setImageURI(imageURI);
+            recipeImage.setImageBitmap(BitmapUtil.fromString(recipe.getImage()));
         }
     }
 
@@ -171,11 +149,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
      * @param recipe to initialize form with
      */
     public void initializeEditRecipe(Recipe recipe) {
-        if (!recipe.getImage().isEmpty()) {
-            imageURI = Uri.parse(recipe.getImage());
-            recipeImage.setImageURI(imageURI);
-        }
-
+        setImage(recipe);
         titleField.setText(recipe.getTitle());
         timeField.setText(String.valueOf(recipe.getPrepTime()));
         servingsField.setText(String.valueOf(recipe.getServings()));
@@ -191,7 +165,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
      */
     private void getCategories(@Nullable Recipe recipe) {
         categoryCollection.getAll(list -> {
-            for (com.example.foodtracker.model.recipe.Category category : list) {
+            for (Category category : list) {
                 categories.add(category.getName());
                 categoryAdapter.notifyDataSetChanged();
             }
@@ -208,11 +182,9 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
     /**
      * Setting the details of a recipe.
      * Return true if the title is not empty; otherwise, return false;
-     * @return {@link Boolean} valid
      */
-    private Boolean setRecipeFields(Recipe recipe) {
-
-        Boolean valid = true;
+    private boolean setRecipeFields(Recipe recipe) {
+        boolean valid = true;
 
         String title = titleField.getText().toString();
         recipe.setTitle(title);
@@ -243,8 +215,8 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         recipe.setCategory(category);
         recipe.setComment(comments);
         recipe.setIngredients(ingredientList);
-        if (imageURI != null) {
-            recipe.setImage(imageURI.toString());
+        if (bitmap != null) {
+            recipe.setImage(BitmapUtil.toString(bitmap));
         }
         return valid;
     }
