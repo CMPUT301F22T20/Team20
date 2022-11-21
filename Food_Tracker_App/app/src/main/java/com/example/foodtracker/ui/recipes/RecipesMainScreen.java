@@ -27,7 +27,6 @@ import java.util.Objects;
  * This class extends {@link AppCompatActivity}
  */
 public class RecipesMainScreen extends AppCompatActivity implements
-        RecipeRecyclerViewAdapter.RecipeArrayListener,
         RecyclerViewInterface,
         TopBar.TopBarListener {
 
@@ -77,17 +76,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
             Recipe received_recipe = (Recipe) intent.getSerializableExtra("EDITED_RECIPE");
             editRecipe(received_recipe);
         }
-
-    }
-
-    @Override
-    public void onEdit(Recipe object) {
-
-    }
-
-    @Override
-    public void onDelete(Recipe object) {
-
     }
 
 

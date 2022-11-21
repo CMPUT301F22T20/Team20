@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public class CustomList extends ArrayAdapter<Ingredient> {
 
-    private ArrayList<Ingredient> ingredients;
-    private Context context;
+    private final ArrayList<Ingredient> ingredients;
+    private final Context context;
 
     public CustomList(Context context, ArrayList<Ingredient> ingredients){
         super(context,0, ingredients);
@@ -30,8 +30,6 @@ public class CustomList extends ArrayAdapter<Ingredient> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //return super.getView(position, convertView, parent);
-
         View view = convertView;
         if(view == null){
             view = LayoutInflater.from(context).inflate(R.layout.recipe_ingredient_content_edit, parent,false);
@@ -44,17 +42,13 @@ public class CustomList extends ArrayAdapter<Ingredient> {
         Button deleteButton = view.findViewById(R.id.delete_Button);
 
         description.setText(ingredient.getDescription());
-        String amount_str = String.valueOf(ingredient.getAmount());
-        String amount_unit = amount_str + ingredient.getUnit();
-        amountUnit.setText(amount_unit);
+        String amountAndUnit = ingredient.getAmount() + " x " + ingredient.getUnit();
+        amountUnit.setText(amountAndUnit);
         category.setText(ingredient.getCategory());
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredients.remove(position);
-                notifyDataSetChanged();
-            }
+        deleteButton.setOnClickListener(v -> {
+            ingredients.remove(position);
+            notifyDataSetChanged();
         });
         return view;
 
