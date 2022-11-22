@@ -31,7 +31,8 @@ import java.util.ArrayList;
 public class MealPlanMainScreen extends AppCompatActivity implements
         TopBar.TopBarListener,
         MealPlanDayRecyclerViewAdapter.MealPlanArrayListener,
-        AddIngredientMPDialog.MealPlanDialogListener{
+        AddIngredientMPDialog.MealPlanDialogListener,
+        AddRecipeMPDialog.MealPlanRecipeDialogListener {
     private final Collection<MealPlanDay> mealPlanDaysCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
@@ -117,8 +118,24 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     }
 
     @Override
+    public void onAddRecipeClick(MealPlanDay mealPlan) {
+        Bundle args = new Bundle();
+        args.putSerializable("meal_plan_add_recipe", mealPlan);
+
+        AddRecipeMPDialog addRecipeMPDialog = new AddRecipeMPDialog();
+        addRecipeMPDialog.setArguments(args);
+        addRecipeMPDialog.show(getSupportFragmentManager(), "ADD_MEAL_PLAN_RECIPE");
+    }
+
+    @Override
     public void onIngredientAdd(MealPlanDay meal_plan_add_ingredient) {
         int editIndex = mealPlanDayArrayList.indexOf(meal_plan_add_ingredient);
         mealPlanDaysCollection.updateDocument(meal_plan_add_ingredient, () -> adapter.notifyItemChanged(editIndex));
+    }
+
+    @Override
+    public void onRecipeAdd(MealPlanDay meal_plan_add_recipe) {
+        int editIndex = mealPlanDayArrayList.indexOf(meal_plan_add_recipe);
+        mealPlanDaysCollection.updateDocument(meal_plan_add_recipe, () -> adapter.notifyItemChanged(editIndex));
     }
 }

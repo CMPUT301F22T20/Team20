@@ -29,6 +29,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
 
     public interface MealPlanArrayListener {
         void onAddIngredientClick(MealPlanDay mealPlan);
+        void onAddRecipeClick(MealPlanDay mealPlan);
     }
 
     MealPlanDayRecyclerViewAdapter(Context context, ArrayList<MealPlanDay> mealPlanDayArrayList) {
@@ -100,6 +101,14 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
                 public void onClick(View view) {
                     MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
                     mealPlanArrayListener.onAddIngredientClick(mealPlan);
+                }
+            });
+
+            mealPlanAddRecipeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
+                    mealPlanArrayListener.onAddRecipeClick(mealPlan);
                 }
             });
 
