@@ -27,68 +27,186 @@
             android:contentDescription="@string/add_recipe_image_description"
             android:src="@drawable/ic_baseline_camera_alt_24" />
 
-        <EditText
-            android:id="@+id/recipeTitle"
-            style="@style/inputField"
-            android:hint="Title"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/recipePrepTime"
-            style="@style/inputField"
-            android:hint="Preparation time (mins)"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/recipeServings"
-            style="@style/inputField"
-            android:hint="Servings"
-            android:inputType="number" />
-
-        <Spinner
-            android:id="@+id/recipeCategory"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="16dp"
-            android:hint="@string/pick_recipe_category" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_weight="1"
+                android:text="@string/title"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/recipe_title"
+                style="@style/inputField"
+                android:hint="@string/title"
+                android:inputType="text" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="16dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="Ingredients:" />
+                android:text="@string/preparation_time_minutes_descriptor"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/recipe_prep_time"
+                style="@style/inputField"
+                android:hint="@string/preparation_time_minutes_descriptor"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_weight="1"
+                android:text="@string/servings"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/recipe_servings"
+                style="@style/inputField"
+                android:hint="@string/servings"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/background_dark"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/primary_dark"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/category"
+                android:textColor="@color/background_light" />
+
+            <Spinner
+                android:id="@+id/recipe_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pick_recipe_category" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                style="@style/textHeader2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ingredients" />
 
             <Button
                 android:id="@+id/addIngredient"
                 style="@style/textButton"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:gravity="end"
                 android:text="@string/add_icon"
                 android:textAlignment="viewEnd"
-                android:textSize="30sp" />
+                android:textColor="@color/primary_dark"
+                android:textSize="30sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/ingredients"
+
+        <LinearLayout
+            android:id="@+id/ingredientHeaders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primary_dark"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="16dp"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/recipeDisplayDescriptionHeader"
+                style="@style/textBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:text="@string/description"
+                android:textColor="@color/background_light"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/recipeDisplayAmountHeader"
+                style="@style/textBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.15"
+                android:text="@string/amount_abbreviation"
+                android:textColor="@color/background_light"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/recipeDisplayUnitHeader"
+                style="@style/textBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:text="@string/unit"
+                android:textColor="@color/background_light"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/recipeDisplayCategoryHeader"
+                style="@style/textBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:text="@string/category"
+                android:textColor="@color/background_light"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recipe_ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp" />
+            android:layout_marginHorizontal="16dp"
+            android:background="@color/background_dark"
+            android:paddingHorizontal="8dp" />
 
         <EditText
             android:id="@+id/recipeComments"
             style="@style/inputField"
-            android:hint="Comments"
+            android:hint="@string/comments"
             android:inputType="text" />
 
         <LinearLayout
@@ -101,9 +219,8 @@
                 style="@style/textButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel" />
+                android:text="@string/cancel" />
 
-            <!--Spacer-->
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -114,8 +231,7 @@
                 style="@style/textButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirm" />
-
+                android:text="@string/confirm" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

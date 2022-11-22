@@ -42,13 +42,13 @@
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="16dp"
                 android:layout_weight="1"
-                android:text="@string/ingredient_amount"
+                android:text="@string/amount"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/ingredientQuantity"
                 style="@style/inputField"
-                android:hint="@string/ingredient_amount"
+                android:hint="@string/amount"
                 android:inputType="number" />
         </LinearLayout>
 
@@ -67,7 +67,7 @@
                 android:background="@color/primary_dark"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="@string/unit"
+                android:text="@string/unit_of_measurement"
                 android:textColor="@color/background_light" />
 
             <Spinner
@@ -92,7 +92,7 @@
                 android:background="@color/primary_dark"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="@string/ingredient_location"
+                android:text="@string/location"
                 android:textColor="@color/background_light" />
 
             <Spinner
@@ -117,7 +117,7 @@
                 android:background="@color/primary_dark"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="@string/ingredient_category"
+                android:text="@string/category"
                 android:textColor="@color/background_light" />
 
             <Spinner

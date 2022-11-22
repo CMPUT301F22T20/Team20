@@ -1,6 +1,6 @@
 package com.example.foodtracker.ui.recipes;
 
-import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
+import static com.example.foodtracker.ui.recipes.RecipeDialog.RECIPE_KEY;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +19,6 @@ import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * This class creates an object that is used to represent the main screen for the Recipes
@@ -80,7 +79,7 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
     @Override
     public void onAddClick() {
-        Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RecipeDialog.class);
         recipeActivityResultLauncher.launch(intent);
     }
 

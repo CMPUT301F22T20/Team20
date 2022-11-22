@@ -9,18 +9,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.ArrayListener;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.Category;
 import com.example.foodtracker.model.recipe.Recipe;
+import com.example.foodtracker.ui.ingredients.IngredientRecyclerViewAdapter;
 import com.example.foodtracker.utils.BitmapUtil;
 import com.example.foodtracker.utils.Collection;
 
@@ -28,19 +31,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddRecipeActivity extends AppCompatActivity implements AddIngredient.smallIngredientListener {
+public class RecipeDialog extends AppCompatActivity implements
+        RecipeIngredientDialog.recipeIngredientDialogListener,
+        IngredientRecyclerViewAdapter.IngredientArrayListener {
 
     public static final String RECIPE_KEY = "recipe";
-
     private final Collection<Category> categoryCollection = new Collection<>(Category.class, new Category());
     private final List<String> categories = new ArrayList<>();
-    private ArrayAdapter<String> categoryAdapter;
-    private Spinner categoryField;
-
-    private EditText titleField;
-    private EditText timeField;
-    private EditText servingsField;
-    private EditText commentsField;
     private ImageView recipeImage;
     private Bitmap bitmap;
     private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
@@ -51,8 +48,15 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
             e.printStackTrace();
         }
     });
-    private ListView ingredientsListField;
-    private ArrayAdapter<Ingredient> adapter;
+    private ArrayAdapter<String> categoryAdapter;
+    private Spinner categoryField;
+
+    private EditText titleField;
+    private EditText timeField;
+    private EditText servingsField;
+    private EditText commentsField;
+
+    private RecipeIngredientsRecyclerViewAdapter adapter;
     private ArrayList<Ingredient> ingredientList;
 
     @Override
@@ -60,54 +64,46 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_recipe);
 
-        titleField = findViewById(R.id.recipeTitle);
-        timeField = findViewById(R.id.recipePrepTime);
-        servingsField = findViewById(R.id.recipeServings);
-        categoryField = findViewById(R.id.recipeCategory);
-        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
-        categoryField.setAdapter(categoryAdapter);
+        titleField = findViewById(R.id.recipe_title);
+        timeField = findViewById(R.id.recipe_prep_time);
+        servingsField = findViewById(R.id.recipe_servings);
         getCategories(null);
         commentsField = findViewById(R.id.recipeComments);
-        Button addIngredientButton = findViewById(R.id.addIngredient);
-        Button confirmButton = findViewById(R.id.recipes_confirm);
-        Button cancelButton = findViewById(R.id.recipes_cancel);
 
-        ingredientsListField = findViewById(R.id.ingredients);
-        ingredientsListField.setOnItemClickListener((adapterView, view, i, l) -> {
-            Ingredient selected_ingredient = (Ingredient) ingredientsListField.getItemAtPosition(i);
-            Bundle args = new Bundle();
-            args.putSerializable("selected_ingredient", selected_ingredient);
-            AddIngredient editFrag = new AddIngredient();
-            editFrag.setArguments(args);
-            editFrag.show(getSupportFragmentManager(), "EDIT_INGREDIENT_IN_RECIPE");
-        });
-
-        addIngredientButton.setOnClickListener(view -> new AddIngredient().show(getSupportFragmentManager(), "Add_ingredient"));
         ImageButton addRecipeImageButton = findViewById(R.id.recipe_image_button);
         recipeImage = findViewById(R.id.recipe_image);
         addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
 
+        RecyclerView recipeIngredients = findViewById(R.id.recipe_ingredients);
+        recipeIngredients.setLayoutManager(new LinearLayoutManager(this));
+        ingredientList = new ArrayList<>();
+        adapter = new RecipeIngredientsRecyclerViewAdapter(this, ingredientList, true);
+        recipeIngredients.setAdapter(adapter);
+
+        //        recipeIngredients.setOnItemClickListener((adapterView, view, i, l) -> {
+        //        });
+
+        Button addIngredientButton = findViewById(R.id.addIngredient);
+        addIngredientButton.setOnClickListener(view -> new RecipeIngredientDialog().show(getSupportFragmentManager(), "Add_ingredient"));
+
+        Button confirmButton = findViewById(R.id.recipes_confirm);
         if (getIntent().getExtras() != null) {
-            Recipe edit_recipe = (Recipe) getIntent().getSerializableExtra("EDIT_RECIPE");
-            getCategories(edit_recipe);
-            initializeEditRecipe(edit_recipe);
+            Recipe recipe = (Recipe) getIntent().getSerializableExtra("EDIT_RECIPE");
+            getCategories(recipe);
+            initializeEditRecipe(recipe);
 
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
-                boolean valid = setRecipeFields(edit_recipe);
+                boolean valid = setRecipeFields(recipe);
 
                 if (valid) {
-                    intent.putExtra("EDIT_RECIPE", edit_recipe);
+                    intent.putExtra("EDIT_RECIPE", recipe);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
 
             });
         } else {
-            ingredientList = new ArrayList<>();
-            adapter = new CustomList(this, ingredientList);
-            ingredientsListField.setAdapter(adapter);
-
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 Recipe recipe = new Recipe();
@@ -122,18 +118,20 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
             });
         }
 
+        Button cancelButton = findViewById(R.id.recipes_cancel);
         cancelButton.setOnClickListener(view -> finish());
 
     }
 
     @Override
-    public void addRecipeIngredient(Ingredient new_ingredient) {
-        adapter.add(new_ingredient);
+    public void addRecipeIngredient(Ingredient ingredient) {
+        ingredientList.add(ingredient);
+        adapter.notifyItemChanged(ingredientList.size());
     }
 
     @Override
-    public void editRecipeIngredient(Ingredient edit_ingredient) {
-        adapter.notifyDataSetChanged();
+    public void editRecipeIngredient(Ingredient ingredient) {
+        adapter.notifyItemChanged(ingredientList.indexOf(ingredient));
     }
 
 
@@ -154,19 +152,36 @@ public class AddRecipeActivity extends AppCompatActivity implements AddIngredien
         timeField.setText(String.valueOf(recipe.getPrepTime()));
         servingsField.setText(String.valueOf(recipe.getServings()));
         commentsField.setText(recipe.getComment());
+        ingredientList.addAll(recipe.getIngredients());
+        adapter.notifyItemRangeInserted(0, ingredientList.size());
+    }
 
-        ingredientList = recipe.getIngredients();
-        adapter = new CustomList(this, ingredientList);
-        ingredientsListField.setAdapter(adapter);
+    @Override
+    public void onEdit(Ingredient ingredient) {
+        Bundle args = new Bundle();
+        args.putSerializable("selected_ingredient", ingredient);
+        RecipeIngredientDialog ingredientDialog = new RecipeIngredientDialog();
+        ingredientDialog.setArguments(args);
+        ingredientDialog.show(getSupportFragmentManager(), "EDIT_INGREDIENT_IN_RECIPE");
+    }
+
+    @Override
+    public void onDelete(Ingredient object) {
+        int index = ingredientList.indexOf(object);
+        ingredientList.remove(object);
+        adapter.notifyItemRemoved(index);
     }
 
     /**
      * Retrieves categories from firestore and populates a string array with the content
      */
     private void getCategories(@Nullable Recipe recipe) {
+        categoryField = findViewById(R.id.recipe_category);
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
+        categoryField.setAdapter(categoryAdapter);
         categoryCollection.getAll(list -> {
             for (Category category : list) {
-                categories.add(category.getName());
+                categories.add(category.getName().toUpperCase());
                 categoryAdapter.notifyDataSetChanged();
             }
             if (recipe != null) {
