@@ -12,9 +12,8 @@ public class ConversionUtilTest {
     @Test
     public void convertAmount_kgToGram() {
         IngredientAmount ingredientAmountA = new IngredientAmount(IngredientUnit.KILOGRAM, 2);
-        IngredientAmount ingredientAmountB = new IngredientAmount(IngredientUnit.GRAM, 200);
 
-        IngredientAmount converted = ConversionUtil.convertAmount(ingredientAmountA, ingredientAmountB);
+        IngredientAmount converted = ConversionUtil.convertAmount(ingredientAmountA, IngredientUnit.GRAM);
 
         assertEquals(2000.0, converted.getAmount(), 0.1);
         assertEquals(IngredientUnit.GRAM, converted.getUnit());
@@ -23,9 +22,8 @@ public class ConversionUtilTest {
     @Test
     public void convertAmount_gToKg() {
         IngredientAmount ingredientAmountA = new IngredientAmount(IngredientUnit.GRAM, 500);
-        IngredientAmount ingredientAmountB = new IngredientAmount(IngredientUnit.KILOGRAM, 2);
 
-        IngredientAmount converted = ConversionUtil.convertAmount(ingredientAmountA, ingredientAmountB);
+        IngredientAmount converted = ConversionUtil.convertAmount(ingredientAmountA, IngredientUnit.KILOGRAM);
 
         assertEquals(0.5, converted.getAmount(), 0.01);
         assertEquals(IngredientUnit.KILOGRAM, converted.getUnit());
@@ -34,9 +32,8 @@ public class ConversionUtilTest {
     @Test
     public void convertAmount_gramToGram() {
         IngredientAmount ingredientAmountA = new IngredientAmount(IngredientUnit.GRAM, 500);
-        IngredientAmount ingredientAmountB = new IngredientAmount(IngredientUnit.GRAM, 200);
 
-        IngredientAmount converted = ConversionUtil.convertAmount(ingredientAmountA, ingredientAmountB);
+        IngredientAmount converted = ConversionUtil.convertAmount(ingredientAmountA, IngredientUnit.GRAM);
 
         assertEquals(500, converted.getAmount(), 0.01);
         assertEquals(IngredientUnit.GRAM, converted.getUnit());
@@ -45,9 +42,8 @@ public class ConversionUtilTest {
     @Test
     public void convertAmount_gramToPound() {
         IngredientAmount ingredientAmountA = new IngredientAmount(IngredientUnit.GRAM, 500);
-        IngredientAmount ingredientAmountB = new IngredientAmount(IngredientUnit.POUND, 2);
 
-        IngredientAmount converted = ConversionUtil.convertAmount(ingredientAmountA, ingredientAmountB);
+        IngredientAmount converted = ConversionUtil.convertAmount(ingredientAmountA, IngredientUnit.POUND);
 
         assertEquals(1.10231, converted.getAmount(), 0.01);
         assertEquals(IngredientUnit.POUND, converted.getUnit());
@@ -87,5 +83,14 @@ public class ConversionUtilTest {
 
         assertEquals(38.8463, needed.getAmount(), 0.01);
         assertEquals(IngredientUnit.OUNCE, needed.getUnit());
+    }
+
+    @Test
+    public void convertAmount_poundToOunceToMillilitre() {
+        // not super accurate but fun to see
+        IngredientAmount pounds = new IngredientAmount(IngredientUnit.POUND, 150);
+
+        IngredientAmount result = ConversionUtil.convertAmount(ConversionUtil.convertAmount(pounds, IngredientUnit.OUNCE), IngredientUnit.MILLILITRE);
+        assertEquals(70976.472, result.getAmount(), 15);
     }
 }

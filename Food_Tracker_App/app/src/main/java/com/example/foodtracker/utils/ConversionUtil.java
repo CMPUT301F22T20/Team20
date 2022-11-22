@@ -47,10 +47,10 @@ public abstract class ConversionUtil {
         conversionMaps.put(IngredientUnit.TABLESPOON, getRelativeConversionMap(cupConversions, CUPS_TO_TABLESPOON_CONVERSION));
         conversionMaps.put(IngredientUnit.TEASPOON, getRelativeConversionMap(cupConversions, CUPS_TO_TEASPOON_CONVERSION));
 
-        EnumMap<IngredientUnit, Double> cupAndKilogramConversions = new EnumMap<>(IngredientUnit.class);
-        cupAndKilogramConversions.putAll(kilogramConversions);
-        cupAndKilogramConversions.putAll(cupConversions);
-        conversionMaps.put(IngredientUnit.OUNCE, getRelativeConversionMap(cupAndKilogramConversions, KILOGRAM_TO_OUNCE_CONVERSION));
+        EnumMap<IngredientUnit, Double> ounceConversionMap = new EnumMap<>(IngredientUnit.class);
+        ounceConversionMap.putAll(getRelativeConversionMap(kilogramConversions, KILOGRAM_TO_OUNCE_CONVERSION));
+        ounceConversionMap.putAll(getRelativeConversionMap(cupConversions, CUPS_TO_OUNCES_CONVERSION));
+        conversionMaps.put(IngredientUnit.OUNCE, ounceConversionMap);
         return conversionMaps;
     }
 
@@ -90,15 +90,14 @@ public abstract class ConversionUtil {
      * @return a new converted ingredient amount
      * @throws IllegalArgumentException in the case that this conversion is impossible
      */
-    public static IngredientAmount convertAmount(IngredientAmount from, IngredientAmount to) throws IllegalArgumentException {
-        if (CONVERSION_MAP.containsKey(from.getUnit()) && Objects.requireNonNull(CONVERSION_MAP.get(from.getUnit())).containsKey(to.getUnit())) {
-            Double conversionRatio = Objects.requireNonNull(CONVERSION_MAP.get(from.getUnit())).get(to.getUnit());
+    public static IngredientAmount convertAmount(IngredientAmount from, IngredientUnit to) throws IllegalArgumentException {
+        if (CONVERSION_MAP.containsKey(from.getUnit()) && Objects.requireNonNull(CONVERSION_MAP.get(from.getUnit())).containsKey(to)) {
+            Double conversionRatio = Objects.requireNonNull(CONVERSION_MAP.get(from.getUnit())).get(to);
             if (conversionRatio == null) {
                 throw new IllegalArgumentException("Conversion is not possible");
             }
             double conversionAmount = from.getAmount() * conversionRatio;
-            IngredientUnit convertedUnit = to.getUnit();
-            return new IngredientAmount(convertedUnit, conversionAmount);
+            return new IngredientAmount(to, conversionAmount);
         } else {
             throw new IllegalArgumentException("Conversion is not possible");
         }
@@ -113,7 +112,7 @@ public abstract class ConversionUtil {
      * @throws IllegalArgumentException if the conversion between the two amounts is not possible
      */
     public static IngredientAmount getMissingAmount(IngredientAmount owned, IngredientAmount needed) throws IllegalArgumentException {
-        IngredientAmount convertedAmount = convertAmount(owned, needed);
+        IngredientAmount convertedAmount = convertAmount(owned, needed.getUnit());
         convertedAmount.setAmount(Math.max(needed.getAmount() - convertedAmount.getAmount(), 0));
         return convertedAmount;
     }
