@@ -22,6 +22,8 @@ import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.BitmapUtil;
 
+import java.util.Locale;
+
 public class RecipeDisplay extends AppCompatActivity {
 
     private final ActivityResultLauncher<Intent> editRecipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
@@ -72,6 +74,7 @@ public class RecipeDisplay extends AppCompatActivity {
         } else {
             recipeImage.setVisibility(View.GONE);
         }
+
 
         recipeIngredients.setLayoutManager(new LinearLayoutManager(this));
         recipeIngredients.setAdapter(adapter);

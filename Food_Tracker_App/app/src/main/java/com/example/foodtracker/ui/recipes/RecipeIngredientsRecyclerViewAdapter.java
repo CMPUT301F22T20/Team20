@@ -14,27 +14,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.ArrayListener;
 import com.example.foodtracker.model.ingredient.Ingredient;
-import com.example.foodtracker.ui.ingredients.IngredientRecyclerViewAdapter;
+import com.example.foodtracker.model.recipe.SimpleIngredient;
 
 import java.util.ArrayList;
 
 public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder> {
 
-    private final ArrayList<Ingredient> ingredientArrayList;
+    /**
+     * @implNote For safe type casting
+     */
+    public interface RecipeIngredientArrayListener extends ArrayListener<SimpleIngredient> {}
+
+    private final ArrayList<SimpleIngredient> ingredientArrayList;
     private final Context context;
     private final boolean editable;
-    private IngredientRecyclerViewAdapter.IngredientArrayListener recipeIngredientListener;
 
-    RecipeIngredientsRecyclerViewAdapter(Context context, ArrayList<Ingredient> ingredientArrayList) {
+    private RecipeIngredientArrayListener recipeIngredientListener;
+
+    RecipeIngredientsRecyclerViewAdapter(Context context, ArrayList<SimpleIngredient> ingredientArrayList) {
         this(context, ingredientArrayList, false);
     }
 
-    RecipeIngredientsRecyclerViewAdapter(Context context, ArrayList<Ingredient> ingredientArrayList, boolean editable) {
+    RecipeIngredientsRecyclerViewAdapter(Context context, ArrayList<SimpleIngredient> ingredientArrayList, boolean editable) {
         this.context = context;
         this.ingredientArrayList = ingredientArrayList;
         this.editable = editable;
         if (editable) {
-            this.recipeIngredientListener = (IngredientRecyclerViewAdapter.IngredientArrayListener) context;
+            this.recipeIngredientListener = (RecipeIngredientArrayListener) context;
         }
     }
 
@@ -49,11 +55,11 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
      * Populates the view with Recipe Ingredient information
      */
     @Override
-    public void onBindViewHolder(RecipeIngredientHolder ingredientHolder, int position) {
-        Ingredient ingredient = ingredientArrayList.get(position);
+    public void onBindViewHolder(RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder ingredientHolder, int position) {
+        SimpleIngredient ingredient = ingredientArrayList.get(position);
         ingredientHolder.description.setText(ingredient.getDescription());
         ingredientHolder.amount.setText(String.format("%s", ingredient.getAmount()));
-        ingredientHolder.unit.setText(ingredient.getUnitAbbreviation());
+        ingredientHolder.unit.setText(ingredient.getUnit());
         ingredientHolder.category.setText(String.format("%s", ingredient.getCategory()));
     }
 
@@ -82,15 +88,15 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
                 deleteButton.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
                 row.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.8f));
                 row.findViewById(R.id.recipe_ingredient_name).setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.6f));
-                row.findViewById(R.id.recipe_ingredient_amount).setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.8f));
-                row.findViewById(R.id.recipe_ingredient_unit).setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,  0.6f));
-                row.findViewById(R.id.recipe_ingredient_category).setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+                row.findViewById(R.id.recipe_ingredient_amount).setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.6f));
+                row.findViewById(R.id.recipe_ingredient_unit).setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,  0.9f));
+                row.findViewById(R.id.recipe_ingredient_category).setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.9f));
                 deleteButton.setOnClickListener(listener -> {
-                    Ingredient ingredientToDelete = ingredientArrayList.get(getAdapterPosition());
+                    SimpleIngredient ingredientToDelete = ingredientArrayList.get(getAdapterPosition());
                     recipeIngredientListener.onDelete(ingredientToDelete);
                 });
                 row.setOnClickListener(listener -> {
-                    Ingredient ingredientToEdit = ingredientArrayList.get(getAdapterPosition());
+                    SimpleIngredient ingredientToEdit = ingredientArrayList.get(getAdapterPosition());
                     recipeIngredientListener.onEdit(ingredientToEdit);
                 });
             }

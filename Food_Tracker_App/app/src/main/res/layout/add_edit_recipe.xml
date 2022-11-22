@@ -117,7 +117,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp">
 
@@ -142,6 +141,14 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/no_ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/no_ingredients"/>
 
         <LinearLayout
             android:id="@+id/ingredientHeaders"
@@ -152,7 +159,8 @@
             android:layout_marginHorizontal="16dp"
             android:paddingHorizontal="8dp"
             android:paddingVertical="16dp"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/recipeDisplayDescriptionHeader"
@@ -203,11 +211,26 @@
             android:background="@color/background_dark"
             android:paddingHorizontal="8dp" />
 
-        <EditText
-            android:id="@+id/recipeComments"
-            style="@style/inputField"
-            android:hint="@string/comments"
-            android:inputType="text" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_weight="1"
+                android:text="@string/comments"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/recipeComments"
+                style="@style/inputField"
+                android:hint="@string/comments"
+                android:inputType="text" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

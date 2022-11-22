@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
 import com.example.foodtracker.utils.Collection;
@@ -26,27 +25,25 @@ import java.util.List;
 /**
  * This class is the dialog fragment class for adding an ingredient to a recipe
  */
-public class RecipeIngredientDialog extends DialogFragment {
+public class AddSimpleIngredient extends DialogFragment {
 
     private final Collection<Category> categoryCollection = new Collection<>(Category.class, new Category());
     private final List<String> categories = new ArrayList<>();
-    private final List<String> ingredientUnits = new ArrayList<>();
     private EditText description;
     private EditText quantity;
+    private EditText unit;
+    private smallIngredientListener listener;
     private Spinner category;
     private ArrayAdapter<String> categoryAdapter;
-    private Spinner unit;
-    private ArrayAdapter<String> unitAdapter;
-    private recipeIngredientDialogListener listener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        if (context instanceof recipeIngredientDialogListener) {
-            listener = (recipeIngredientDialogListener) context;
+        if (context instanceof smallIngredientListener) {
+            listener = (smallIngredientListener) context;
         } else {
-            throw new RuntimeException("Must implement " + recipeIngredientDialogListener.class.getSimpleName());
+            throw new RuntimeException(context + " must implement smallIngredientListener");
         }
     }
 
@@ -56,21 +53,19 @@ public class RecipeIngredientDialog extends DialogFragment {
         View view = getLayoutInflater().inflate(R.layout.smaller_add_ingredient_dialog, null);
         description = view.findViewById(R.id.ingredientDescription);
         quantity = view.findViewById(R.id.ingredientQuantity);
-
         unit = view.findViewById(R.id.ingredientUnit);
-        unitAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, ingredientUnits);
-        unit.setAdapter(unitAdapter);
-
         category = view.findViewById(R.id.ingredientCategory);
         categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categories);
         category.setAdapter(categoryAdapter);
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
         Bundle arguments = getArguments();
         if (arguments != null) {
-            return createEditRecipeIngredientDialog(view, builder, arguments);
+            return createEditIngredientDialog(view, builder, arguments);
         }
-        return createAddRecipeIngredientDialog(view, builder);
+        return createAddIngredientDialog(view, builder);
     }
 
     /**
@@ -81,21 +76,21 @@ public class RecipeIngredientDialog extends DialogFragment {
     public void initializeIngredient(SimpleIngredient ingredient) {
         description.setText(ingredient.getDescription());
         quantity.setText(String.valueOf(ingredient.getAmount()));
+        unit.setText(ingredient.getUnit());
     }
 
-    private AlertDialog createAddRecipeIngredientDialog(View view, AlertDialog.Builder builder) {
-        initializeDropdowns(null);
+    private AlertDialog createAddIngredientDialog(View view, AlertDialog.Builder builder) {
+        getCategories(null);
+        SimpleIngredient create_ingredient = new SimpleIngredient();
         AlertDialog dialog = builder
                 .setView(view)
                 .setTitle("Add an ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", null).create();
-
         dialog.setOnShowListener(dialogInterface -> {
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            SimpleIngredient ingredient = new SimpleIngredient();
             button.setOnClickListener(v -> {
-                if (addClick(ingredient)) {
+                if (addClick(create_ingredient)) {
                     dialog.dismiss();
                 }
             });
@@ -103,15 +98,15 @@ public class RecipeIngredientDialog extends DialogFragment {
         return dialog;
     }
 
-    private AlertDialog createEditRecipeIngredientDialog(View view, AlertDialog.Builder builder, Bundle arguments) {
+    private AlertDialog createEditIngredientDialog(View view, AlertDialog.Builder builder, Bundle arguments) {
         SimpleIngredient ingredientToEdit = (SimpleIngredient) arguments.get("selected_ingredient");
         initializeIngredient(ingredientToEdit);
-        initializeDropdowns(ingredientToEdit);
+        getCategories(ingredientToEdit);
         AlertDialog dialog = builder
                 .setView(view)
-                .setTitle("Add an ingredient")
+                .setTitle("Edit ingredient")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Add", null).create();
+                .setPositiveButton("Edit", null).create();
         dialog.setOnShowListener(dialogInterface -> {
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(v -> {
@@ -121,37 +116,29 @@ public class RecipeIngredientDialog extends DialogFragment {
             });
         });
         return dialog;
+
     }
 
     /**
-     * Retrieves categories from firestore and populates a string array with the content,
-     * initializes the unit dropdown from {@link com.example.foodtracker.model.IngredientUnit.IngredientUnit} values
+     * Retrieves categories from firestore and populates a string array with the content
      */
-    private void initializeDropdowns(@Nullable SimpleIngredient ingredient) {
+    private void getCategories(@Nullable SimpleIngredient ingredient) {
         categoryCollection.getAll(list -> {
             for (Category category : list) {
-                categories.add(category.getName().toUpperCase());
+                categories.add(category.getName());
                 categoryAdapter.notifyDataSetChanged();
             }
             if (ingredient != null) {
                 category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
             }
         });
-
-        for (IngredientUnit ingredientUnit : IngredientUnit.values()) {
-            ingredientUnits.add(ingredientUnit.name());
-        }
-        unitAdapter.notifyDataSetChanged();
-        if (ingredient != null) {
-            unit.setSelection(unitAdapter.getPosition(ingredient.getUnit()));
-        }
     }
 
     /**
      * Set the fields of an ingredient, returns true if the added ingredient is valid
      * and false otherwise
+     * the ingredient to be added to a recipe
      *
-     * @param ingredient {@link SimpleIngredient} the ingredient to be added to a recipe
      * @return true if the added ingredient is valid, false otherwise
      */
     private boolean setFields(SimpleIngredient ingredient) {
@@ -173,11 +160,8 @@ public class RecipeIngredientDialog extends DialogFragment {
             valid = false;
         }
 
-        if (unit.getSelectedItem() == null) {
-            valid = false;
-        } else {
-            ingredient.setUnit(unit.getSelectedItem().toString());
-        }
+        String addUnit = unit.getText().toString();
+        ingredient.setUnit(addUnit);
 
         if (category.getSelectedItem() == null) {
             valid = false;
@@ -208,7 +192,8 @@ public class RecipeIngredientDialog extends DialogFragment {
      * Edits an ingredient in a recipe, returns true if the added ingredient is valid
      * and false otherwise
      *
-     * @param ingredient {@link SimpleIngredient} the ingredient to be added to a recipe
+     * @param ingredient {@link SimpleIngredient}
+     *                   the ingredient to be added to a recipe
      * @return true if the added ingredient is valid, false otherwise
      */
     private boolean editClick(SimpleIngredient ingredient) {
@@ -221,11 +206,11 @@ public class RecipeIngredientDialog extends DialogFragment {
 
 
     /**
-     * A listener interface which provides callbacks to interact with events occurring in the dialog
+     * A listener interface which provides callbacks to interact with events occuring in the dialog
      */
-    public interface recipeIngredientDialogListener {
-        void addRecipeIngredient(SimpleIngredient ingredient);
+    public interface smallIngredientListener {
+        void addRecipeIngredient(SimpleIngredient new_ingredient);
 
-        void editRecipeIngredient(SimpleIngredient ingredient);
+        void editRecipeIngredient(SimpleIngredient edit_ingredient);
     }
 }

@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -19,11 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.ArrayListener;
-import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.Category;
 import com.example.foodtracker.model.recipe.Recipe;
-import com.example.foodtracker.ui.ingredients.IngredientRecyclerViewAdapter;
+import com.example.foodtracker.model.recipe.SimpleIngredient;
 import com.example.foodtracker.utils.BitmapUtil;
 import com.example.foodtracker.utils.Collection;
 
@@ -33,7 +34,7 @@ import java.util.List;
 
 public class RecipeDialog extends AppCompatActivity implements
         RecipeIngredientDialog.recipeIngredientDialogListener,
-        IngredientRecyclerViewAdapter.IngredientArrayListener {
+        RecipeIngredientsRecyclerViewAdapter.RecipeIngredientArrayListener {
 
     public static final String RECIPE_KEY = "recipe";
     private final Collection<Category> categoryCollection = new Collection<>(Category.class, new Category());
@@ -57,7 +58,7 @@ public class RecipeDialog extends AppCompatActivity implements
     private EditText commentsField;
 
     private RecipeIngredientsRecyclerViewAdapter adapter;
-    private ArrayList<Ingredient> ingredientList;
+    private ArrayList<SimpleIngredient> ingredientList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +81,6 @@ public class RecipeDialog extends AppCompatActivity implements
         adapter = new RecipeIngredientsRecyclerViewAdapter(this, ingredientList, true);
         recipeIngredients.setAdapter(adapter);
 
-        //        recipeIngredients.setOnItemClickListener((adapterView, view, i, l) -> {
-        //        });
-
         Button addIngredientButton = findViewById(R.id.addIngredient);
         addIngredientButton.setOnClickListener(view -> new RecipeIngredientDialog().show(getSupportFragmentManager(), "Add_ingredient"));
 
@@ -91,7 +89,6 @@ public class RecipeDialog extends AppCompatActivity implements
             Recipe recipe = (Recipe) getIntent().getSerializableExtra("EDIT_RECIPE");
             getCategories(recipe);
             initializeEditRecipe(recipe);
-
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 boolean valid = setRecipeFields(recipe);
@@ -124,16 +121,52 @@ public class RecipeDialog extends AppCompatActivity implements
     }
 
     @Override
-    public void addRecipeIngredient(Ingredient ingredient) {
+    public void addRecipeIngredient(SimpleIngredient ingredient) {
         ingredientList.add(ingredient);
         adapter.notifyItemChanged(ingredientList.size());
+        if (ingredientList.size() == 1) {
+            toggleRecipeIngredientsDisplay();
+        }
+    }
+
+    /**
+     * Either shows the header or a no ingredients message
+     */
+    private void toggleRecipeIngredientsDisplay() {
+        TextView noIngredientsMessage = findViewById(R.id.no_ingredients);
+        LinearLayout ingredientHeaders = findViewById(R.id.ingredientHeaders);
+        if (View.VISIBLE == ingredientHeaders.getVisibility()) {
+            noIngredientsMessage.setVisibility(View.VISIBLE);
+            ingredientHeaders.setVisibility(View.GONE);
+        } else {
+            noIngredientsMessage.setVisibility(View.GONE);
+            ingredientHeaders.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
-    public void editRecipeIngredient(Ingredient ingredient) {
+    public void editRecipeIngredient(SimpleIngredient ingredient) {
         adapter.notifyItemChanged(ingredientList.indexOf(ingredient));
     }
 
+    @Override
+    public void onEdit(SimpleIngredient ingredient) {
+        Bundle args = new Bundle();
+        args.putSerializable("selected_ingredient", ingredient);
+        RecipeIngredientDialog ingredientDialog = new RecipeIngredientDialog();
+        ingredientDialog.setArguments(args);
+        ingredientDialog.show(getSupportFragmentManager(), "EDIT_INGREDIENT_IN_RECIPE");
+    }
+
+    @Override
+    public void onDelete(SimpleIngredient ingredient) {
+        int index = ingredientList.indexOf(ingredient);
+        ingredientList.remove(ingredient);
+        adapter.notifyItemRemoved(index);
+        if (ingredientList.isEmpty()) {
+            toggleRecipeIngredientsDisplay();
+        }
+    }
 
     public void setImage(Recipe recipe) {
         if (!recipe.getImage().isEmpty()) {
@@ -152,24 +185,9 @@ public class RecipeDialog extends AppCompatActivity implements
         timeField.setText(String.valueOf(recipe.getPrepTime()));
         servingsField.setText(String.valueOf(recipe.getServings()));
         commentsField.setText(recipe.getComment());
-        ingredientList.addAll(recipe.getIngredients());
-        adapter.notifyItemRangeInserted(0, ingredientList.size());
-    }
-
-    @Override
-    public void onEdit(Ingredient ingredient) {
-        Bundle args = new Bundle();
-        args.putSerializable("selected_ingredient", ingredient);
-        RecipeIngredientDialog ingredientDialog = new RecipeIngredientDialog();
-        ingredientDialog.setArguments(args);
-        ingredientDialog.show(getSupportFragmentManager(), "EDIT_INGREDIENT_IN_RECIPE");
-    }
-
-    @Override
-    public void onDelete(Ingredient object) {
-        int index = ingredientList.indexOf(object);
-        ingredientList.remove(object);
-        adapter.notifyItemRemoved(index);
+        for (SimpleIngredient ingredient : recipe.getIngredients()) {
+            addRecipeIngredient(ingredient);
+        }
     }
 
     /**

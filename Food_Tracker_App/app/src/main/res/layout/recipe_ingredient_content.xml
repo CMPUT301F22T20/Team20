@@ -5,14 +5,13 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="1"
-    tools:ignore="NestedWeights" >
-
+    tools:ignore="NestedWeights">
 
     <LinearLayout
         android:id="@+id/recipe_ingredient_row"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.8"
+        android:layout_weight="1"
         android:paddingVertical="10dp"
         android:weightSum="4">
 
@@ -51,6 +50,7 @@
         android:elevation="1dp"
         android:focusable="false"
         android:text="@string/remove_icon_text"
-        android:textAlignment="viewEnd"
+        android:layout_gravity="center_vertical"
+        android:gravity="end"
         android:textColor="@color/secondary_dark" />
 </LinearLayout>

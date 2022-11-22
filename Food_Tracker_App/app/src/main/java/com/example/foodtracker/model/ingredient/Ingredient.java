@@ -5,6 +5,7 @@ import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.DocumentableFieldName;
 import com.example.foodtracker.model.IngredientUnit.IngredientAmount;
 import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
+import com.example.foodtracker.model.recipe.SimpleIngredient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class Ingredient extends Document {
     /**
      * Represents the collection name in Firebase
      */
-    public static String INGREDIENTS_COLLECTION_NAME = "Ingredients-IAN-TEST-UNITS";
+    public static String INGREDIENTS_COLLECTION_NAME = "Ingredients-V1.0.0";
     /**
      * Represents the amount we have of this ingredient
      */
@@ -45,13 +46,11 @@ public class Ingredient extends Document {
     public Ingredient() {
     }
 
-    public Ingredient(String description, IngredientUnit unit, double amount, String location, String category, String expiry) {
-        this.ingredientAmount.setUnit(unit);
-        this.ingredientAmount.setAmount(amount);
-        setDescription(description);
-        setLocation(location);
-        setCategory(category);
-        setExpiry(expiry);
+    public Ingredient(SimpleIngredient simpleIngredient) {
+        setDescription(simpleIngredient.getDescription());
+        setUnit(simpleIngredient.getUnit());
+        setAmount(simpleIngredient.getAmount());
+        setCategory(simpleIngredient.getCategory());
     }
 
     @Override
@@ -107,12 +106,12 @@ public class Ingredient extends Document {
         return this.ingredientAmount.getUnit().toString();
     }
 
-    public String getUnitAbbreviation() {
-        return this.ingredientAmount.getUnit().getUnitAbbreviation();
-    }
-
     public void setUnit(String unit) {
         this.ingredientAmount.setUnit(IngredientUnit.valueOf(unit));
+    }
+
+    public String getUnitAbbreviation() {
+        return this.ingredientAmount.getUnit().getUnitAbbreviation();
     }
 
     public String getExpiry() {
