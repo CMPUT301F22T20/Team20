@@ -6,13 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.ArrayListener;
 import com.example.foodtracker.model.ingredient.Ingredient;
 
 import java.util.ArrayList;
@@ -21,12 +19,17 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
     private final ArrayList<Ingredient> ingredientArrayList;
     private final Context context;
 
-    public interface MealPlanIngredientArrayListener extends ArrayListener<Ingredient> {}
+    public interface MPIngredientArrayListener{
+        void deleteIngredient(int ingredientPosition);
+    }
+
+   private MPIngredientArrayListener mpIngredientArrayListener;
 
 
-    MealPlanIngredientsRecyclerViewAdapter(ArrayList<Ingredient> ingredientArrayList, Context context) {
+    MealPlanIngredientsRecyclerViewAdapter(ArrayList<Ingredient> ingredientArrayList, Context context,MPIngredientArrayListener mpIngredientArrayListener) {
         this.ingredientArrayList = ingredientArrayList;
         this.context = context;
+        this.mpIngredientArrayListener= mpIngredientArrayListener;
     }
 
 
@@ -76,9 +79,8 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
 
             deleteIngredient.setOnClickListener(onClick -> {
                 Ingredient ingredient = ingredientArrayList.get(getAdapterPosition());
-                //ingredientListener.onDelete(ingredient);
-
-                Toast.makeText(context, "Success"+ingredient.getDescription(), Toast.LENGTH_LONG).show();
+                ingredientArrayList.remove(ingredient);
+                mpIngredientArrayListener.deleteIngredient(getAdapterPosition());
             });
 
 

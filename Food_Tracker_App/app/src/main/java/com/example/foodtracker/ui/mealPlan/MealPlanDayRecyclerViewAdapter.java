@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.ArrayListener;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 
 import java.util.ArrayList;
@@ -25,7 +24,19 @@ import java.util.ArrayList;
  */
 public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanDayRecyclerViewAdapter.MealPlanDayHolder>{
 
-    public interface MealPlanDayArrayListener extends ArrayListener<MealPlanDay> {}
+    public interface MealPlanDayArrayListener{
+        //handles operations with MEAL PLAN
+        void onDelete(MealPlanDay mealPlanDay);
+        void onEdit(MealPlanDay mealPlanDay);
+
+        //handles with Ingredient operations
+        void deleteIngredient(int ingredientPosition,MealPlanDay object);
+
+        //handles Recipe operations
+      //  void deleteRecipe(int recipePosition,MealPlanDay object);
+
+    }
+
 
     private final ArrayList<MealPlanDay> mealPlanDayArrayList;
     private final Context context;
@@ -67,11 +78,11 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         layoutManager.setInitialPrefetchItemCount(mealPlanDay.getIngredients().size());
         layoutManager2.setInitialPrefetchItemCount(mealPlanDay.getRecipes().size());
 
-        MealPlanIngredientsRecyclerViewAdapter childItemAdapter = new MealPlanIngredientsRecyclerViewAdapter(mealPlanDay.getIngredients(), context);
+        MealPlanIngredientsRecyclerViewAdapter childItemAdapter = new MealPlanIngredientsRecyclerViewAdapter(mealPlanDay.getIngredients(), context,holder);
         holder.mealPlanDayIngredientsList.setLayoutManager(layoutManager2);
         holder.mealPlanDayIngredientsList.setAdapter(childItemAdapter);
 
-        MealPlanRecipesRecyclerViewAdapter childItemAdapter2 = new MealPlanRecipesRecyclerViewAdapter(mealPlanDay.getRecipes());
+        MealPlanRecipesRecyclerViewAdapter childItemAdapter2 = new MealPlanRecipesRecyclerViewAdapter(mealPlanDay.getRecipes(),context);
         holder.mealPlanDayRecipesList.setLayoutManager(layoutManager);
         holder.mealPlanDayRecipesList.setAdapter(childItemAdapter2);
 
@@ -85,7 +96,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
     /**
      * Represents an {@link MealPlanDay} in our {@link MealPlanDayRecyclerViewAdapter}
      */
-    public class MealPlanDayHolder extends RecyclerView.ViewHolder {
+    public class MealPlanDayHolder extends RecyclerView.ViewHolder implements MealPlanIngredientsRecyclerViewAdapter.MPIngredientArrayListener {
 
         protected final TextView day = itemView.findViewById(R.id.mealPlanDay);
         protected RecyclerView mealPlanDayIngredientsList = itemView.findViewById(R.id.mealPlanIngredientsList);
@@ -99,6 +110,12 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
                 mealPlanListener.onDelete(mealPlan);
             });
             
+        }
+
+        @Override
+        public void deleteIngredient(int ingredientPosition) {
+            MealPlanDay mealPlanDay = mealPlanDayArrayList.get(getAdapterPosition());
+            mealPlanListener.deleteIngredient(ingredientPosition,mealPlanDay);
         }
     }
 }

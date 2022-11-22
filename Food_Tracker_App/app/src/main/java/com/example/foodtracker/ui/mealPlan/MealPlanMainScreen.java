@@ -3,8 +3,6 @@ package com.example.foodtracker.ui.mealPlan;
 import static com.example.foodtracker.ui.mealPlan.AddMealPlanDialog.CREATE_MEAL_PLAN_TAG;
 
 import android.os.Bundle;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -112,6 +110,11 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
 
     }
 
+    @Override
+    public void deleteIngredient(int ingredientPosition, MealPlanDay mealPlan) {
+         mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
+    }
+
     public void onDelete(MealPlanDay mealPlanDay) {
         removeMealPlan(mealPlanDay);
     }
@@ -120,19 +123,5 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     public void onAddClick() {
         new AddMealPlanDialog().show(getSupportFragmentManager(), CREATE_MEAL_PLAN_TAG);
     }
-
-    public void deleteIngredient(int integer){
-
-        ImageButton deleteIngredient = findViewById(R.id.deleteMealPlanIngredient);
-
-        ingredientArrayList.add(new Ingredient("apple", "", "pantry", "snack", 2, ""));
-        int removedIndex = integer;
-        deleteIngredient.setOnClickListener(onClick -> {
-            Toast.makeText(getApplicationContext(), "Success!"+integer, Toast.LENGTH_LONG).show();
-        });
-
-    };
-
-
 
 }
