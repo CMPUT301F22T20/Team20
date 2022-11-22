@@ -14,7 +14,10 @@
         android:theme="@style/Theme.FoodTracker"
         tools:targetApi="31">
         <activity
-            android:name=".IngredientList"
+            android:name=".RecipeList"
+            android:exported="false" />
+        <activity
+            android:name=".ui.mealPlan.IngredientList"
             android:exported="false" />
         <activity
             android:name=".ui.recipes.AddRecipeActivity"

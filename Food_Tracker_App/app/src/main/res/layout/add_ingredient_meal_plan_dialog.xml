@@ -6,13 +6,14 @@
     android:padding="16dp">
 
 
-    <Spinner
-        android:id="@+id/ingredientSpinner"
+    <TextView
+        android:id="@+id/ingredientTextView"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ems="10"
-        style="@style/inputField"
-        />
+        android:text="Description"
+        style="@style/inputField"/>
+
 
     <EditText
         android:id="@+id/ingredientAmount"

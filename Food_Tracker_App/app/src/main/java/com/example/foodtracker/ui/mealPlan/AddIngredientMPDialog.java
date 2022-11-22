@@ -26,23 +26,14 @@ import java.util.List;
 
 public class AddIngredientMPDialog extends DialogFragment {
 
+    private TextView description;
     private EditText amount;
     private TextView unit;
-    private MealPlanDay mealPlanDay;
-
-    /**
-     * This is a private final variable
-     * This holds a collection of {@link Ingredient} objects and is of type {@link Ingredient}
-     */
-    private final Collection<Ingredient> ingredientsCollection = new Collection<>(Ingredient.class, new Ingredient());
-    private final List<String> ingredientNames = new ArrayList<>();
-    private ArrayAdapter<String> ingredientSpinnerAdapter;
-    private Spinner description;
 
     private MealPlanDialogListener listener;
 
     public interface MealPlanDialogListener {
-        void onIngredientAdd(MealPlanDay meal_plan_add_ingredient);
+        void onIngredientAdd(Ingredient meal_plan_add_ingredient);
     }
 
     @Override
@@ -60,23 +51,21 @@ public class AddIngredientMPDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.add_ingredient_meal_plan_dialog, null);
-        description = view.findViewById(R.id.ingredientSpinner);
+        description = view.findViewById(R.id.ingredientTextView);
         amount = view.findViewById(R.id.ingredientAmount);
         unit = view.findViewById(R.id.ingredientUnit);
 
-        ingredientSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, ingredientNames);
-        description.setAdapter(ingredientSpinnerAdapter);
-        getIngredients(null);
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         if (getArguments().get("meal_plan_add_ingredient") != null) {
             Bundle selectedBundle = getArguments();
-            mealPlanDay = (MealPlanDay) selectedBundle.get("meal_plan_add_ingredient");
-
+            Ingredient received_ingredient = (Ingredient) selectedBundle.get("meal_plan_add_ingredient");
+            initializeFields(received_ingredient);
             return builder.setView(view).setTitle("Add Meal plan ingredient")
                     .setNegativeButton("Cancel", null)
-                    .setPositiveButton("Add", (dialogInterface, i) -> addClick(mealPlanDay))
+                    .setPositiveButton("Add", (dialogInterface, i) -> addClick(received_ingredient))
                     .create();
         }
 
@@ -87,16 +76,22 @@ public class AddIngredientMPDialog extends DialogFragment {
 
     }
 
-    public void addClick(MealPlanDay mealPlanADD) {
-        Ingredient ingredientToAdd = new Ingredient();
-        String ingredient_name = description.getSelectedItem().toString();
-        ingredientToAdd.setDescription(ingredient_name);
+    public void initializeFields(Ingredient ingredient) {
+        description.setText(ingredient.getDescription());
+        unit.setText(ingredient.getUnit());
+    }
 
-        int position = description.getSelectedItemPosition();
+    public void addClick(Ingredient ingredient) {
+        Ingredient ingredientToAdd = new Ingredient();
+
+        ingredientToAdd.setDescription(ingredient.getDescription());
+        ingredientToAdd.setUnit(ingredient.getUnit());
+        ingredientToAdd.setCategory(ingredient.getCategory());
+        ingredientToAdd.setExpiry(ingredient.getExpiry());
+        ingredientToAdd.setLocation(ingredient.getLocation());
 
         if (setFields(ingredientToAdd)) {
-            mealPlanADD.getIngredients().add(ingredientToAdd);
-            listener.onIngredientAdd(mealPlanADD);
+            listener.onIngredientAdd(ingredientToAdd);
         }
     }
 
@@ -126,19 +121,4 @@ public class AddIngredientMPDialog extends DialogFragment {
 
     }
 
-    /**
-     * Retrieves categories from firestore and populates a string array with the content
-     */
-    private void getIngredients(@Nullable Ingredient edit_ingredient) {
-        ingredientsCollection.getAll(list -> {
-            for (Ingredient ingredient : list) {
-                ingredientNames.add(ingredient.getDescription());
-                ingredientSpinnerAdapter.notifyDataSetChanged();
-            }
-            if (edit_ingredient != null) {
-                description.setSelection(ingredientSpinnerAdapter.getPosition(edit_ingredient.getDescription()));
-                unit.setText(edit_ingredient.getUnit());
-            }
-        });
-    }
 }

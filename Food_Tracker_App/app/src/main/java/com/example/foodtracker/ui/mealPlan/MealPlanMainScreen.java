@@ -2,6 +2,7 @@ package com.example.foodtracker.ui.mealPlan;
 
 import static com.example.foodtracker.ui.mealPlan.AddMealPlanDialog.CREATE_MEAL_PLAN_TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -31,7 +32,6 @@ import java.util.ArrayList;
 public class MealPlanMainScreen extends AppCompatActivity implements
         TopBar.TopBarListener,
         MealPlanDayRecyclerViewAdapter.MealPlanArrayListener,
-        AddIngredientMPDialog.MealPlanDialogListener,
         AddRecipeMPDialog.MealPlanRecipeDialogListener {
     private final Collection<MealPlanDay> mealPlanDaysCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
@@ -56,6 +56,12 @@ public class MealPlanMainScreen extends AppCompatActivity implements
             createRecyclerView();
             createNavBar();
             createTopBar();
+        }
+
+        if (getIntent().getExtras() != null) {
+            Intent intent = getIntent();
+            MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra("meal_plan_after_ingredient_add");
+            addIngredient(received_meal_plan);
         }
     }
 
@@ -108,30 +114,51 @@ public class MealPlanMainScreen extends AppCompatActivity implements
 
 
     @Override
-    public void onAddIngredientClick(MealPlanDay mealPlanDay) {
+    public void onAddIngredientClick(MealPlanDay mealPlan) {
+        /*
         Bundle args = new Bundle();
-        args.putSerializable("meal_plan_add_ingredient", mealPlanDay);
+        args.putSerializable("meal_plan_add_ingredient", mealPlan);
 
         AddIngredientMPDialog addIngredientMPDialog = new AddIngredientMPDialog();
         addIngredientMPDialog.setArguments(args);
         addIngredientMPDialog.show(getSupportFragmentManager(), "ADD_MEAL_PLAN_INGREDIENT");
+
+         */
+        Intent intent = new Intent(getApplicationContext(), IngredientList.class);
+        intent.putExtra("meal_plan_for_ingredient_add", mealPlan);
+        startActivity(intent);
+
     }
 
+    /**
+     * When add recipe button is clicked
+     * @param mealPlan where recipe is added to
+     */
     @Override
     public void onAddRecipeClick(MealPlanDay mealPlan) {
+
         Bundle args = new Bundle();
         args.putSerializable("meal_plan_add_recipe", mealPlan);
 
         AddRecipeMPDialog addRecipeMPDialog = new AddRecipeMPDialog();
         addRecipeMPDialog.setArguments(args);
         addRecipeMPDialog.show(getSupportFragmentManager(), "ADD_MEAL_PLAN_RECIPE");
+
     }
 
+    public void addIngredient(MealPlanDay meal_plan_add_ingredient) {
+        int editIndex = mealPlanDayArrayList.indexOf(meal_plan_add_ingredient);
+        mealPlanDaysCollection.updateDocument(meal_plan_add_ingredient, () -> adapter.notifyItemChanged(editIndex));
+    }
+
+    /*
     @Override
     public void onIngredientAdd(MealPlanDay meal_plan_add_ingredient) {
         int editIndex = mealPlanDayArrayList.indexOf(meal_plan_add_ingredient);
         mealPlanDaysCollection.updateDocument(meal_plan_add_ingredient, () -> adapter.notifyItemChanged(editIndex));
     }
+
+     */
 
     @Override
     public void onRecipeAdd(MealPlanDay meal_plan_add_recipe) {
