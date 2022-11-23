@@ -32,6 +32,8 @@ import java.util.ArrayList;
 public class MealPlanMainScreen extends AppCompatActivity implements
         TopBar.TopBarListener,
         MealPlanDayRecyclerViewAdapter.MealPlanArrayListener{
+    public static final String MEAL_PLAN_AFTER_INGREDIENT_ADD = "meal_plan_after_ingredient_add";
+    public static final String MEAL_PLAN_AFTER_RECIPE_ADD = "meal_plan_after_recipe_add";
     private final Collection<MealPlanDay> mealPlanDaysCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
@@ -59,12 +61,12 @@ public class MealPlanMainScreen extends AppCompatActivity implements
 
         if (getIntent().getExtras() != null) {
             Intent intent = getIntent();
-            if (intent.getSerializableExtra("meal_plan_after_ingredient_add") != null) {
-                MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra("meal_plan_after_ingredient_add");
+            if (intent.getSerializableExtra(MEAL_PLAN_AFTER_INGREDIENT_ADD) != null) {
+                MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra(MEAL_PLAN_AFTER_INGREDIENT_ADD);
                 addIngredient(received_meal_plan);
             }
-            if (intent.getSerializableExtra("meal_plan_after_recipe_add") != null) {
-                MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra("meal_plan_after_recipe_add");
+            if (intent.getSerializableExtra(MEAL_PLAN_AFTER_RECIPE_ADD) != null) {
+                MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra(MEAL_PLAN_AFTER_RECIPE_ADD);
                 addRecipe(received_meal_plan);
             }
         }

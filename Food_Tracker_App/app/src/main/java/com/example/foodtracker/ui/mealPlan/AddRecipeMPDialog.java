@@ -59,6 +59,8 @@ public class AddRecipeMPDialog extends DialogFragment {
             Bundle selectedBundle = getArguments();
             Recipe received_recipe = (Recipe) selectedBundle.get("meal_plan_add_recipe");
 
+            initializeFields(received_recipe);
+
             return builder.setView(view).setTitle("Add Meal plan recipe")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Add", (dialogInterface, i) -> addClick(received_recipe))
