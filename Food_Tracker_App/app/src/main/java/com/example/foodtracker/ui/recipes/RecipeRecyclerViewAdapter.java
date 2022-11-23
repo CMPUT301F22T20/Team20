@@ -13,7 +13,6 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.ArrayListener;
 import com.example.foodtracker.model.recipe.Recipe;
 
-import java.text.CollationElementIterator;
 import java.util.ArrayList;
 
 /**
@@ -24,21 +23,13 @@ import java.util.ArrayList;
  */
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.RecipeHolder> {
 
-    /**
-     * See {@link ArrayListener}
-     * @implNote For safe type casting
-     */
-    public interface RecipeArrayListener extends ArrayListener<Recipe> {}
-
     private final ArrayList<Recipe> recipeArrayList;
     private final Context context;
-    private final RecipeRecyclerViewAdapter.RecipeArrayListener recipeListener;
     private final RecyclerViewInterface recyclerViewInterface;
 
     RecipeRecyclerViewAdapter(Context context, ArrayList<Recipe> recipeArrayList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.recipeArrayList = recipeArrayList;
-        recipeListener = (RecipeRecyclerViewAdapter.RecipeArrayListener) context;
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
@@ -46,7 +37,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     @Override
     public RecipeRecyclerViewAdapter.RecipeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipe_content, parent, false);
-        return new RecipeRecyclerViewAdapter.RecipeHolder(view, recipeListener, recyclerViewInterface);
+        return new RecipeHolder(view, recyclerViewInterface);
     }
 
     /**
@@ -69,24 +60,21 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     /**
      * Represents an {@link Recipe} in our {@link RecipeRecyclerViewAdapter}
      */
-    public class RecipeHolder extends RecyclerView.ViewHolder {
+    public static class RecipeHolder extends RecyclerView.ViewHolder {
 
         protected final TextView title = itemView.findViewById(R.id.recipe_name);
         protected final TextView prepTime = itemView.findViewById(R.id.text_recipe_preptime);
         protected final TextView servings = itemView.findViewById(R.id.text_recipe_servings);
         protected final TextView category = itemView.findViewById(R.id.text_recipe_category);
 
-        public RecipeHolder(View itemView, RecipeRecyclerViewAdapter.RecipeArrayListener recipeListener, RecyclerViewInterface recyclerViewInterface) {
+        public RecipeHolder(View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
+            itemView.setOnClickListener(v -> {
+                if (recyclerViewInterface != null) {
+                    int pos = getAdapterPosition();
 
-                        if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.onItemClick(pos);
-                        }
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.onItemClick(pos);
                     }
                 }
             });
