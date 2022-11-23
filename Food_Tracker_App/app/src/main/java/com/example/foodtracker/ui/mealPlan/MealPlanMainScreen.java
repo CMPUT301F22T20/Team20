@@ -31,8 +31,7 @@ import java.util.ArrayList;
  */
 public class MealPlanMainScreen extends AppCompatActivity implements
         TopBar.TopBarListener,
-        MealPlanDayRecyclerViewAdapter.MealPlanArrayListener,
-        AddRecipeMPDialog.MealPlanRecipeDialogListener {
+        MealPlanDayRecyclerViewAdapter.MealPlanArrayListener{
     private final Collection<MealPlanDay> mealPlanDaysCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
@@ -60,8 +59,14 @@ public class MealPlanMainScreen extends AppCompatActivity implements
 
         if (getIntent().getExtras() != null) {
             Intent intent = getIntent();
-            MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra("meal_plan_after_ingredient_add");
-            addIngredient(received_meal_plan);
+            if (intent.getSerializableExtra("meal_plan_after_ingredient_add") != null) {
+                MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra("meal_plan_after_ingredient_add");
+                addIngredient(received_meal_plan);
+            }
+            if (intent.getSerializableExtra("meal_plan_after_recipe_add") != null) {
+                MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra("meal_plan_after_recipe_add");
+                addRecipe(received_meal_plan);
+            }
         }
     }
 
@@ -137,12 +142,9 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     @Override
     public void onAddRecipeClick(MealPlanDay mealPlan) {
 
-        Bundle args = new Bundle();
-        args.putSerializable("meal_plan_add_recipe", mealPlan);
-
-        AddRecipeMPDialog addRecipeMPDialog = new AddRecipeMPDialog();
-        addRecipeMPDialog.setArguments(args);
-        addRecipeMPDialog.show(getSupportFragmentManager(), "ADD_MEAL_PLAN_RECIPE");
+        Intent intent = new Intent(getApplicationContext(), RecipeList.class);
+        intent.putExtra("meal_plan_for_recipe_add", mealPlan);
+        startActivity(intent);
 
     }
 
@@ -151,18 +153,9 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         mealPlanDaysCollection.updateDocument(meal_plan_add_ingredient, () -> adapter.notifyItemChanged(editIndex));
     }
 
-    /*
-    @Override
-    public void onIngredientAdd(MealPlanDay meal_plan_add_ingredient) {
-        int editIndex = mealPlanDayArrayList.indexOf(meal_plan_add_ingredient);
-        mealPlanDaysCollection.updateDocument(meal_plan_add_ingredient, () -> adapter.notifyItemChanged(editIndex));
-    }
-
-     */
-
-    @Override
-    public void onRecipeAdd(MealPlanDay meal_plan_add_recipe) {
+    public void addRecipe(MealPlanDay meal_plan_add_recipe) {
         int editIndex = mealPlanDayArrayList.indexOf(meal_plan_add_recipe);
         mealPlanDaysCollection.updateDocument(meal_plan_add_recipe, () -> adapter.notifyItemChanged(editIndex));
     }
+
 }

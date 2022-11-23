@@ -17,7 +17,7 @@ import com.example.foodtracker.utils.Collection;
 import java.util.ArrayList;
 
 public class IngredientList extends AppCompatActivity implements
-        AddIngredientMPDialog.MealPlanDialogListener{
+        AddIngredientMPDialog.MealPlanIngredientDialogListener{
 
     ListView ingredientListView;
     ArrayList<Ingredient> ingredientArrayList;

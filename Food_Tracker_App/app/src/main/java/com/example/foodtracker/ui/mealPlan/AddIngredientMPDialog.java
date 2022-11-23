@@ -30,9 +30,9 @@ public class AddIngredientMPDialog extends DialogFragment {
     private EditText amount;
     private TextView unit;
 
-    private MealPlanDialogListener listener;
+    private MealPlanIngredientDialogListener listener;
 
-    public interface MealPlanDialogListener {
+    public interface MealPlanIngredientDialogListener {
         void onIngredientAdd(Ingredient meal_plan_add_ingredient);
     }
 
@@ -41,9 +41,9 @@ public class AddIngredientMPDialog extends DialogFragment {
         super.onAttach(context);
 
         try {
-            listener = (MealPlanDialogListener) context;
+            listener = (MealPlanIngredientDialogListener) context;
         } catch (ClassCastException classCastException) {
-            throw new RuntimeException("Must implement " + MealPlanDialogListener.class.getSimpleName());
+            throw new RuntimeException("Must implement " + MealPlanIngredientDialogListener.class.getSimpleName());
         }
     }
 
