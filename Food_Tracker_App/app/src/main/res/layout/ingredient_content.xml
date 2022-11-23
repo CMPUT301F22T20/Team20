@@ -23,20 +23,20 @@
             android:id="@+id/text_ingredient_category"
             style="@style/ingredientViewText"
             android:layout_below="@id/ingredient_name"
-            android:text="@string/ingredient_category" />
+            android:text="@string/category" />
 
         <TextView
             android:id="@+id/text_ingredient_expiry"
             style="@style/ingredientViewText"
             android:layout_below="@id/ingredient_name"
             android:layout_alignParentEnd="true"
-            android:text="@string/ingredient_expiry" />
+            android:text="@string/expiry_date" />
 
         <TextView
             android:id="@+id/text_ingredient_location"
             style="@style/ingredientViewText"
             android:layout_below="@id/text_ingredient_category"
-            android:text="@string/ingredient_location" />
+            android:text="@string/location" />
 
         <!-- Expandable content -->
         <RelativeLayout
@@ -51,13 +51,13 @@
                 android:id="@+id/text_ingredient_unit"
                 style="@style/ingredientViewText"
                 android:layout_alignParentEnd="true"
-                android:text="@string/ingredient_unit" />
+                android:text="@string/unit" />
 
             <TextView
                 android:id="@+id/text_ingredient_amount"
                 style="@style/ingredientViewText"
                 android:layout_alignParentStart="true"
-                android:text="@string/ingredient_amount" />
+                android:text="@string/amount" />
 
             <Button
                 android:id="@+id/delete_ingredient"

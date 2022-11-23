@@ -62,7 +62,7 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     public void onBindViewHolder(IngredientHolder holder, int position) {
         Ingredient ingredient = ingredientArrayList.get(position);
         holder.name.setText(ingredient.getDescription());
-        holder.unit.setText(String.format("Unit: %s", ingredient.getUnit()));
+        holder.unit.setText(String.format("Unit: %s", ingredient.getUnitAbbreviation()));
         holder.amount.setText(String.format("Quantity: %s", ingredient.getAmount()));
         holder.expiry.setText(String.format("Expiry Date: %s", ingredient.getExpiry()));
         holder.category.setText(String.format("Category: %s", ingredient.getCategory()));

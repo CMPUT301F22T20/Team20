@@ -4,6 +4,7 @@ import static java.lang.String.*;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +22,6 @@ import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.BitmapUtil;
 
-import java.text.MessageFormat;
 import java.util.Locale;
 
 public class RecipeDisplay extends AppCompatActivity {
@@ -61,10 +61,20 @@ public class RecipeDisplay extends AppCompatActivity {
         recipePrepTime.setText(String.valueOf(recipe.getPrepTime()));
         recipeServings.setText(String.valueOf(recipe.getServings()));
         recipeCategory.setText(recipe.getCategory());
-        recipeComment.setText(MessageFormat.format("\n{0}", recipe.getComment()));
+
+        if (recipe.getComment().isEmpty()) {
+            recipeComment.setText(format("\n%s", "No comments"));
+            recipeComment.setTextColor(getResources().getColor(R.color.primary_light));
+        } else {
+            recipeComment.setText(format("\n%s", recipe.getComment()));
+        }
+
         if (!recipe.getImage().isEmpty()) {
             recipeImage.setImageBitmap(BitmapUtil.fromString(recipe.getImage()));
+        } else {
+            recipeImage.setVisibility(View.GONE);
         }
+
 
         recipeIngredients.setLayoutManager(new LinearLayoutManager(this));
         recipeIngredients.setAdapter(adapter);
@@ -75,7 +85,7 @@ public class RecipeDisplay extends AppCompatActivity {
         }
 
         editRecipeButton.setOnClickListener(v -> {
-            Intent editIntent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+            Intent editIntent = new Intent(getApplicationContext(), RecipeDialog.class);
             editIntent.putExtra("EDIT_RECIPE", recipe);
             editRecipeActivityResultLauncher.launch(editIntent);
         });

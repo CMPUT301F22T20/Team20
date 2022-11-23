@@ -73,7 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/preparation_time"
+                    android:text="@string/preparation_time_title"
                     android:textStyle="bold" />
 
                 <TextView
@@ -100,7 +100,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/servings"
+                    android:text="@string/servings_title"
                     android:textStyle="bold" />
 
                 <TextView
@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category"
+                    android:text="@string/category_title"
                     android:textStyle="bold" />
 
                 <TextView
@@ -154,59 +154,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recipeDisplayCategory" />
 
-            <LinearLayout
-                android:id="@+id/ingredientHeaders"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/primary_dark"
-                android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="16dp"
-                android:weightSum="4"
-                app:layout_constraintBottom_toTopOf="@id/recipeDisplayIngredientList"
-                app:layout_constraintTop_toBottomOf="@id/recipeDisplayIngredientsHeader">
-
-                <TextView
-                    android:id="@+id/recipeDisplayDescriptionHeader"
-                    style="@style/textBody"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.4"
-                    android:text="Description"
-                    android:textColor="@color/background_light"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/recipeDisplayAmountHeader"
-                    style="@style/textBody"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:text="Amount"
-                    android:textColor="@color/background_light"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/recipeDisplayUnitHeader"
-                    style="@style/textBody"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:text="Unit"
-                    android:textColor="@color/background_light"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/recipeDisplayCategoryHeader"
-                    style="@style/textBody"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Category"
-                    android:textAlignment="viewEnd"
-                    android:textColor="@color/background_light"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <include layout="@layout/ingredient_header_row"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:background="@color/background_light"
@@ -227,7 +175,7 @@
                 android:orientation="vertical"
                 android:background="@color/background_light"
                 android:layout_marginVertical="16dp"
-                android:paddingHorizontal="8dp"
+                android:padding="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

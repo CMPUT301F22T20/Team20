@@ -11,7 +11,7 @@ import java.util.Map;
 public class Location extends Document {
 
     public static String INGREDIENTS_LOCATION_COLLECTION_NAME = "Ingredients-Location";
-    private String name;
+    private String name = "";
 
     public Location() {
     }
