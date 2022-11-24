@@ -19,39 +19,31 @@ import com.example.foodtracker.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-
-public class createMealPlanDialog extends DialogFragment {
+import java.util.Locale;
 
 
+public class singleMealPlanDialog extends DialogFragment {
 
-
-    public interface setMPDatesListener{
-        void addMP(String dates);
+    public interface setSingleMPDatesListener{
+        void addSingle(String day);
+        boolean isInList(String day);
     }
 
-    private setMPDatesListener mpDatesListener;
-    String startDay;
-    String endDay;
+    setSingleMPDatesListener singleMPDatesListener;
+    public static final String SINGLE_MEAL_PLAN_TAG = "Create_single_meal_plan";
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mpDatesListener= (setMPDatesListener) context;
+        singleMPDatesListener = (setSingleMPDatesListener) context;
     }
 
-
-    /**
-     * https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-     * @param savedInstanceState
-     * @return
-     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = getLayoutInflater().inflate(R.layout.create_meal_plan_dialog, null);
-        DatePicker startDayPicker = view.findViewById(R.id.mealPlanStartDate);
-        DatePicker endDayPicker = view.findViewById(R.id.mealPlanEndDate);
+        View view = getLayoutInflater().inflate(R.layout.single_meal_plan_dialog,null);
+        DatePicker singleDate = view.findViewById(R.id.mealPlanSingleDate);
 
 
         final AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -72,20 +64,23 @@ public class createMealPlanDialog extends DialogFragment {
                     @Override
                     public void onClick(View view) {
                         Calendar cStart = Calendar.getInstance();
-                        cStart.set(startDayPicker.getYear(), startDayPicker.getMonth(), startDayPicker.getDayOfMonth());
+                        cStart.set(singleDate.getYear(), singleDate.getMonth(), singleDate.getDayOfMonth());
+                        String entryDay = String.format(Locale.CANADA, "%02d-%02d-%d", singleDate.getDayOfMonth()
+                                ,singleDate.getMonth() + 1, singleDate.getYear());
 
-                        Calendar cEnd = Calendar.getInstance();
-                        cEnd.set(endDayPicker.getYear(), endDayPicker.getMonth(), endDayPicker.getDayOfMonth());
-
-                        if (cStart.after(cEnd)){
+                        //TODO fix this
+                        if (!singleMPDatesListener.isInList(entryDay)){
                             String message = "Start day cannot be after end day";
                             Toast.makeText(getContext(),message, Toast.LENGTH_LONG).show();
+
+                            setDay(cStart);
                         }
                         else {
-                            setDates(cStart,cEnd);
+                            String message = "Not in list";
                             dialog.dismiss();
                         }
 
+                        //TODO: get the end date of mealplan array's values and compare.
                     }
                 });
             }
@@ -93,22 +88,15 @@ public class createMealPlanDialog extends DialogFragment {
         dialog.show();
 
         return dialog;
+
     }
-
-
-    public void setDates(Calendar startDay, Calendar endDay) {
-
+    public void setDay(Calendar singleDay) {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        while(startDay.compareTo(endDay) < 1){
-
-            Date convertDate =  startDay.getTime();
-            String strDate = dateFormat.format(convertDate);
-
-            startDay.add(Calendar.DAY_OF_MONTH, 1);
-            mpDatesListener.addMP(strDate);
-
-        }
+        //mpDatesListener.addMP(singleDay);
     }
 
+
 }
+
+

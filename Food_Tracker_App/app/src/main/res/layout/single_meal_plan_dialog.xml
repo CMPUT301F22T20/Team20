@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text= "Choose the START date for your meal plan"
+        android:text= "Extend your meal plan by adding another day"
         android:textColor="@color/primary_dark" />
 
     <DatePicker
-        android:id="@+id/mealPlanStartDate"
+        android:id="@+id/mealPlanSingleDate"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
@@ -24,23 +24,6 @@
         android:endYear="2100"
         android:startYear="2022" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text= "Choose the END date for your meal plan"
-        android:textColor="@color/primary_dark" />
-
-    <DatePicker
-        android:id="@+id/mealPlanEndDate"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginHorizontal="16dp"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:endYear="2100"
-        android:startYear="2022" />
 
 
 </LinearLayout>

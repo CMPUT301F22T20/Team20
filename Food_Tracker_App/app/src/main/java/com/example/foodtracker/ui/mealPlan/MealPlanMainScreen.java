@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
+import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
@@ -24,12 +26,12 @@ import java.util.ArrayList;
  * @see <a href=https://www.geeksforgeeks.org/how-to-create-a-nested-recyclerview-in-android</a>
  */
 public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopBarListener,
-        MealPlanDayRecyclerViewAdapter.MealPlanDayArrayListener
+        MealPlanDayRecyclerViewAdapter.MealPlanDayArrayListener, createMealPlanDialog.setMPDatesListener,
+        singleMealPlanDialog.setSingleMPDatesListener
 {
     private final Collection<MealPlanDay> mealPlanDaysCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
-
 
 
     public MealPlanMainScreen() {
@@ -154,6 +156,40 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     @Override
     public void deleteRecipe(int recipePosition, MealPlanDay mealPlan) {
         mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
+    }
+
+    @Override
+    public void addMP(String dates) {
+
+        //TODO clear the database when there are items
+
+        ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+
+        MealPlanDay mealPlanDay = new MealPlanDay(dates, ingredientArrayList, recipeArrayList);
+
+
+        mealPlanDayArrayList.add(mealPlanDay);
+        mealPlanDaysCollection.createDocument(mealPlanDay, () -> {
+                    adapter.notifyItemInserted(ingredientArrayList.indexOf(mealPlanDay));
+                }
+        );
+    }
+
+    @Override
+    public void addSingle(String day) {
+        ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+
+        MealPlanDay mealPlanDay = new MealPlanDay(day, ingredientArrayList, recipeArrayList);
+
+        mealPlanDayArrayList.add(mealPlanDay);
+    }
+
+    @Override
+    public boolean isInList(String day) {
+    //TODO implement check to make sure there are no duplicates
+        return false;
     }
 
 }
