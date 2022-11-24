@@ -102,6 +102,7 @@ public class AddRecipeMPDialog extends DialogFragment {
         recipeToAdd.setPrepTime(recipe.getPrepTime());
         recipeToAdd.setIngredients(recipe.getIngredients());
         recipeToAdd.setComment(recipe.getComment());
+        recipeToAdd.setServings(recipe.getServings()); //default serving
 
         if (setFields(recipeToAdd)) {
             listener.onRecipeAdd(recipeToAdd);
@@ -109,6 +110,7 @@ public class AddRecipeMPDialog extends DialogFragment {
     }
 
     public void editClick(Recipe recipe) {
+
         if (setFields(recipe)) {
             listener.onRecipeEdit(recipe);
         }
@@ -122,6 +124,8 @@ public class AddRecipeMPDialog extends DialogFragment {
     public Boolean setFields(Recipe recipe) {
         Boolean valid = true;
 
+        int old_serving = recipe.getServings();
+
         String amount_str = serving.getText().toString();
         try {
             int amountInt = Integer.parseInt(amount_str);
@@ -129,7 +133,10 @@ public class AddRecipeMPDialog extends DialogFragment {
                 serving.setError("Invalid amount");
                 return false;
             }
+
             recipe.setServings(amountInt);
+            scaleRecipeIngredients(recipe, old_serving);
+
         } catch (NumberFormatException e) {
             serving.setError("Invalid amount");
             valid = false;
@@ -137,6 +144,23 @@ public class AddRecipeMPDialog extends DialogFragment {
 
         return valid;
 
+    }
+
+    public void scaleRecipeIngredients(Recipe recipe, int old_servings) {
+        int new_servings = recipe.getServings();
+        double old_double = old_servings;
+        double new_double = new_servings;
+
+        double ratio = new_double / old_double;
+
+        double old_ingredient_amount;
+        int new_amount_int;
+
+        for (int i=0; i<recipe.getIngredients().size(); i++) {
+            old_ingredient_amount = recipe.getIngredients().get(i).getAmount();
+            new_amount_int = (int) Math.ceil(ratio * old_ingredient_amount);
+            recipe.getIngredients().get(i).setAmount(new_amount_int);
+        }
     }
 
 }
