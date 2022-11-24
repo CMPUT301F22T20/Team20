@@ -15,6 +15,7 @@ import com.example.foodtracker.model.ingredient.Ingredient;
 import java.util.ArrayList;
 
 public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanIngredientsRecyclerViewAdapter.MealPlanIngredientHolder> {
+
     private final ArrayList<Ingredient> ingredientArrayList;
 
     MealPlanIngredientsRecyclerViewAdapter(ArrayList<Ingredient> ingredientArrayList) {
