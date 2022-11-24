@@ -31,7 +31,7 @@ import java.util.Set;
 public class ShoppingCartMainScreen extends AppCompatActivity implements
         TopBar.TopBarListener {
 
-    private final Collection<Ingredient> shoppingItemCollection = new Collection<>(Ingredient.class, new Ingredient());
+    private final Collection<Ingredient> ingredientCollection = new Collection<>(Ingredient.class, new Ingredient());
     private final Collection<MealPlanDay> mealPlanDayCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     List<Ingredient> ingredientsInStorage = new ArrayList<>();
     List<SimpleIngredient> ingredientsInShoppingList = new ArrayList<>();
@@ -52,9 +52,9 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
 
         mealPlanDayCollection.getAll(mealPlans -> {
             mealPlanDays.addAll(mealPlans);
-            shoppingItemCollection.getAll(ingredients -> {
+            ingredientCollection.getAll(ingredients -> {
                 ingredientsInStorage.addAll(ingredients);
-                initializeShoppingList();
+                refreshShoppingList();
             });
         });
 
@@ -69,9 +69,15 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
 
     }
 
-    private void initializeShoppingList() {
+    private void refreshShoppingList() {
         setIngredientsInShoppingList(getRequiredIngredients());
-        initializeShoppingListView();
+        setIngredientsByCategory();
+        if (expandableListAdapter == null) {
+            expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
+            shoppingCartExpandableList.setAdapter(expandableListAdapter);
+        } else {
+            expandableListAdapter.notifyDataSetChanged();
+        }
     }
 
     private Set<SimpleIngredient> getRequiredIngredients() {
@@ -103,12 +109,6 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
             }
         }
         return mergedIngredients;
-    }
-
-    private void initializeShoppingListView() {
-        setIngredientsByCategory();
-        expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
-        shoppingCartExpandableList.setAdapter(expandableListAdapter);
     }
 
     private void setIngredientsByCategory() {
@@ -159,7 +159,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
      * Instantiates the top bar fragment for the ingredients menu
      */
     private void createTopBar() {
-        TopBar topBar = TopBar.newInstance("Shopping List", true, false);
+        TopBar topBar = TopBar.newInstance("Shopping List", false, false);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.topBarContainerView, topBar)
