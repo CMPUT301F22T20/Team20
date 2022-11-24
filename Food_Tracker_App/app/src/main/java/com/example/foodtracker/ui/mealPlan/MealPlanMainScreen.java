@@ -189,7 +189,10 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         MealPlanDay mealPlanDay = new MealPlanDay(day, ingredientArrayList, recipeArrayList);
 
         mealPlanDayArrayList.add(mealPlanDay);
-        adapter.notifyItemInserted(mealPlanDayArrayList.lastIndexOf(mealPlanDay));
+        mealPlanDaysCollection.createDocument(mealPlanDay, () ->
+                adapter.notifyItemInserted(mealPlanDayArrayList.lastIndexOf(mealPlanDay)));
+
+
     }
 
     @Override
@@ -201,7 +204,6 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         for (MealPlanDay meal: mealPlanDayArrayList){
                 mealPlanDays.add(meal.getDay());
         }
-
         if (mealPlanDays.contains(day)){
             return true;
         }
