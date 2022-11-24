@@ -32,6 +32,7 @@ public class AddRecipeMPDialog extends DialogFragment {
 
     public interface MealPlanRecipeDialogListener {
         void onRecipeAdd(Recipe meal_plan_add_recipe);
+        void onRecipeEdit(Recipe meal_plan_edit_recipe);
     }
 
     @Override
@@ -67,6 +68,20 @@ public class AddRecipeMPDialog extends DialogFragment {
                     .create();
         }
 
+        if (getArguments().get("meal_plan_edit_recipe") != null) {
+            Bundle selectedBundle = getArguments();
+            Recipe received_recipe = (Recipe) selectedBundle.get("meal_plan_edit_recipe");
+
+            initializeFields(received_recipe);
+            serving.setText(String.valueOf(received_recipe.getServings()));
+
+            return builder.setView(view).setTitle("Edit Servings")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Edit", (dialogInterface, i) -> editClick(received_recipe))
+                    .create();
+
+        }
+
         return builder.setView(view).setTitle("Add an ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", null)
@@ -77,6 +92,7 @@ public class AddRecipeMPDialog extends DialogFragment {
     public void initializeFields(Recipe recipe) {
         title.setText(recipe.getTitle());
     }
+
 
     public void addClick(Recipe recipe) {
         Recipe recipeToAdd = new Recipe();
@@ -89,6 +105,12 @@ public class AddRecipeMPDialog extends DialogFragment {
 
         if (setFields(recipeToAdd)) {
             listener.onRecipeAdd(recipeToAdd);
+        }
+    }
+
+    public void editClick(Recipe recipe) {
+        if (setFields(recipe)) {
+            listener.onRecipeEdit(recipe);
         }
     }
 

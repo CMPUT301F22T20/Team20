@@ -79,4 +79,9 @@ public class RecipeList extends AppCompatActivity implements
         intent1.putExtra("meal_plan_after_recipe_add", mealPlan);
         startActivity(intent1);
     }
+
+    @Override
+    public void onRecipeEdit(Recipe meal_plan_edit_recipe) {
+        //do nothing
+    }
 }

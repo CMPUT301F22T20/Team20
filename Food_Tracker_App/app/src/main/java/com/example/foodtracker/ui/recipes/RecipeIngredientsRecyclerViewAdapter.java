@@ -31,7 +31,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
 
     private RecipeIngredientArrayListener recipeIngredientListener;
 
-    RecipeIngredientsRecyclerViewAdapter(Context context, ArrayList<SimpleIngredient> ingredientArrayList) {
+    public RecipeIngredientsRecyclerViewAdapter(Context context, ArrayList<SimpleIngredient> ingredientArrayList) {
         this(context, ingredientArrayList, false);
     }
 

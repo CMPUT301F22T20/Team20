@@ -79,7 +79,15 @@ public class MealPlanMainScreen extends AppCompatActivity implements
                 MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra(MEAL_PLAN_AFTER_RECIPE_ADD);
                 addRecipe(received_meal_plan);
             }
+            /**
+             * edit recipe
+             */
+            if (intent.getSerializableExtra("meal_plan_after_recipe_edit") != null) {
+                MealPlanDay received_meal_plan = (MealPlanDay) intent.getSerializableExtra("meal_plan_after_recipe_edit");
+                editRecipe(received_meal_plan);
+            }
         }
+
     }
 
     /**
@@ -186,6 +194,19 @@ public class MealPlanMainScreen extends AppCompatActivity implements
 
     }
 
+    /**
+     * when a recipe is clicked to show the recipe details and then change the # of servings
+     * @param recipePosition
+     * @param object
+     */
+    @Override
+    public void scaleRecipe(int recipePosition, MealPlanDay object) {
+        Intent intent = new Intent(getApplicationContext(), ViewRecipe.class);
+        intent.putExtra("meal_plan_for_recipe_edit", object);
+        intent.putExtra("recipe_edit_index", recipePosition);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onAddIngredientClick(MealPlanDay mealPlan) {
@@ -236,5 +257,14 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     public void onIngredientEdit(MealPlanDay meal_plan_edit_ingredient) {
         int editIndex = mealPlanDayArrayList.indexOf(meal_plan_edit_ingredient);
         mealPlanDaysCollection.updateDocument(meal_plan_edit_ingredient, () -> adapter.notifyItemChanged(editIndex));
+    }
+
+    /**
+     * Edit the number of servings in a meal plan
+     * @param meal_plan_edit_recipe
+     */
+    public void editRecipe(MealPlanDay meal_plan_edit_recipe) {
+        int editIndex = mealPlanDayArrayList.indexOf(meal_plan_edit_recipe);
+        mealPlanDaysCollection.updateDocument(meal_plan_edit_recipe, () -> adapter.notifyItemChanged(editIndex));
     }
 }

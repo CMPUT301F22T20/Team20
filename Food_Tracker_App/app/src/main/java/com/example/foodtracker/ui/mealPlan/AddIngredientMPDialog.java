@@ -79,6 +79,7 @@ public class AddIngredientMPDialog extends DialogFragment {
             Ingredient received_ingredient = received_meal_plan.getIngredients().get(received_ingredient_index);
 
             initializeFields(received_ingredient);
+            amount.setText(String.valueOf(received_ingredient.getAmount()));
             return builder.setView(view).setTitle("Edit Ingredient Amount")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Edit",
