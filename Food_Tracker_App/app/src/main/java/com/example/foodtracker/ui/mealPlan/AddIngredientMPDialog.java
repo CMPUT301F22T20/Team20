@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class AddIngredientMPDialog extends DialogFragment {
     private TextView description;
     private EditText amount;
     private TextView unit;
+    private ImageButton closeButton;
 
     private MealPlanIngredientDialogListener listener;
 
@@ -55,8 +57,14 @@ public class AddIngredientMPDialog extends DialogFragment {
         description = view.findViewById(R.id.ingredientTextView);
         amount = view.findViewById(R.id.ingredientAmount);
         unit = view.findViewById(R.id.ingredientUnit);
+        closeButton = view.findViewById(R.id.closeButton);
 
-
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -65,7 +73,6 @@ public class AddIngredientMPDialog extends DialogFragment {
             Ingredient received_ingredient = (Ingredient) selectedBundle.get("meal_plan_add_ingredient");
             initializeFields(received_ingredient);
             return builder.setView(view).setTitle("Add Meal plan ingredient")
-                    .setNegativeButton("Cancel", null)
                     .setPositiveButton("Add", (dialogInterface, i) -> addClick(received_ingredient))
                     .create();
         }
@@ -81,14 +88,12 @@ public class AddIngredientMPDialog extends DialogFragment {
             initializeFields(received_ingredient);
             amount.setText(String.valueOf(received_ingredient.getAmount()));
             return builder.setView(view).setTitle("Edit Ingredient Amount")
-                    .setNegativeButton("Cancel", null)
                     .setPositiveButton("Edit",
                             (dialogInterface, i) -> editClick(received_meal_plan, received_ingredient_index))
                     .create();
         }
 
         return builder.setView(view).setTitle("Add an ingredient")
-                .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", null)
                 .create();
 
