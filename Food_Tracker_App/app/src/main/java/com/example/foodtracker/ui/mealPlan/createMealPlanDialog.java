@@ -28,7 +28,7 @@ public class createMealPlanDialog extends DialogFragment {
 
 
     public interface setMPDatesListener{
-        void addMP(ArrayList<String> listOfMpDates);
+        void addMP(ArrayList<String> day);
     }
 
     private setMPDatesListener mpDatesListener;
@@ -106,9 +106,9 @@ public class createMealPlanDialog extends DialogFragment {
             startDay.add(Calendar.DAY_OF_MONTH, 1);
 
             listDates.add(strDate);
-            mpDatesListener.addMP(listDates);
 
         }
+        mpDatesListener.addMP(listDates);
     }
 
 }

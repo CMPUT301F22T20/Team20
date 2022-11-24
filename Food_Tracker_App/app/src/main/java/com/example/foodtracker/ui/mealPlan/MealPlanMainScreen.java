@@ -14,6 +14,7 @@ import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.Sort;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
@@ -33,6 +34,8 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
 
+    private Sort<MealPlanDay.FieldName,MealPlanDayRecyclerViewAdapter,MealPlanDay> sort;
+
 
     public MealPlanMainScreen() {
         super(R.layout.meal_plan_main);
@@ -45,7 +48,8 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_main);
-         initializeData();
+        initializeData();
+        initializeSort();
 
         if (savedInstanceState == null) {
           //  createData();  TODO: REMOVE LATER
@@ -170,16 +174,11 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         for (String dates: listOfDates){
             MealPlanDay mealPlanDay = new MealPlanDay(dates, ingredientArrayList, recipeArrayList);
             mealPlanDayArrayList.add(mealPlanDay);
+            mealPlanDaysCollection.createDocument(mealPlanDay, () -> {} );
         }
         adapter.notifyDataSetChanged();
 
 
-        /*
-        mealPlanDaysCollection.createDocument(mealPlanDay, () -> {
-                    adapter.notifyItemInserted(mealPlanDayArrayList.indexOf(mealPlanDay));
-                }
-                //sort.sortByFieldName();
-        ); */
     }
 
     @Override
@@ -208,5 +207,10 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         }
         return false;
     }
+
+    private void initializeSort() {
+        sort = new Sort<>(this.mealPlanDaysCollection, this.adapter, this.mealPlanDayArrayList, MealPlanDay.FieldName.class);
+    }
+
 
 }
