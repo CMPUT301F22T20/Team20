@@ -1,7 +1,6 @@
 package com.example.foodtracker.ui.recipes;
 
-import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
-
+import static com.example.foodtracker.ui.recipes.RecipeDialog.RECIPE_KEY;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,14 +19,12 @@ import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * This class creates an object that is used to represent the main screen for the Recipes
  * This class extends {@link AppCompatActivity}
  */
 public class RecipesMainScreen extends AppCompatActivity implements
-        RecipeRecyclerViewAdapter.RecipeArrayListener,
         RecyclerViewInterface,
         TopBar.TopBarListener {
 
@@ -41,10 +38,12 @@ public class RecipesMainScreen extends AppCompatActivity implements
             deleteRecipe(recipeToDelete);
         }
     });
+
     /**
      * Allows us to sort by a selected field name and refresh the data in the view
      */
     private Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort;
+
     private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
@@ -75,23 +74,12 @@ public class RecipesMainScreen extends AppCompatActivity implements
             Recipe received_recipe = (Recipe) intent.getSerializableExtra("EDITED_RECIPE");
             editRecipe(received_recipe);
         }
-
-    }
-
-    @Override
-    public void onEdit(Recipe object) {
-
-    }
-
-    @Override
-    public void onDelete(Recipe object) {
-
     }
 
 
     @Override
     public void onAddClick() {
-        Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RecipeDialog.class);
         recipeActivityResultLauncher.launch(intent);
     }
 

@@ -1,8 +1,10 @@
 package com.example.foodtracker.ui.mealPlan;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +18,21 @@ import java.util.ArrayList;
 
 public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanRecipesRecyclerViewAdapter.MealPlanRecipeHolder> {
     private final ArrayList<Recipe> recipeArrayList;
+    private final Context context;
 
-    MealPlanRecipesRecyclerViewAdapter(ArrayList<Recipe> recipeArrayList) {
-        this.recipeArrayList = recipeArrayList;
+    public interface MPRecipesArrayListener{
+        void deleteRecipe(int recipePosition);
     }
+    private MealPlanRecipesRecyclerViewAdapter.MPRecipesArrayListener mpRecipesArrayListener;
 
+
+    MealPlanRecipesRecyclerViewAdapter(ArrayList<Recipe> recipeArrayList, Context context, MPRecipesArrayListener mpRecipesArrayListener) {
+        this.recipeArrayList = recipeArrayList;
+        this.context = context;
+        this.mpRecipesArrayListener= mpRecipesArrayListener;
+
+
+    }
 
     @NonNull
     @Override
@@ -39,6 +51,9 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
         holder.category.setText(String.format("%s", recipe.getCategory()));
         holder.servings.setText(String.format("Servings: %s", recipe.getServings()));
         holder.prepTime.setText(String.format("Prep Time: %s", recipe.getPrepTime()));
+
+
+
     }
 
     @Override
@@ -56,8 +71,18 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
         protected final TextView servings = itemView.findViewById(R.id.mealPlanRecipeServings);
         protected final TextView prepTime = itemView.findViewById(R.id.mealPlanRecipePrepTime);
 
+        protected final ImageButton deleteRecipe= itemView.findViewById(R.id.deleteMealPlanRecipe);
+
+
         public MealPlanRecipeHolder(View itemView) {
+
             super(itemView);
+            deleteRecipe.setOnClickListener(onClick -> {
+                Recipe recipe = recipeArrayList.get(getAdapterPosition());
+                recipeArrayList.remove(recipe);
+                mpRecipesArrayListener.deleteRecipe(getAdapterPosition());
+            });
+
         }
     }
 }

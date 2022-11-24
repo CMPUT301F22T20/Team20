@@ -12,10 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
+import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.TopBar;
+import com.example.foodtracker.utils.Collection;
+
+import java.util.ArrayList;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog;
 import com.example.foodtracker.ui.recipes.RecipeRecyclerViewAdapter;
@@ -31,12 +36,16 @@ import java.util.ArrayList;
  */
 public class MealPlanMainScreen extends AppCompatActivity implements
         TopBar.TopBarListener,
-        MealPlanDayRecyclerViewAdapter.MealPlanArrayListener{
+        MealPlanDayRecyclerViewAdapter.MealPlanDayArrayListener,
+        MealPlanDayRecyclerViewAdapter.MealPlanArrayListener
+{
     public static final String MEAL_PLAN_AFTER_INGREDIENT_ADD = "meal_plan_after_ingredient_add";
     public static final String MEAL_PLAN_AFTER_RECIPE_ADD = "meal_plan_after_recipe_add";
+
     private final Collection<MealPlanDay> mealPlanDaysCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
+
 
 
     public MealPlanMainScreen() {
@@ -86,7 +95,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
         ingredientArrayList.add(new Ingredient("apple", "", "pantry", "snack", 2, ""));
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-        recipeArrayList.add(new Recipe("", "Soup", 90, 6, "Dinner", "", ingredientArrayList));
+        //recipeArrayList.add(new Recipe("", "Soup", 90, 6, "Dinner", "", ingredientArrayList));
         MealPlanDay mealPlanDay = new MealPlanDay("11-20-2022", ingredientArrayList, recipeArrayList);
         mealPlanDayArrayList.add(mealPlanDay);
         mealPlanDaysCollection.createDocument(mealPlanDay, () -> {
@@ -110,13 +119,44 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     private void createTopBar(){
         TopBar topBar = TopBar.newInstance("Meal Plan", true, false);
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.topBarContainerView, topBar).commit();
+    }
 
+
+    @Override
+    public void deleteMealPlan(MealPlanDay mealPlanDay) {
+        int removedIndex = mealPlanDayArrayList.indexOf(mealPlanDay);
+        mealPlanDayArrayList.remove(removedIndex);
+
+
+        mealPlanDaysCollection.delete(mealPlanDay, () ->
+        adapter.notifyItemRemoved(removedIndex));
+    }
+
+    /**
+     * Deletes an ingredient from a meal plan
+     * @param ingredientPosition
+     * @param mealPlan
+     */
+
+    @Override
+    public void deleteIngredient(int ingredientPosition, MealPlanDay mealPlan) {
+        mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
     }
 
 
     @Override
     public void onAddClick() {
         new AddMealPlanDialog().show(getSupportFragmentManager(), CREATE_MEAL_PLAN_TAG);
+    }
+
+    /**
+     * deletes a recipe from the meal plan
+     * @param recipePosition
+     * @param mealPlan
+     */
+    @Override
+    public void deleteRecipe(int recipePosition, MealPlanDay mealPlan) {
+        mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
     }
 
 

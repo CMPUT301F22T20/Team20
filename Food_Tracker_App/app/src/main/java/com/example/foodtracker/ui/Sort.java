@@ -19,8 +19,6 @@ import com.example.foodtracker.model.DocumentableFieldName;
 import com.example.foodtracker.utils.Collection;
 import com.google.firebase.firestore.Query;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
