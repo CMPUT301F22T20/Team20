@@ -12,12 +12,14 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.Sort;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.ui.ingredients.dialogs.AddDialog;
 import com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
+
 
 /**
  * This class creates an object that is used to represent the main screen for the Ingredients
@@ -47,6 +49,11 @@ public class IngredientsMainScreen extends AppCompatActivity implements
     private final IngredientRecyclerViewAdapter adapter = new IngredientRecyclerViewAdapter(this, ingredientArrayList);
 
     /**
+     * Allows for sorting of Ingredients by field name
+     */
+    private Sort<Ingredient.FieldName, IngredientRecyclerViewAdapter, Ingredient> sort;
+
+    /**
      * This is the constructor for the class
      */
     public IngredientsMainScreen() {
@@ -61,7 +68,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeData();
+        initializeSort();
         if (savedInstanceState == null) {
             createRecyclerView();
             createNavbar();
@@ -105,6 +112,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
         new AddDialog().show(getSupportFragmentManager(), ADD_INGREDIENT_SELECTION_TAG);
     }
 
+
     private void createRecyclerView() {
         RecyclerView ingredientsRecyclerView = findViewById(R.id.ingredient_list);
         ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -113,8 +121,11 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     private void addIngredient(Ingredient ingredient) {
         ingredientArrayList.add(ingredient);
-        ingredientsCollection.createDocument(ingredient, () ->
-                adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient)));
+        ingredientsCollection.createDocument(ingredient, () -> {
+                    adapter.notifyItemInserted(ingredientArrayList.indexOf(ingredient));
+                    sort.sortByFieldName();
+                }
+        );
     }
 
     private void editIngredient(Ingredient ingredient) {
@@ -151,13 +162,11 @@ public class IngredientsMainScreen extends AppCompatActivity implements
                 .commit();
     }
 
-    /**
-     * Adds some initial data to the list
-     */
-    private void initializeData() {
-        ingredientsCollection.getAll(list -> {
-            ingredientArrayList.addAll(list);
-            adapter.notifyItemRangeInserted(0, ingredientArrayList.size());
-        });
+    private void initializeSort() {
+        sort = new Sort<>(this.ingredientsCollection, this.adapter, this.ingredientArrayList, Ingredient.FieldName.class);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.sort_spinner, sort)
+                .commit();
     }
 }

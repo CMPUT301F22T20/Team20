@@ -1,0 +1,29 @@
+# Modified from Lab 8 https://github.com/UncleSamTech/Lab8/blob/master/.github/workflows/android.yml
+name: Android CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      # https://thiagolopessilva.medium.com/running-android-unit-testing-on-github-action-with-a-project-that-contains-firebase-dependency-621603363bc1
+      - name: Decode google-services.json
+        env: 
+          FIREBASE_SECRET: ${{ secrets.FIREBASE_SECRET }}
+        run: echo $FIREBASE_SECRET > ./Food_Tracker_App/app/google-services.json
+      - run: chmod +x gradlew
+        working-directory: ./Food_Tracker_App
+      - run: ./gradlew build
+        working-directory: ./Food_Tracker_App
+      - run: ./gradlew test
+        working-directory: ./Food_Tracker_App

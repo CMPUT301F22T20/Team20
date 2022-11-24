@@ -1,65 +1,29 @@
 package com.example.foodtracker.model.recipe;
 
 import com.example.foodtracker.model.Document;
-import com.example.foodtracker.model.ingredient.Ingredient;
+import com.example.foodtracker.model.DocumentableFieldName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @see <a href=https://www.geeksforgeeks.org/overriding-equals-method-in-java/">Geeks for Geeks</a>
- */
 public class Recipe extends Document {
 
-    public static final String RECIPES_COLLECTION_NAME = "Recipes";
-    private String image; // TODO: figure out if this should be a String or a different data type
+    public static final String RECIPES_COLLECTION_NAME = "Recipes-V1.0.0";
+    private String image = "";
     private String title;
-    private int prepTime;
-    private int servings;
-    private String category;
-    private String comment;
-    private ArrayList<Ingredient> ingredients;
+    private int prepTime = 0;
+    private int servings = 0;
+    private Category category = new Category();
+    private String comment = "";
+    private ArrayList<SimpleIngredient> ingredients = new ArrayList<>();
 
     public Recipe() {
-        image = "";
-        title = "";
-        prepTime = 0;
-        servings = 0;
-        category = "";
-        comment = "";
-        ingredients = new ArrayList<>();
     }
 
-    public Recipe(String image, String title, int prepTime, int servings, String category, String comment, ArrayList<Ingredient> ingredients) {
-        this.image = image;
-        this.title = title;
-        this.prepTime = prepTime;
-        this.servings = servings;
-        this.category = category;
-        this.comment = comment;
-        this.ingredients = ingredients;
-    }
-
-
-    @Override
-    public String getCollectionName() {
-        return RECIPES_COLLECTION_NAME;
-    }
-
-    @Override
-    public Map<String, Object> getData() {
-        Map<String, Object> data = new HashMap<>();
-        data.put(Recipe.FieldNames.TITLE, this.getTitle());
-        data.put(Recipe.FieldNames.IMAGE, this.getImage());
-        data.put(Recipe.FieldNames.PREPTIME, this.getPrepTime());
-        data.put(Recipe.FieldNames.CATEGORY, this.getCategory());
-        data.put(Recipe.FieldNames.SERVINGS, this.getServings());
-        data.put(Recipe.FieldNames.COMMENT, this.getComment());
-        data.put(FieldNames.INGREDIENTS, this.getIngredients());
-        return data;
-    }
-
+    /**
+     * @see <a href=https://www.geeksforgeeks.org/overriding-equals-method-in-java/%22%3EGeeks for Geeks</a>
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) {
@@ -80,6 +44,24 @@ public class Recipe extends Document {
         Recipe recipe = (Recipe) o;
 
         return this.getKey().equals(recipe.getKey());
+    }
+
+    @Override
+    public String getCollectionName() {
+        return RECIPES_COLLECTION_NAME;
+    }
+
+    @Override
+    public Map<String, Object> getData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put(Recipe.FieldName.TITLE.getName(), this.getTitle());
+        data.put(Recipe.FieldName.IMAGE.getName(), this.getImage());
+        data.put(Recipe.FieldName.PREPARATION_TIME.getName(), this.getPrepTime());
+        data.put(Recipe.FieldName.CATEGORY.getName(), this.getCategory());
+        data.put(Recipe.FieldName.SERVINGS.getName(), this.getServings());
+        data.put(Recipe.FieldName.COMMENT.getName(), this.getComment());
+        data.put(FieldName.INGREDIENTS.getName(), this.getIngredients());
+        return data;
     }
 
     public String getTitle() {
@@ -107,11 +89,11 @@ public class Recipe extends Document {
     }
 
     public String getCategory() {
-        return category;
+        return category.getName();
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.category = new Category(category);
     }
 
     public String getComment() {
@@ -122,11 +104,11 @@ public class Recipe extends Document {
         this.comment = comment;
     }
 
-    public ArrayList<Ingredient> getIngredients() {
+    public ArrayList<SimpleIngredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
+    public void setIngredients(ArrayList<SimpleIngredient> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -138,13 +120,34 @@ public class Recipe extends Document {
         this.image = image;
     }
 
-    public static class FieldNames {
-        public static String TITLE = "title";
-        public static String IMAGE = "image";
-        public static String PREPTIME = "prepTime";
-        public static String CATEGORY = "category";
-        public static String SERVINGS = "servings";
-        public static String COMMENT = "comment";
-        public static String INGREDIENTS = "ingredients";
+    /**
+     * Represents the field names in the recipes class
+     */
+    public enum FieldName implements DocumentableFieldName {
+        TITLE("title", true),
+        IMAGE("image", false),
+        PREPARATION_TIME("prepTime", true),
+        CATEGORY("category", true),
+        SERVINGS("servings", false),
+        COMMENT("comment", false),
+        INGREDIENTS("ingredients", false);
+
+        private final String name;
+        private final boolean sortable;
+
+        FieldName(String fieldName, boolean sortable) {
+            this.name = fieldName;
+            this.sortable = sortable;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public boolean sortable() {
+            return sortable;
+        }
     }
 }

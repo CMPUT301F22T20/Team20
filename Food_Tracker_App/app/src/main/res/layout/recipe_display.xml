@@ -10,14 +10,14 @@
         android:id="@+id/topBarContainerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/top_bar" />
 
     <ScrollView
         android:id="@+id/RecipeContent"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/recipeDeleteButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,176 +27,175 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/recipeDisplayTitle"
                 style="@style/textHeader1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_margin="16dp"
                 android:gravity="center"
                 android:text="Recipe Title"
+                app:layout_constraintBottom_toTopOf="@id/recipe_display_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/recipe_display_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/recipe_image_description"
-                app:layout_constraintBottom_toBottomOf="@id/recipeDisplayCategory"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/recipeDisplayPrepTime"
-                app:layout_constraintTop_toTopOf="@id/recipeDisplayTitle" />
-
-            <TextView
-                android:id="@+id/recipeDisplayPrepTime"
-                style="@style/textBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Preperation Time"
+                android:adjustViewBounds="true"
+                android:background="@color/background_light"
+                android:contentDescription="@string/recipe_image_description"
+                android:paddingVertical="16dp"
+                android:maxHeight="200dp"
+                app:layout_constraintBottom_toTopOf="@id/recipeDisplayPrepTime"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recipeDisplayTitle" />
 
-            <TextView
-                android:id="@+id/recipeDisplayServings"
-                style="@style/textBody"
+            <LinearLayout
+                android:id="@+id/recipeDisplayPrepTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Servings"
+                android:layout_marginBottom="8dp"
+                android:layout_marginHorizontal="8dp"
+                app:layout_constraintBottom_toTopOf="@id/recipeDisplayServings"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recipeDisplayPrepTime" />
+                app:layout_constraintTop_toBottomOf="@id/recipe_display_image">
 
-            <TextView
-                android:id="@+id/recipeDisplayCategory"
-                style="@style/textBody"
+                <TextView
+                    style="@style/textBody"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/preparation_time_title"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/preparation_time"
+                    style="@style/textBody"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="viewEnd" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recipeDisplayServings"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Category"
+                android:layout_margin="8dp"
+                app:layout_constraintBottom_toTopOf="@id/recipeDisplayCategory"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recipeDisplayServings" />
+                app:layout_constraintTop_toBottomOf="@id/recipeDisplayPrepTime">
+
+                <TextView
+                    style="@style/textBody"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/servings_title"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/servings"
+                    style="@style/textBody"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="viewEnd" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recipeDisplayCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintBottom_toTopOf="@id/recipeDisplayIngredientsHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recipeDisplayServings">
+
+                <TextView
+                    style="@style/textBody"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/category_title"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/category"
+                    style="@style/textBody"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="viewEnd" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/recipeDisplayIngredientsHeader"
-                style="@style/textBody"
+                style="@style/textHeader2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:text="Ingredients:"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/ingredients"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toTopOf="@id/ingredientHeaders"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recipeDisplayCategory" />
 
-            <LinearLayout
-                android:id="@+id/ingredientHeaders"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="4"
-                app:layout_constraintTop_toBottomOf="@id/recipeDisplayIngredientsHeader"
-                app:layout_constraintBottom_toTopOf="@id/recipeDisplayIngredientList">
-
-                <TextView
-                    android:id="@+id/recipeDisplayDescriptionHeader"
-                    style="@style/textBody"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.4"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="Description"
-                    app:layout_constraintEnd_toStartOf="@id/recipeDisplayAmountHeader"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recipeDisplayIngredientsHeader" />
-
-                <TextView
-                    android:id="@+id/recipeDisplayAmountHeader"
-                    style="@style/textBody"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.8"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Amount"
-                    app:layout_constraintEnd_toEndOf="@id/recipeDisplayUnitHeader"
-                    app:layout_constraintStart_toStartOf="@id/recipeDisplayDescriptionHeader"
-                    app:layout_constraintTop_toBottomOf="@id/recipeDisplayIngredientsHeader" />
-
-                <TextView
-                    android:id="@+id/recipeDisplayUnitHeader"
-                    style="@style/textBody"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.8"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Unit"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/recipeDisplayDescriptionHeader"
-                    app:layout_constraintEnd_toEndOf="@id/recipeDisplayCategoryHeader"
-                    app:layout_constraintStart_toStartOf="@id/recipeDisplayAmountHeader" />
-
-                <TextView
-                    android:id="@+id/recipeDisplayCategoryHeader"
-                    style="@style/textBody"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="Category"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/recipeDisplayUnitHeader"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/recipeDisplayUnitHeader" />
-
-
-            </LinearLayout>
+            <include layout="@layout/ingredient_header_row"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:background="@color/background_light"
+                android:padding="8dp"
                 android:id="@+id/recipeDisplayIngredientList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
                 app:layout_constraintBottom_toTopOf="@id/recipeDisplayComment"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_min="25dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ingredientHeaders" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/recipeDisplayComment"
-                style="@style/textBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:text="Comment:"
+                android:orientation="vertical"
+                android:background="@color/background_light"
+                android:layout_marginVertical="16dp"
+                android:padding="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recipeDisplayIngredientList" />
+                app:layout_constraintTop_toBottomOf="@id/recipeDisplayIngredientList" >
+
+                <TextView
+                    style="@style/textBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comments"
+                    android:textStyle="bold"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/comments"
+                    style="@style/textBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"/>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -208,7 +207,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="DELETE"
-        app:backgroundTint="@color/secondary_dark"
+        app:backgroundTint="@color/negative"
         app:layout_constraintBottom_toTopOf="@id/recipe_display_nav_bar"
         app:layout_constraintEnd_toStartOf="@id/recipeEditButton"
         app:layout_constraintStart_toStartOf="parent"

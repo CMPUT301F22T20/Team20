@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.ingredient.Location;
@@ -32,10 +33,13 @@ import java.util.Objects;
 public class IngredientDialog extends DialogFragment {
 
     private EditText description;
-    private EditText unit;
     private EditText quantity;
     private DatePicker expiry;
     private Ingredient ingredientToEdit;
+
+    private Spinner unit;
+    private ArrayAdapter<String> unitAdapter;
+    private final List<String> ingredientUnits = new ArrayList<>();
 
     private Spinner location;
     private ArrayAdapter<String> locationAdapter;
@@ -67,27 +71,37 @@ public class IngredientDialog extends DialogFragment {
     }
 
     /**
-     * Retrieves locations and categories from firestore and populates a string array with the content
+     * Retrieves locations and categories from firestore and populates a string array with the content,
+     * initializes the unit dropdown from {@link com.example.foodtracker.model.IngredientUnit.IngredientUnit} values
      */
-    private void getLocationsAndCategories(@Nullable Ingredient ingredient) {
+    private void initializeDropdowns(@Nullable Ingredient ingredient) {
         categoryCollection.getAll(list -> {
             for (Category category : list) {
-                categories.add(category.getName());
+                categories.add(category.getName().toUpperCase());
                 categoryAdapter.notifyDataSetChanged();
             }
             if (ingredient != null) {
                 category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
             }
         });
+
         locationCollection.getAll(list -> {
             for (Location location : list) {
-                locations.add(location.getName());
+                locations.add(location.getName().toUpperCase());
                 locationAdapter.notifyDataSetChanged();
             }
             if (ingredient != null) {
                 location.setSelection(locationAdapter.getPosition(ingredient.getLocation()));
             }
         });
+
+        for (IngredientUnit ingredientUnit : IngredientUnit.values()) {
+            ingredientUnits.add(ingredientUnit.name());
+        }
+        unitAdapter.notifyDataSetChanged();
+        if (ingredient != null) {
+            unit.setSelection(unitAdapter.getPosition(ingredient.getUnit()));
+        }
     }
 
     /**
@@ -103,12 +117,19 @@ public class IngredientDialog extends DialogFragment {
         description = view.findViewById(R.id.ingredientDescription);
         unit = view.findViewById(R.id.ingredientUnit);
         quantity = view.findViewById(R.id.ingredientQuantity);
+
         location = view.findViewById(R.id.ingredientLocation);
         locationAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, locations);
         location.setAdapter(locationAdapter);
+
         category = view.findViewById(R.id.ingredientCategory);
         categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categories);
         category.setAdapter(categoryAdapter);
+
+        unit = view.findViewById(R.id.ingredientUnit);
+        unitAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, ingredientUnits);
+        unit.setAdapter(unitAdapter);
+
         expiry = view.findViewById(R.id.datePicker);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -117,13 +138,13 @@ public class IngredientDialog extends DialogFragment {
             Bundle selectedBundle = getArguments();
             ingredientToEdit = (Ingredient) selectedBundle.get("ingredient");
             initializeIngredient(ingredientToEdit);
-            getLocationsAndCategories(ingredientToEdit);
+            initializeDropdowns(ingredientToEdit);
             return builder.setView(view).setTitle("Edit ingredient")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
                     .create();
         }
-        getLocationsAndCategories(null);
+        initializeDropdowns(null);
         return builder.setView(view).setTitle("Add an ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", (dialogInterface, i) -> addClick())
@@ -132,7 +153,6 @@ public class IngredientDialog extends DialogFragment {
 
     public void initializeIngredient(Ingredient ingredient) {
         description.setText(ingredient.getDescription());
-        unit.setText(ingredient.getUnit());
         quantity.setText(String.valueOf(ingredient.getAmount()));
         setDatePicker(ingredient);
     }
@@ -150,7 +170,6 @@ public class IngredientDialog extends DialogFragment {
 
     private void setIngredientFields(Ingredient ingredient) {
         ingredient.setDescription(description.getText().toString());
-        ingredient.setUnit(unit.getText().toString());
         String quantityString = quantity.getText().toString();
         int quantity = 1;
         try {
@@ -159,9 +178,10 @@ public class IngredientDialog extends DialogFragment {
             e.printStackTrace();
         }
         ingredient.setAmount(quantity);
+        ingredient.setUnit(unit.getSelectedItem().toString());
         ingredient.setLocation(location.getSelectedItem().toString());
         ingredient.setCategory(category.getSelectedItem().toString());
-        ingredient.setExpiry(String.format(Locale.CANADA, "%02d-%02d-%d", expiry.getDayOfMonth(), expiry.getMonth() + 1, expiry.getYear()));
+        ingredient.setExpiry(String.format(Locale.CANADA, "%02d-%02d-%d",  expiry.getDayOfMonth(),expiry.getMonth() + 1, expiry.getYear()));
     }
 
     private void setDatePicker(Ingredient ingredient) {
