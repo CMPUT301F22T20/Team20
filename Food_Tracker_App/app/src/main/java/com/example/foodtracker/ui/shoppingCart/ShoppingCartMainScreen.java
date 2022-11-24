@@ -74,8 +74,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
         initializeShoppingListView();
     }
 
-    // Should be good
-    private List<SimpleIngredient> getRequiredIngredients() {
+    private Set<SimpleIngredient> getRequiredIngredients() {
         List<SimpleIngredient> requiredIngredients = new ArrayList<>();
         for (MealPlanDay mealPlanDay : mealPlanDays) {
             requiredIngredients.addAll(mealPlanDay.getIngredients());
@@ -83,42 +82,53 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
                 requiredIngredients.addAll(recipe.getIngredients());
             }
         }
-        return requiredIngredients;
+        return combineLikewiseIngredients(requiredIngredients);
     }
 
-    // Not sure if completely working
-    private void initializeShoppingListView() {
-        for (SimpleIngredient requiredIngredient : ingredientsInShoppingList) {
-            String shoppingCategory = requiredIngredient.getCategory().getName();
-            if (ingredientsByCategory.containsKey(shoppingCategory)) {
-                Set<SimpleIngredient> ingredientsInCategory = Objects.requireNonNull(ingredientsByCategory.get(shoppingCategory));
-                SimpleIngredient ingredientInShoppingList = getIngredient(ingredientsInCategory, requiredIngredient);
-                if (ingredientInShoppingList != null) {
-                    ingredientInShoppingList.addIngredientAmount(requiredIngredient.getAmount());
-                } else {
-                    ingredientsInCategory.add(requiredIngredient);
+    private Set<SimpleIngredient> combineLikewiseIngredients(List<SimpleIngredient> ingredients) {
+        Set<SimpleIngredient> mergedIngredients = new HashSet<>();
+        for (int i = 0; i < ingredients.size(); i++) {
+            boolean ingredientAdded = false;
+            SimpleIngredient ingredientA = ingredients.get(i);
+            for (int j = i + 1; j < ingredients.size(); j++) {
+                SimpleIngredient ingredientB = ingredients.get(j);
+                if (i != j && ingredientA.equals(ingredientB)) {
+                    ingredientA.addIngredientAmount(ingredientB.getAmount());
+                    mergedIngredients.add(ingredientA);
+                    ingredientAdded = true;
                 }
-            } else {
-                Set<SimpleIngredient> ingredientsToPurchase = new HashSet<>();
-                ingredientsToPurchase.add(requiredIngredient);
-                ingredientsByCategory.put(shoppingCategory, ingredientsToPurchase);
+            }
+            if (!ingredientAdded) {
+                mergedIngredients.add(ingredientA);
             }
         }
+        return mergedIngredients;
+    }
+
+    private void initializeShoppingListView() {
+        setIngredientsByCategory();
         expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
         shoppingCartExpandableList.setAdapter(expandableListAdapter);
     }
 
-    private SimpleIngredient getIngredient(Set<SimpleIngredient> ingredients, SimpleIngredient ingredient) {
-        for (SimpleIngredient ingredientInShoppingList : ingredients) {
-            if (ingredient.equals(ingredientInShoppingList)) {
-                return ingredientInShoppingList;
+    private void setIngredientsByCategory() {
+        for (SimpleIngredient shoppingListIngredient : ingredientsInShoppingList) {
+            String shoppingCategory = shoppingListIngredient.getCategory().getName();
+            Set<SimpleIngredient> ingredientsInCategory;
+            if (ingredientsByCategory.containsKey(shoppingCategory)) {
+                ingredientsInCategory = Objects.requireNonNull(ingredientsByCategory.get(shoppingCategory));
+                List<SimpleIngredient> categoryWithAddedIngredient = new ArrayList<>(ingredientsInCategory);
+                categoryWithAddedIngredient.add(shoppingListIngredient);
+                ingredientsInCategory = combineLikewiseIngredients(categoryWithAddedIngredient);
+            } else {
+                ingredientsInCategory = new HashSet<>();
+                ingredientsInCategory.add(shoppingListIngredient);
             }
+            ingredientsByCategory.put(shoppingCategory, ingredientsInCategory);
         }
-        return null;
     }
 
-    // Not quite working yet
-    private void setIngredientsInShoppingList(List<SimpleIngredient> ingredientsRequired) {
+    private void setIngredientsInShoppingList(Set<SimpleIngredient> ingredientsRequired) {
         for (SimpleIngredient requiredIngredient : ingredientsRequired) {
             boolean consideredForShoppingList = false;
             for (Ingredient ingredientInStorage : ingredientsInStorage) {
