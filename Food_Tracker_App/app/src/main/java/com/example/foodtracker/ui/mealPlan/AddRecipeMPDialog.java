@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class AddRecipeMPDialog extends DialogFragment {
 
     private TextView title;
     private EditText serving;
+    private ImageButton closeButton;
 
     private MealPlanRecipeDialogListener listener;
 
@@ -52,7 +54,14 @@ public class AddRecipeMPDialog extends DialogFragment {
         View view = getLayoutInflater().inflate(R.layout.add_recipe_meal_plan_dialog, null);
         title = view.findViewById(R.id.recipeTitle);
         serving = view.findViewById(R.id.recipeServings);
+        closeButton = view.findViewById(R.id.closeButton);
 
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -63,7 +72,6 @@ public class AddRecipeMPDialog extends DialogFragment {
             initializeFields(received_recipe);
 
             return builder.setView(view).setTitle("Add Meal plan recipe")
-                    .setNegativeButton("Cancel", null)
                     .setPositiveButton("Add", (dialogInterface, i) -> addClick(received_recipe))
                     .create();
         }
@@ -76,14 +84,12 @@ public class AddRecipeMPDialog extends DialogFragment {
             serving.setText(String.valueOf(received_recipe.getServings()));
 
             return builder.setView(view).setTitle("Edit Servings")
-                    .setNegativeButton("Cancel", null)
                     .setPositiveButton("Edit", (dialogInterface, i) -> editClick(received_recipe))
                     .create();
 
         }
 
         return builder.setView(view).setTitle("Add an ingredient")
-                .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", null)
                 .create();
 
