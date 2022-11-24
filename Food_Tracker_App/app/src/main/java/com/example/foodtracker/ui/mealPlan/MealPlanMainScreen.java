@@ -159,21 +159,27 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     }
 
     @Override
-    public void addMP(String dates) {
+    public void addMP(ArrayList<String> listOfDates) {
 
         //TODO clear the database when there are items
 
         ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
 
-        MealPlanDay mealPlanDay = new MealPlanDay(dates, ingredientArrayList, recipeArrayList);
+        mealPlanDayArrayList.clear();
+        for (String dates: listOfDates){
+            MealPlanDay mealPlanDay = new MealPlanDay(dates, ingredientArrayList, recipeArrayList);
+            mealPlanDayArrayList.add(mealPlanDay);
+        }
+        adapter.notifyDataSetChanged();
 
 
-        mealPlanDayArrayList.add(mealPlanDay);
+        /*
         mealPlanDaysCollection.createDocument(mealPlanDay, () -> {
-                    adapter.notifyItemInserted(ingredientArrayList.indexOf(mealPlanDay));
+                    adapter.notifyItemInserted(mealPlanDayArrayList.indexOf(mealPlanDay));
                 }
-        );
+                //sort.sortByFieldName();
+        ); */
     }
 
     @Override
@@ -184,11 +190,22 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         MealPlanDay mealPlanDay = new MealPlanDay(day, ingredientArrayList, recipeArrayList);
 
         mealPlanDayArrayList.add(mealPlanDay);
+        adapter.notifyItemInserted(mealPlanDayArrayList.lastIndexOf(mealPlanDay));
     }
 
     @Override
     public boolean isInList(String day) {
     //TODO implement check to make sure there are no duplicates
+
+        ArrayList<String> mealPlanDays = new ArrayList<>();
+
+        for (MealPlanDay meal: mealPlanDayArrayList){
+                mealPlanDays.add(meal.getDay());
+        }
+
+        if (mealPlanDays.contains(day)){
+            return true;
+        }
         return false;
     }
 

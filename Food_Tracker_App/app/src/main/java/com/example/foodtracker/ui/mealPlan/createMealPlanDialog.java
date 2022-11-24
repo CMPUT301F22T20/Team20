@@ -18,6 +18,7 @@ import com.example.foodtracker.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,12 +28,10 @@ public class createMealPlanDialog extends DialogFragment {
 
 
     public interface setMPDatesListener{
-        void addMP(String dates);
+        void addMP(ArrayList<String> listOfMpDates);
     }
 
     private setMPDatesListener mpDatesListener;
-    String startDay;
-    String endDay;
 
     @Override
     public void onAttach(Context context) {
@@ -99,14 +98,15 @@ public class createMealPlanDialog extends DialogFragment {
     public void setDates(Calendar startDay, Calendar endDay) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        ArrayList<String> listDates = new ArrayList<>();
 
         while(startDay.compareTo(endDay) < 1){
-
             Date convertDate =  startDay.getTime();
             String strDate = dateFormat.format(convertDate);
-
             startDay.add(Calendar.DAY_OF_MONTH, 1);
-            mpDatesListener.addMP(strDate);
+
+            listDates.add(strDate);
+            mpDatesListener.addMP(listDates);
 
         }
     }

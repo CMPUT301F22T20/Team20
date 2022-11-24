@@ -19,6 +19,7 @@ import com.example.foodtracker.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 
@@ -69,15 +70,13 @@ public class singleMealPlanDialog extends DialogFragment {
                                 ,singleDate.getMonth() + 1, singleDate.getYear());
 
                         //TODO fix this
-                        if (!singleMPDatesListener.isInList(entryDay)){
-                            String message = "Start day cannot be after end day";
-                            Toast.makeText(getContext(),message, Toast.LENGTH_LONG).show();
-
+                        if (singleMPDatesListener.isInList(entryDay) == false){
                             setDay(cStart);
+                            dialog.dismiss();
                         }
                         else {
-                            String message = "Not in list";
-                            dialog.dismiss();
+                            String message = "This day is already in the meal plan.";
+                            Toast.makeText(getContext(),message, Toast.LENGTH_LONG).show();
                         }
 
                         //TODO: get the end date of mealplan array's values and compare.
@@ -92,8 +91,10 @@ public class singleMealPlanDialog extends DialogFragment {
     }
     public void setDay(Calendar singleDay) {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date convertDate =  singleDay.getTime();
+        String strDate = dateFormat.format(convertDate);
 
-        //mpDatesListener.addMP(singleDay);
+        singleMPDatesListener.addSingle(strDate);
     }
 
 
