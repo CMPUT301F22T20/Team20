@@ -4,7 +4,6 @@ import static com.example.foodtracker.ui.mealPlan.AddMealPlanDialog.CREATE_MEAL_
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,16 +13,9 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.ingredient.Ingredient;
-import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
-import com.example.foodtracker.utils.Collection;
-
-import java.util.ArrayList;
-import com.example.foodtracker.ui.TopBar;
-import com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog;
-import com.example.foodtracker.ui.recipes.RecipeRecyclerViewAdapter;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
@@ -219,7 +211,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         addIngredientMPDialog.show(getSupportFragmentManager(), "ADD_MEAL_PLAN_INGREDIENT");
 
          */
-        Intent intent = new Intent(getApplicationContext(), IngredientList.class);
+        Intent intent = new Intent(getApplicationContext(), SelectIngredient.class);
         intent.putExtra("meal_plan_for_ingredient_add", mealPlan);
         startActivity(intent);
 

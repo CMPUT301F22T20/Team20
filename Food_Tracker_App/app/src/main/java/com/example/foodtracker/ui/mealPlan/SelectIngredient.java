@@ -12,12 +12,16 @@ import android.widget.ListView;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
+import com.example.foodtracker.model.recipe.SimpleIngredient;
+import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
 
-public class IngredientList extends AppCompatActivity implements
-        AddIngredientMPDialog.MealPlanIngredientDialogListener{
+public class SelectIngredient extends AppCompatActivity implements
+        AddIngredientMPDialog.MealPlanIngredientDialogListener,
+        TopBar.TopBarListener,
+        AddNewIngredientMPDialog.smallIngredientListener {
 
     ListView ingredientListView;
     ArrayList<Ingredient> ingredientArrayList;
@@ -32,7 +36,7 @@ public class IngredientList extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredient_list);
+        setContentView(R.layout.meal_plan_select_ingredient);
 
         ingredientListView = findViewById(R.id.ingredient_list);
         ingredientArrayList = new ArrayList<>();
@@ -57,6 +61,10 @@ public class IngredientList extends AppCompatActivity implements
 
             }
         });
+
+        if (savedInstanceState == null) {
+            createTopBar();
+        }
     }
 
     /**
@@ -84,4 +92,31 @@ public class IngredientList extends AppCompatActivity implements
         //do nothing
     }
 
+    /**
+     * Instantiates the top bar fragment for the recipe display menu
+     */
+    private void createTopBar() {
+        TopBar topBar = TopBar.newInstance("Select Ingredient", true, true);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
+                .commit();
+    }
+
+    @Override
+    public void onAddClick() {
+        /**
+         *add a new ingredient which is not in the ingredient storage
+         */
+        AddNewIngredientMPDialog addNewIngredientMPDialog = new AddNewIngredientMPDialog();
+        addNewIngredientMPDialog.show(getSupportFragmentManager(), "ADD_NEW_MEAL_PLAN_INGREDIENT");
+    }
+
+    @Override
+    public void addRecipeIngredient(Ingredient new_ingredient) {
+        mealPlan.getIngredients().add(new_ingredient);
+        Intent intent1 = new Intent(getApplicationContext(), MealPlanMainScreen.class);
+        intent1.putExtra("meal_plan_after_ingredient_add", mealPlan);
+        startActivity(intent1);
+    }
 }

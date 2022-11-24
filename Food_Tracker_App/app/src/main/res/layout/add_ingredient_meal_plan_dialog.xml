@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="88dp"
+        android:layout_marginRight="88dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/ic_egg_alt_fill0_wght400_grad0_opsz48_black" />
 
     <TextView
         android:id="@+id/ingredientTextView"
@@ -13,6 +33,21 @@
         android:ems="10"
         android:text="Description"
         style="@style/inputField"/>
+
+    <TextView
+        android:id="@+id/QuantityTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:paddingTop = "16dp"
+        android:paddingLeft = "8dp"
+        android:paddingRight = "8dp"
+        android:paddingBottom = "0dp"
+        android:layout_marginTop = "16dp"
+        android:layout_marginLeft = "16dp"
+        android:layout_marginRight = "16dp"
+        android:layout_marginBottom = "0dp"
+        android:text="Ingredient Amount:" />
 
 
     <EditText

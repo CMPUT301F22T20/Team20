@@ -15,6 +15,21 @@
         android:text="Recipe Title" />
 
 
+    <TextView
+        android:id="@+id/ServingTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:paddingTop = "16dp"
+        android:paddingLeft = "8dp"
+        android:paddingRight = "8dp"
+        android:paddingBottom = "0dp"
+        android:layout_marginTop = "16dp"
+        android:layout_marginLeft = "16dp"
+        android:layout_marginRight = "16dp"
+        android:layout_marginBottom = "0dp"
+        android:text="Recipe Servings:" />
+
     <EditText
         android:id="@+id/recipeServings"
         android:layout_width="match_parent"
