@@ -36,6 +36,8 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         //handles Recipe operations
         void deleteRecipe(int recipePosition,MealPlanDay object);
 
+        void scaleIngredient(int ingredientPosition, MealPlanDay object);
+
     }
 
     public interface MealPlanArrayListener {
@@ -145,6 +147,12 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         public void deleteIngredient(int ingredientPosition) {
             MealPlanDay mealPlanDay = mealPlanDayArrayList.get(getAdapterPosition());
             mealPlanListener.deleteIngredient(ingredientPosition,mealPlanDay);
+        }
+
+        @Override
+        public void scaleIngredient(int ingredientPosition) {
+            MealPlanDay mealPlanDay = mealPlanDayArrayList.get(getAdapterPosition());
+            mealPlanListener.scaleIngredient(ingredientPosition, mealPlanDay);
         }
 
         @Override

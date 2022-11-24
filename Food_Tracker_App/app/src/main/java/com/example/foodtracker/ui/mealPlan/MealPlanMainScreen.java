@@ -37,7 +37,8 @@ import java.util.ArrayList;
 public class MealPlanMainScreen extends AppCompatActivity implements
         TopBar.TopBarListener,
         MealPlanDayRecyclerViewAdapter.MealPlanDayArrayListener,
-        MealPlanDayRecyclerViewAdapter.MealPlanArrayListener
+        MealPlanDayRecyclerViewAdapter.MealPlanArrayListener,
+        AddIngredientMPDialog.MealPlanIngredientDialogListener
 {
     public static final String MEAL_PLAN_AFTER_INGREDIENT_ADD = "meal_plan_after_ingredient_add";
     public static final String MEAL_PLAN_AFTER_RECIPE_ADD = "meal_plan_after_recipe_add";
@@ -159,6 +160,32 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
     }
 
+    /**
+     * change the amount of ingredients in a meal plan
+     * @param ingredientPosition
+     * @param object
+     */
+    @Override
+    public void scaleIngredient(int ingredientPosition, MealPlanDay object) {
+        Bundle args = new Bundle();
+        Bundle bundle1 = new Bundle();
+        Bundle bundle2 = new Bundle();
+
+        bundle1.putSerializable("meal_plan", object);
+
+        //Ingredient ingredient = object.getIngredients().get(ingredientPosition);
+        bundle2.putSerializable("ingredient_index", ingredientPosition);
+
+        args.putBundle("meal_plan_edit_ingredient", bundle1);
+        args.putBundle("edit_ingredient", bundle2);
+
+        AddIngredientMPDialog addIngredientMPDialog = new AddIngredientMPDialog();
+        addIngredientMPDialog.setArguments(args);
+
+        addIngredientMPDialog.show(getSupportFragmentManager(), "EDIT_MEAL_PLAN_INGREDIENT");
+
+    }
+
 
     @Override
     public void onAddIngredientClick(MealPlanDay mealPlan) {
@@ -200,4 +227,14 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         mealPlanDaysCollection.updateDocument(meal_plan_add_recipe, () -> adapter.notifyItemChanged(editIndex));
     }
 
+    @Override
+    public void onIngredientAdd(Ingredient meal_plan_add_ingredient) {
+        //do nothing
+    }
+
+    @Override
+    public void onIngredientEdit(MealPlanDay meal_plan_edit_ingredient) {
+        int editIndex = mealPlanDayArrayList.indexOf(meal_plan_edit_ingredient);
+        mealPlanDaysCollection.updateDocument(meal_plan_edit_ingredient, () -> adapter.notifyItemChanged(editIndex));
+    }
 }

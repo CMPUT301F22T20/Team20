@@ -78,4 +78,10 @@ public class IngredientList extends AppCompatActivity implements
         intent1.putExtra("meal_plan_after_ingredient_add", mealPlan);
         startActivity(intent1);
     }
+
+    @Override
+    public void onIngredientEdit(MealPlanDay meal_plan_edit_ingredient) {
+        //do nothing
+    }
+
 }

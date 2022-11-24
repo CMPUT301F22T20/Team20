@@ -23,32 +23,32 @@
             android:id="@+id/text_ingredient_quantity"
             style="@style/ingredientViewText"
             android:layout_below="@id/ingredient_name"
-            android:text="@string/ingredient_amount" />
+            android:text="Amount" />
 
         <TextView
             android:id="@+id/text_ingredient_category"
             style="@style/ingredientViewText"
             android:layout_below="@id/text_ingredient_quantity"
-            android:text="@string/ingredient_category" />
+            android:text="Category" />
 
         <TextView
             android:id="@+id/text_ingredient_expiry"
             style="@style/ingredientViewText"
             android:layout_below="@id/ingredient_name"
             android:layout_alignParentEnd="true"
-            android:text="@string/ingredient_expiry" />
+            android:text="Expiry" />
 
         <TextView
             android:id="@+id/text_ingredient_location"
             style="@style/ingredientViewText"
             android:layout_below="@id/text_ingredient_category"
-            android:text="@string/ingredient_location" />
+            android:text="Location" />
         <TextView
             android:id="@+id/ingredient_unit"
             style="@style/ingredientViewText"
             android:layout_below="@id/text_ingredient_category"
             android:layout_alignParentEnd="true"
-            android:text="@string/ingredient_unit" />
+            android:text="Unit" />
 
 
 

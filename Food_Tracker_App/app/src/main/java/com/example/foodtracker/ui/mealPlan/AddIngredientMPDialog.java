@@ -34,6 +34,7 @@ public class AddIngredientMPDialog extends DialogFragment {
 
     public interface MealPlanIngredientDialogListener {
         void onIngredientAdd(Ingredient meal_plan_add_ingredient);
+        void onIngredientEdit(MealPlanDay meal_plan_edit_ingredient);
     }
 
     @Override
@@ -69,6 +70,22 @@ public class AddIngredientMPDialog extends DialogFragment {
                     .create();
         }
 
+        if (getArguments().get("meal_plan_edit_ingredient") != null) {
+            Bundle bundle1 = (Bundle) getArguments().get("meal_plan_edit_ingredient");
+            MealPlanDay received_meal_plan = (MealPlanDay) bundle1.get("meal_plan");
+
+            Bundle bundle2 = (Bundle) getArguments().get("edit_ingredient");
+            int received_ingredient_index = (int) bundle2.get("ingredient_index");
+            Ingredient received_ingredient = received_meal_plan.getIngredients().get(received_ingredient_index);
+
+            initializeFields(received_ingredient);
+            return builder.setView(view).setTitle("Edit Ingredient Amount")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Edit",
+                            (dialogInterface, i) -> editClick(received_meal_plan, received_ingredient_index))
+                    .create();
+        }
+
         return builder.setView(view).setTitle("Add an ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", null)
@@ -92,6 +109,14 @@ public class AddIngredientMPDialog extends DialogFragment {
 
         if (setFields(ingredientToAdd)) {
             listener.onIngredientAdd(ingredientToAdd);
+        }
+    }
+
+    public void editClick(MealPlanDay meal_plan, int index) {
+        Ingredient ingredient = meal_plan.getIngredients().get(index);
+        if (setFields(ingredient)) {
+            meal_plan.getIngredients().get(index).setAmount(ingredient.getAmount());
+            listener.onIngredientEdit(meal_plan);
         }
     }
 

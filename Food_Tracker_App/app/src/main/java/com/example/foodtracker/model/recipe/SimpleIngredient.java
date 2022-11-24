@@ -55,9 +55,12 @@ public class SimpleIngredient implements Serializable {
         this.amount = amount;
     }
 
+
     public String getUnit() {
         return unit.name();
     }
+
+
 
     public String getUnitAbbreviation() {
         return unit.getUnitAbbreviation();

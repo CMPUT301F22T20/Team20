@@ -45,7 +45,7 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
         TextView ingredientDate = view.findViewById(R.id.text_ingredient_expiry);
 
         ingredientName.setText(ingredient.getDescription());
-        //ingredientAmount.setText(String.valueOf(ingredient.getAmount()));
+//        ingredientAmount.setText(String.valueOf(ingredient.getAmount()));
         ingredientLocation.setText(ingredient.getLocation());
         ingredientCategory.setText(ingredient.getCategory());
         ingredientDate.setText(ingredient.getExpiry());
