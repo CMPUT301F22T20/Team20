@@ -20,13 +20,19 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
     private final ArrayList<Recipe> recipeArrayList;
     private final Context context;
 
+    public interface MPRecipesArrayListener{
+        void deleteRecipe(int recipePosition);
+    }
+    private MealPlanRecipesRecyclerViewAdapter.MPRecipesArrayListener mpRecipesArrayListener;
 
-    MealPlanRecipesRecyclerViewAdapter(ArrayList<Recipe> recipeArrayList, Context context) {
+
+    MealPlanRecipesRecyclerViewAdapter(ArrayList<Recipe> recipeArrayList, Context context, MPRecipesArrayListener mpRecipesArrayListener) {
         this.recipeArrayList = recipeArrayList;
         this.context = context;
+        this.mpRecipesArrayListener= mpRecipesArrayListener;
+
 
     }
-
 
     @NonNull
     @Override
@@ -47,10 +53,6 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
         holder.prepTime.setText(String.format("Prep Time: %s", recipe.getPrepTime()));
 
 
-        holder.deleteRecipe.setOnClickListener(onClick -> {
-            recipeArrayList.remove(recipe);
-            notifyDataSetChanged();
-        });
 
     }
 
@@ -73,7 +75,14 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
 
 
         public MealPlanRecipeHolder(View itemView) {
+
             super(itemView);
+            deleteRecipe.setOnClickListener(onClick -> {
+                Recipe recipe = recipeArrayList.get(getAdapterPosition());
+                recipeArrayList.remove(recipe);
+                mpRecipesArrayListener.deleteRecipe(getAdapterPosition());
+            });
+
         }
     }
 }

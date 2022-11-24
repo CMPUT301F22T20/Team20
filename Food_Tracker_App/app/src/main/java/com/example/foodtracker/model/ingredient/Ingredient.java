@@ -53,6 +53,17 @@ public class Ingredient extends Document {
         setCategory(simpleIngredient.getCategory());
     }
 
+    //TODO: Had to add this back in to instantiate a new meal plan day object- delete later if not needed
+    public Ingredient(String description, String unit, String location, String category,
+                      int amount, String expiry) {
+        setDescription(description);
+        setUnit(unit);
+        setLocation(location);
+        setCategory(category);
+        setAmount(amount);
+        setExpiry(expiry);
+    }
+
     @Override
     public String getCollectionName() {
         return INGREDIENTS_COLLECTION_NAME;

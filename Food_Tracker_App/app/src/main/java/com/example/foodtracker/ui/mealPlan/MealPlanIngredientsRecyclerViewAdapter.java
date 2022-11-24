@@ -26,7 +26,7 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
    private MPIngredientArrayListener mpIngredientArrayListener;
 
 
-    MealPlanIngredientsRecyclerViewAdapter(ArrayList<Ingredient> ingredientArrayList, Context context,MPIngredientArrayListener mpIngredientArrayListener) {
+    MealPlanIngredientsRecyclerViewAdapter(ArrayList<Ingredient> ingredientArrayList, Context context, MPIngredientArrayListener mpIngredientArrayListener) {
         this.ingredientArrayList = ingredientArrayList;
         this.context = context;
         this.mpIngredientArrayListener= mpIngredientArrayListener;

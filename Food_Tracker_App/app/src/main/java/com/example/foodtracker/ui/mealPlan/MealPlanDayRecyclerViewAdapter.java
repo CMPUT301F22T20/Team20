@@ -26,14 +26,14 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
 
     public interface MealPlanDayArrayListener{
         //handles operations with MEAL PLAN
-        void onDelete(MealPlanDay mealPlanDay);
-        void onEdit(MealPlanDay mealPlanDay);
+        void deleteMealPlan(MealPlanDay mealPlanDay);
+
 
         //handles with Ingredient operations
         void deleteIngredient(int ingredientPosition,MealPlanDay object);
 
         //handles Recipe operations
-      //  void deleteRecipe(int recipePosition,MealPlanDay object);
+        void deleteRecipe(int recipePosition,MealPlanDay object);
 
     }
 
@@ -82,7 +82,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         holder.mealPlanDayIngredientsList.setLayoutManager(layoutManager2);
         holder.mealPlanDayIngredientsList.setAdapter(childItemAdapter);
 
-        MealPlanRecipesRecyclerViewAdapter childItemAdapter2 = new MealPlanRecipesRecyclerViewAdapter(mealPlanDay.getRecipes(),context);
+        MealPlanRecipesRecyclerViewAdapter childItemAdapter2 = new MealPlanRecipesRecyclerViewAdapter(mealPlanDay.getRecipes(),context,holder);
         holder.mealPlanDayRecipesList.setLayoutManager(layoutManager);
         holder.mealPlanDayRecipesList.setAdapter(childItemAdapter2);
 
@@ -96,7 +96,8 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
     /**
      * Represents an {@link MealPlanDay} in our {@link MealPlanDayRecyclerViewAdapter}
      */
-    public class MealPlanDayHolder extends RecyclerView.ViewHolder implements MealPlanIngredientsRecyclerViewAdapter.MPIngredientArrayListener {
+    public class MealPlanDayHolder extends RecyclerView.ViewHolder implements MealPlanIngredientsRecyclerViewAdapter.MPIngredientArrayListener,
+            MealPlanRecipesRecyclerViewAdapter.MPRecipesArrayListener{
 
         protected final TextView day = itemView.findViewById(R.id.mealPlanDay);
         protected RecyclerView mealPlanDayIngredientsList = itemView.findViewById(R.id.mealPlanIngredientsList);
@@ -107,7 +108,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
             super(itemView);
             mealPlanDayDelete.setOnClickListener(onClick -> {
                 MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
-                mealPlanListener.onDelete(mealPlan);
+                mealPlanListener.deleteMealPlan(mealPlan);
             });
             
         }
@@ -116,6 +117,12 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         public void deleteIngredient(int ingredientPosition) {
             MealPlanDay mealPlanDay = mealPlanDayArrayList.get(getAdapterPosition());
             mealPlanListener.deleteIngredient(ingredientPosition,mealPlanDay);
+        }
+
+        @Override
+        public void deleteRecipe(int recipePosition) {
+            MealPlanDay mealPlanDay = mealPlanDayArrayList.get(getAdapterPosition());
+            mealPlanListener.deleteRecipe(recipePosition,mealPlanDay);
         }
     }
 }

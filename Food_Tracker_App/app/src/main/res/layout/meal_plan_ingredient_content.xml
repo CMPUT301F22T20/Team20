@@ -21,6 +21,7 @@
             android:layout_height="15dp"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/mealPlanIngredientName"
+            android:layout_alignEnd="@id/mealPlanIngredientUnit"
             android:background="@android:color/transparent"
             app:tint="@color/primary_light"
             cardView:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48" />
@@ -35,13 +36,13 @@
             android:id="@+id/mealPlanIngredientCategory"
             style="@style/ingredientViewText"
             android:layout_below="@id/mealPlanIngredientName"
-            android:text="@string/ingredient_category" />
+            android:text="@string/category" />
 
         <TextView
             android:id="@+id/mealPlanIngredientAmount"
             style="@style/ingredientViewText"
             android:layout_below="@id/mealPlanIngredientCategory"
-            android:text="@string/ingredient_amount" />
+            android:text="@string/amount" />
 
         <TextView
             android:id="@+id/mealPlanIngredientUnit"
@@ -49,7 +50,7 @@
             android:layout_below="@id/mealPlanIngredientCategory"
             android:layout_marginLeft="32dp"
             android:layout_toRightOf="@id/mealPlanIngredientAmount"
-            android:text="@string/ingredient_unit" />
+            android:text="@string/unit" />
 
 
     </RelativeLayout>

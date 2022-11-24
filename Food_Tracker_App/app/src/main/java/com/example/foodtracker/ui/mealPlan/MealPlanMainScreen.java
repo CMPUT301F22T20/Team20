@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
-import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
-import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
@@ -33,7 +31,6 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
 
 
-    private final ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
 
     public MealPlanMainScreen() {
         super(R.layout.meal_plan_main);
@@ -46,10 +43,10 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_main);
-        initializeData();
+         initializeData();
 
         if (savedInstanceState == null) {
-            //createData();
+          //  createData();  TODO: REMOVE LATER
             createRecyclerView();
             createNavBar();
             createTopBar();
@@ -59,25 +56,48 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     /**
      * Adds some initial data to the list
      */
+
     private void initializeData() {
-        mealPlanDaysCollection.getAll(list -> {
-            mealPlanDayArrayList.addAll(list);
-            adapter.notifyItemRangeInserted(0, mealPlanDayArrayList.size());
+         mealPlanDaysCollection.getAll(list -> {
+         mealPlanDayArrayList.addAll(list);
+         adapter.notifyItemRangeInserted(0, mealPlanDayArrayList.size());
         });
     }
 
+
+    //TODO Delete createData() - this was used for being able to add a new meal plan object for testing
+
+/*
     private void createData() {
         ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
-        ingredientArrayList.add(new Ingredient("apple", "", "pantry", "snack", 2, ""));
+        ArrayList<SimpleIngredient> simpleIngredient = new ArrayList<>();
+
+       // SimpleIngredient sIng1 = new SimpleIngredient("Apple","KILOGRAM","PANTRY","SHELF",1,"01-01-2022");
+       // simpleIngredient.add(sIng1);
+
+        Ingredient ing1 = new Ingredient("Cheese","KILOGRAM","PANTRY","SHELF",1,"01-01-2022");
+        Ingredient ing2 = new Ingredient("Chocolate","KILOGRAM","PANTRY","SHELF",1,"01-01-2022");
+
+        ingredientArrayList.add(ing1);
+        ingredientArrayList.add(ing2);
+
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-        recipeArrayList.add(new Recipe("", "Soup", 90, 6, "Dinner", "", ingredientArrayList));
+        Recipe rec1  = new Recipe("", "Ice Cream",20,2,"DINNER","",simpleIngredient);
+        Recipe rec2  = new Recipe("", "Pie",22,2,"DINNER","",simpleIngredient);
+        Recipe rec3 =  new Recipe("", "Cheesecake",22,2,"DINNER","",simpleIngredient);
+        recipeArrayList.add(rec1);
+        recipeArrayList.add(rec2);
+        recipeArrayList.add(rec3);
+
         MealPlanDay mealPlanDay = new MealPlanDay("11-20-2022", ingredientArrayList, recipeArrayList);
         mealPlanDayArrayList.add(mealPlanDay);
+
+
         mealPlanDaysCollection.createDocument(mealPlanDay, () -> {
             adapter.notifyItemInserted(mealPlanDayArrayList.indexOf(mealPlanDay));
         });
-    }
 
+    } */
     private void createRecyclerView() {
         RecyclerView mealPlanRecyclerView = findViewById(R.id.mealPlanDays);
         mealPlanRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -98,30 +118,42 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.topBarContainerView, topBar).commit();
 
     }
-    private void removeMealPlan(MealPlanDay mealPlanDay) {
+
+    @Override
+    public void deleteMealPlan(MealPlanDay mealPlanDay) {
         int removedIndex = mealPlanDayArrayList.indexOf(mealPlanDay);
         mealPlanDayArrayList.remove(removedIndex);
+
+
         mealPlanDaysCollection.delete(mealPlanDay, () ->
         adapter.notifyItemRemoved(removedIndex));
     }
 
-    @Override
-    public void onEdit(MealPlanDay object) {
-
-    }
+    /**
+     * Deletes an ingredient from a meal plan
+     * @param ingredientPosition
+     * @param mealPlan
+     */
 
     @Override
     public void deleteIngredient(int ingredientPosition, MealPlanDay mealPlan) {
-         mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
+        mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
     }
 
-    public void onDelete(MealPlanDay mealPlanDay) {
-        removeMealPlan(mealPlanDay);
-    }
 
     @Override
     public void onAddClick() {
         new AddMealPlanDialog().show(getSupportFragmentManager(), CREATE_MEAL_PLAN_TAG);
+    }
+
+    /**
+     * deletes a recipe from the meal plan
+     * @param recipePosition
+     * @param mealPlan
+     */
+    @Override
+    public void deleteRecipe(int recipePosition, MealPlanDay mealPlan) {
+        mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
     }
 
 }
