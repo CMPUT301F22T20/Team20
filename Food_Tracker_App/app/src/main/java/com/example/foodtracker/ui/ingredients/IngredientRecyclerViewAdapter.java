@@ -63,9 +63,9 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         Ingredient ingredient = ingredientArrayList.get(position);
         holder.name.setText(ingredient.getDescription());
         holder.unit.setText(String.format("Unit: %s", ingredient.getUnitAbbreviation()));
-        holder.amount.setText(String.format("Quantity: %s", ingredient.getAmount()));
+        holder.amount.setText(String.format("Quantity: %s", ingredient.getAmountQuantity()));
         holder.expiry.setText(String.format("Expiry Date: %s", ingredient.getExpiry()));
-        holder.category.setText(String.format("Category: %s", ingredient.getCategory()));
+        holder.category.setText(String.format("Category: %s", ingredient.getCategoryName()));
         holder.location.setText(String.format("Location: %s", ingredient.getLocation()));
         holder.extraIngredientInformation.setOnClickListener(v -> {
             int toggledVisibility = holder.expandIngredient.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;

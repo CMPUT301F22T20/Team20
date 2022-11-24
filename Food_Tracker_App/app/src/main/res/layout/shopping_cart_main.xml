@@ -21,14 +21,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:popupBackground="@color/background_light"
-        app:layout_constraintBottom_toTopOf="@+id/shoppinglist_list"
+        app:layout_constraintBottom_toTopOf="@+id/shopping_list_expandable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBarContainerView"
         tools:layout="@layout/sort"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shoppinglist_list"
+    <ExpandableListView
+        android:id="@+id/shopping_list_expandable"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/shopping_cart_nav_bar"

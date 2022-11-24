@@ -49,8 +49,8 @@ public class Ingredient extends Document {
     public Ingredient(SimpleIngredient simpleIngredient) {
         setDescription(simpleIngredient.getDescription());
         setUnit(simpleIngredient.getUnit());
-        setAmount(simpleIngredient.getAmount());
-        setCategory(simpleIngredient.getCategory());
+        setAmount(simpleIngredient.getAmountQuantity());
+        setCategory(simpleIngredient.getCategoryName());
     }
 
     @Override
@@ -64,13 +64,17 @@ public class Ingredient extends Document {
         data.put(FieldName.DESCRIPTION.getName(), this.getDescription());
         data.put(FieldName.UNIT.getName(), this.getUnit());
         data.put(FieldName.LOCATION.getName(), this.getLocation());
-        data.put(FieldName.CATEGORY.getName(), this.getCategory());
-        data.put(FieldName.AMOUNT.getName(), this.getAmount());
+        data.put(FieldName.CATEGORY.getName(), this.getCategoryName());
+        data.put(FieldName.AMOUNT.getName(), this.getAmountQuantity());
         data.put(FieldName.EXPIRY.getName(), this.getExpiry());
         return data;
     }
 
-    public double getAmount() {
+    public IngredientAmount getAmount() {
+        return this.ingredientAmount;
+    }
+
+    public double getAmountQuantity() {
         return ingredientAmount.getAmount();
     }
 
@@ -78,8 +82,12 @@ public class Ingredient extends Document {
         this.ingredientAmount.setAmount(amount);
     }
 
-    public String getCategory() {
+    public String getCategoryName() {
         return category.getName();
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     public void setCategory(String category) {
