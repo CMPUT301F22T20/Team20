@@ -147,7 +147,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
         for (SimpleIngredient requiredIngredient : ingredientsRequired) {
             boolean consideredForShoppingList = false;
             for (SimpleIngredient ingredientInStorage : ingredientsInStorage) {
-                if (ingredientInStorage.getDescription().equals(requiredIngredient.getDescription())) {
+                if (ingredientInStorage.equals(requiredIngredient)) {
                     SimpleIngredient ingredientToPurchase = new SimpleIngredient();
                     try {
                         ingredientToPurchase.setIngredientAmount(ConversionUtil.getMissingAmount(ingredientInStorage.getIngredientAmount(), requiredIngredient.getIngredientAmount()));
