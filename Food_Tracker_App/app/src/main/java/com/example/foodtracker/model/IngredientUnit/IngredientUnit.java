@@ -9,7 +9,8 @@ public enum IngredientUnit {
     TEASPOON("TSP"),
     TABLESPOON("TBSP"),
     LITRE("L"),
-    MILLILITRE("ML");
+    MILLILITRE("ML"),
+    UNIT("UNIT");
 
     final String unitAbbreviation;
 

@@ -27,7 +27,7 @@ public class Ingredient extends Document {
     /**
      * The name of the ingredient
      */
-    private String description;
+    private String description = "";
     /**
      * Represents where this ingredient is stored
      */
@@ -41,7 +41,7 @@ public class Ingredient extends Document {
     /**
      * Represents the expiry date of our ingredient
      */
-    private String expiry;
+    private String expiry = "";
 
     public Ingredient() {
     }
