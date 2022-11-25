@@ -17,7 +17,7 @@
             android:name=".ui.mealPlan.ViewRecipe"
             android:exported="false" />
         <activity
-            android:name=".ui.mealPlan.RecipeList"
+            android:name=".ui.mealPlan.SelectRecipe"
             android:exported="false" />
         <activity
             android:name=".ui.mealPlan.SelectIngredient"

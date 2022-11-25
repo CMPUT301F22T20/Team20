@@ -12,16 +12,16 @@
 
     <RelativeLayout
         android:id="@+id/meal_relative_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
         <ImageButton
             android:id="@+id/deleteMealPlanIngredient"
             android:layout_width="35dp"
             android:layout_height="15dp"
-            android:layout_marginLeft="20dp"
+            android:layout_alignParentRight="true"
             android:layout_toRightOf="@id/mealPlanIngredientName"
-            android:layout_alignEnd="@id/mealPlanIngredientUnit"
+            android:layout_marginLeft="32dp"
             android:background="@android:color/transparent"
             app:tint="@color/primary_light"
             cardView:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48" />

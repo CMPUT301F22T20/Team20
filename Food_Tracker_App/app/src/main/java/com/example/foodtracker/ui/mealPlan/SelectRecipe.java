@@ -10,14 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.recipe.Recipe;
+import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
 
-public class RecipeList extends AppCompatActivity implements
+public class SelectRecipe extends AppCompatActivity implements
         AddRecipeMPDialog.MealPlanRecipeDialogListener{
 
     ListView recipeListView;
@@ -33,7 +33,7 @@ public class RecipeList extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_list);
+        setContentView(R.layout.meal_plan_select_recipe);
 
         recipeListView = findViewById(R.id.recipe_list);
         recipeArrayList = new ArrayList<>();
@@ -57,6 +57,10 @@ public class RecipeList extends AppCompatActivity implements
                 addRecipeMPDialog.show(getSupportFragmentManager(), "ADD_MEAL_PLAN_RECIPE");
             }
         });
+
+        if (savedInstanceState == null) {
+            createTopBar();
+        }
 
     }
 
@@ -83,5 +87,16 @@ public class RecipeList extends AppCompatActivity implements
     @Override
     public void onRecipeEdit(Recipe meal_plan_edit_recipe) {
         //do nothing
+    }
+
+    /**
+     * Instantiates the top bar fragment for the recipe display menu
+     */
+    private void createTopBar() {
+        TopBar topBar = TopBar.newInstance("Select Recipe", false, true);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
+                .commit();
     }
 }

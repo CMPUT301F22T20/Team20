@@ -5,10 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +16,6 @@ import androidx.fragment.app.DialogFragment;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
-import com.example.foodtracker.model.recipe.Recipe;
-import com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog;
-import com.example.foodtracker.utils.Collection;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddIngredientMPDialog extends DialogFragment {
 
@@ -53,7 +45,7 @@ public class AddIngredientMPDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = getLayoutInflater().inflate(R.layout.add_ingredient_meal_plan_dialog, null);
+        View view = getLayoutInflater().inflate(R.layout.meal_plan_scale_ingredient_dialog, null);
         description = view.findViewById(R.id.ingredientTextView);
         amount = view.findViewById(R.id.ingredientAmount);
         unit = view.findViewById(R.id.ingredientUnit);

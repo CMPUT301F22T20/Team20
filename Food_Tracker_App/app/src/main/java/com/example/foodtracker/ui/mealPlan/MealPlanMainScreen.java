@@ -224,7 +224,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     @Override
     public void onAddRecipeClick(MealPlanDay mealPlan) {
 
-        Intent intent = new Intent(getApplicationContext(), RecipeList.class);
+        Intent intent = new Intent(getApplicationContext(), SelectRecipe.class);
         intent.putExtra("meal_plan_for_recipe_add", mealPlan);
         startActivity(intent);
 

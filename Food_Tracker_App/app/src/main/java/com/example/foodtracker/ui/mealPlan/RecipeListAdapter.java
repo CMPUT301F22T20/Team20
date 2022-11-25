@@ -1,5 +1,7 @@
 package com.example.foodtracker.ui.mealPlan;
 
+import static java.lang.String.format;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
