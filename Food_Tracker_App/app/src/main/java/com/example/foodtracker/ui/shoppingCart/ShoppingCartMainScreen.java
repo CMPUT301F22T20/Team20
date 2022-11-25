@@ -29,7 +29,7 @@ import java.util.Set;
  * This class extends from {@link AppCompatActivity}
  */
 public class ShoppingCartMainScreen extends AppCompatActivity implements
-        TopBar.TopBarListener {
+        TopBar.TopBarListener, ExpandableShoppingListAdapter.ShoppingListListener {
 
     private final Collection<Ingredient> shoppingItemCollection = new Collection<>(Ingredient.class, new Ingredient());
     private final Collection<MealPlanDay> mealPlanDayCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
@@ -54,7 +54,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
             mealPlanDays.addAll(mealPlans);
             shoppingItemCollection.getAll(ingredients -> {
                 ingredientsInStorage.addAll(ingredients);
-                initializeShoppingList();
+                refreshShoppingList();
             });
         });
 
@@ -69,9 +69,16 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
 
     }
 
-    private void initializeShoppingList() {
+    private void refreshShoppingList() {
+        ingredientsInShoppingList.clear();
         setIngredientsInShoppingList(getRequiredIngredients());
-        initializeShoppingListView();
+        setIngredientsByCategory();
+        if (expandableListAdapter == null) {
+            expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
+            shoppingCartExpandableList.setAdapter(expandableListAdapter);
+        } else {
+            expandableListAdapter.notifyDataSetChanged();
+        }
     }
 
     private Set<SimpleIngredient> getRequiredIngredients() {
@@ -103,12 +110,6 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
             }
         }
         return mergedIngredients;
-    }
-
-    private void initializeShoppingListView() {
-        setIngredientsByCategory();
-        expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
-        shoppingCartExpandableList.setAdapter(expandableListAdapter);
     }
 
     private void setIngredientsByCategory() {
@@ -149,6 +150,17 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
         }
     }
 
+    private void checkoutIngredient(SimpleIngredient ingredient) {
+        String shoppingCategory = ingredient.getCategory().getName();
+        ingredientsInShoppingList.remove(ingredient);
+        Objects.requireNonNull(ingredientsByCategory.get(shoppingCategory)).remove(ingredient);
+
+        Ingredient newIngredient = new Ingredient(ingredient);
+        ingredientsInStorage.add(newIngredient);
+        shoppingItemCollection.createDocument(newIngredient,
+                this::refreshShoppingList
+        );
+    }
 
     private void createNavbar() {
         NavBar navBar = NavBar.newInstance(MenuItem.SHOPPING_CART);
@@ -164,5 +176,11 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
                 .setReorderingAllowed(true)
                 .replace(R.id.topBarContainerView, topBar)
                 .commit();
+    }
+
+    @Override
+    public void onCheck(SimpleIngredient ingredient) {
+
+        checkoutIngredient(ingredient);
     }
 }

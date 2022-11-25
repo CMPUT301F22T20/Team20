@@ -7,10 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.ArrayListener;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
+import com.example.foodtracker.ui.ingredients.IngredientRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +25,14 @@ import java.util.Set;
 
 public class ExpandableShoppingListAdapter extends BaseExpandableListAdapter {
 
+    public interface ShoppingListListener {
+        void onCheck(SimpleIngredient ingredient);
+    }
+
     private final Context context;
     private final List<String> categories = new ArrayList<>();
     private final Map<String, List<SimpleIngredient>> ingredientsByCategory = new HashMap<>();
+    private final ShoppingListListener shoppingListListener;
 
     public ExpandableShoppingListAdapter(Context context, Set<String> categories, Map<String, Set<SimpleIngredient>> ingredientsByCategory) {
         this.context = context;
@@ -32,6 +41,7 @@ public class ExpandableShoppingListAdapter extends BaseExpandableListAdapter {
             List<SimpleIngredient> ingredients = new ArrayList<>(ingredientSetByCategory.getValue());
             this.ingredientsByCategory.put(ingredientSetByCategory.getKey(), ingredients);
         }
+        shoppingListListener = (ShoppingListListener) context;
     }
 
     @Override
@@ -99,8 +109,12 @@ public class ExpandableShoppingListAdapter extends BaseExpandableListAdapter {
         }
         TextView itemName = convertView.findViewById(R.id.shopping_item_name);
         TextView ingredientAmount = convertView.findViewById(R.id.ingredient_amount);
+        CheckBox box = convertView.findViewById(R.id.shopping_check_box);
         itemName.setText(ingredient.getDescription());
         ingredientAmount.setText(format(Locale.CANADA, "%.2f x %s", ingredient.getAmountQuantity(), ingredient.getUnitAbbreviation()));
+        box.setOnClickListener(onClick -> {
+            shoppingListListener.onCheck(ingredient);
+        });
         return convertView;
     }
 
