@@ -1,5 +1,6 @@
 package com.example.foodtracker.ui_test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -7,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -86,9 +88,9 @@ public class IngredientTest {
     public void editExistingIngredient(){
         solo.clickInRecyclerView(0);
         solo.clickOnView(solo.getView(R.id.edit_ingredient));
-        solo.clearEditText(0);
-        solo.clearEditText(1);
-        solo.clearEditText(2);
+        solo.clearEditText((EditText) solo.getView(R.id.ingredientDescription));
+        solo.clearEditText((EditText) solo.getView(R.id.ingredientQuantity));
+        solo.clearEditText((EditText) solo.getView(R.id.ingredientUnit));
         solo.enterText((EditText) solo.getView(R.id.ingredientDescription), "Oreo Thins");
         solo.enterText((EditText) solo.getView(R.id.ingredientUnit), "1.60");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
@@ -120,6 +122,9 @@ public class IngredientTest {
         solo.clickOnView(solo.getView(android.R.id.button2));
     }
 
+    /**
+     * Test to add a new ingredient location
+     */
     @Test
     public void addIngredientLocation(){
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
@@ -130,6 +135,9 @@ public class IngredientTest {
 
     }
 
+    /**
+     * Test to click on add new ingredient location and cancel
+     */
     @Test
     public void cancelAddIngredientLocation(){
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
@@ -139,6 +147,9 @@ public class IngredientTest {
         solo.clickOnView(solo.getView(android.R.id.button2));
     }
 
+    /**
+     * Test to add new ingredient category
+     */
     @Test
     public void addIngredientCategory(){
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
@@ -148,6 +159,9 @@ public class IngredientTest {
         solo.clickOnView(solo.getView(android.R.id.button1));
     }
 
+    /**
+     * Test to click on add new ingredient category and then cancel
+     */
     @Test
     public void cancelAddIngredientCategory(){
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
@@ -155,6 +169,72 @@ public class IngredientTest {
         assertTrue(solo.waitForText("New Category"));
         solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
         solo.clickOnView(solo.getView(android.R.id.button2));
+    }
+
+    /**
+     * Function to get the total number of items in the ingredient list recycler view
+     * @return Number of items in recycler view of type {@link Integer}
+     */
+    public int getCount(){
+        solo.sleep(1000);
+        RecyclerView view = (RecyclerView) solo.getView(R.id.ingredient_list);
+        return view.getAdapter().getItemCount();
+    }
+
+    /**
+     * Function to check if the sort button actually works
+     */
+    public void checkSort(){
+        int count = getCount();
+        if(count > 1) {
+            ArrayList<TextView> textView = solo.clickInRecyclerView(0);
+            String clickedRecipeTitle = String.valueOf(textView.get(0).getText());
+            solo.clickOnView(solo.getView(R.id.top_bar_back_button));
+
+            solo.clickOnView(solo.getView(R.id.sorting_direction));
+            solo.sleep(1000);
+
+            ArrayList<TextView> textView1 = solo.clickInRecyclerView(count - 1);
+            String clickedRecipeTitle2 = String.valueOf(textView1.get(0).getText());
+
+            assertEquals(clickedRecipeTitle, clickedRecipeTitle2);
+        }
+    }
+
+    /**
+     * Test to check if sorting by description works for ascending and descending
+     */
+    @Test
+    public void checkSortByDescription(){
+        solo.pressSpinnerItem(0,0);
+        checkSort();
+    }
+
+    /**
+     * Test to check if sorting by location works for ascending and descending
+     */
+    @Test
+    public void checkSortByLocation(){
+        solo.pressSpinnerItem(0,1);
+        checkSort();
+    }
+
+    /**
+     * Test to check if sorting by category works for ascending and descending
+     */
+    @Test
+    public void checkSortByCategory(){
+        solo.pressSpinnerItem(0, 2);
+        checkSort();
+    }
+
+    /**
+     * Test to check if sorting by expiry works for ascending and descending
+     */
+    @Test
+    public void checkSortByExpiry(){
+        solo.pressSpinnerItem(0,3);
+        checkSort();
     }
 
     @After
