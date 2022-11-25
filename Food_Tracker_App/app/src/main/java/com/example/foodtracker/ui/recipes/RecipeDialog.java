@@ -2,7 +2,6 @@ package com.example.foodtracker.ui.recipes;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -82,15 +81,19 @@ public class RecipeDialog extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_recipe);
 
+        TextView dialogTitle = findViewById(R.id.recipe_dialog_title);
         titleField = findViewById(R.id.recipe_title);
         timeField = findViewById(R.id.recipe_prep_time);
         servingsField = findViewById(R.id.recipe_servings);
         getCategories(null);
         commentsField = findViewById(R.id.recipeComments);
-
-        ImageButton addRecipeImageButton = findViewById(R.id.recipe_image_button);
         recipeImage = findViewById(R.id.recipe_image);
-        addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
+
+        ImageButton addRecipeImageFromGalleryButton = findViewById(R.id.recipe_add_image_from_gallery);
+        addRecipeImageFromGalleryButton.setOnClickListener(v -> addImageFromGallery());
+
+        ImageButton addRecipeFromCameraButton = findViewById(R.id.recipe_add_image_from_camera);
+        addRecipeFromCameraButton.setOnClickListener(v -> addImageFromCamera());
 
         RecyclerView recipeIngredients = findViewById(R.id.recipe_ingredients);
         recipeIngredients.setLayoutManager(new LinearLayoutManager(this));
@@ -103,6 +106,7 @@ public class RecipeDialog extends AppCompatActivity implements
 
         Button confirmButton = findViewById(R.id.recipes_confirm);
         if (getIntent().getExtras() != null) {
+            dialogTitle.setText(R.string.edit_recipe);
             Recipe recipe = (Recipe) getIntent().getSerializableExtra("EDIT_RECIPE");
             getCategories(recipe);
             initializeEditRecipe(recipe);
@@ -118,6 +122,7 @@ public class RecipeDialog extends AppCompatActivity implements
 
             });
         } else {
+            dialogTitle.setText(R.string.add_recipe);
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 Recipe recipe = new Recipe();
@@ -226,7 +231,10 @@ public class RecipeDialog extends AppCompatActivity implements
     }
 
     private void addImageFromGallery() {
-//        imageGalleryResultHandler.launch("image/*");
+        imageGalleryResultHandler.launch("image/*");
+    }
+
+    private void addImageFromCamera() {
         takePictureResultHandler.launch(null);
     }
 
