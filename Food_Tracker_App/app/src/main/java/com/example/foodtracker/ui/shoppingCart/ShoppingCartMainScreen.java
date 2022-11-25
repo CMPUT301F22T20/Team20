@@ -29,16 +29,16 @@ import java.util.Set;
  * This class extends from {@link AppCompatActivity}
  */
 public class ShoppingCartMainScreen extends AppCompatActivity implements
-        TopBar.TopBarListener {
+        ExpandableShoppingListAdapter.ShoppingListListener {
 
     private final Collection<Ingredient> ingredientCollection = new Collection<>(Ingredient.class, new Ingredient());
     private final Collection<MealPlanDay> mealPlanDayCollection = new Collection<>(MealPlanDay.class, new MealPlanDay());
-    List<Ingredient> ingredientsInStorage = new ArrayList<>();
+    Set<SimpleIngredient> ingredientsInStorage = new HashSet<>();
     List<SimpleIngredient> ingredientsInShoppingList = new ArrayList<>();
     List<MealPlanDay> mealPlanDays = new ArrayList<>();
     ExpandableListView shoppingCartExpandableList;
     ExpandableShoppingListAdapter expandableListAdapter;
-    Map<String, Set<SimpleIngredient>> ingredientsByCategory = new HashMap<>();
+    Map<String, Set<SimpleIngredient>> ingredientsByCategory;
 
     /**
      * @param savedInstanceState This is of type {@link Bundle}
@@ -50,13 +50,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
 
         shoppingCartExpandableList = findViewById(R.id.shopping_list_expandable);
 
-        mealPlanDayCollection.getAll(mealPlans -> {
-            mealPlanDays.addAll(mealPlans);
-            ingredientCollection.getAll(ingredients -> {
-                ingredientsInStorage.addAll(ingredients);
-                refreshShoppingList();
-            });
-        });
+        refreshAll();
 
         if (savedInstanceState == null) {
             createNavbar();
@@ -65,19 +59,34 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
     }
 
     @Override
-    public void onAddClick() {
+    public void onCheck(SimpleIngredient ingredient) {
+        checkoutIngredient(ingredient);
+    }
 
+    private void refreshAll() {
+        mealPlanDays.clear();
+        ingredientsInStorage.clear();
+        mealPlanDayCollection.getAll(mealPlans -> {
+            mealPlanDays.addAll(mealPlans);
+
+            ingredientCollection.getAll(ingredients -> {
+                List<SimpleIngredient> simpleIngredients = new ArrayList<>();
+                for (Ingredient ingredient : ingredients) {
+                    simpleIngredients.add(new SimpleIngredient(ingredient));
+                }
+                ingredientsInStorage.addAll(combineLikewiseIngredients(simpleIngredients));
+                refreshShoppingList();
+            });
+        });
     }
 
     private void refreshShoppingList() {
+        ingredientsInShoppingList.clear();
+        ingredientsByCategory = new HashMap<>();
         setIngredientsInShoppingList(getRequiredIngredients());
         setIngredientsByCategory();
-        if (expandableListAdapter == null) {
-            expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
-            shoppingCartExpandableList.setAdapter(expandableListAdapter);
-        } else {
-            expandableListAdapter.notifyDataSetChanged();
-        }
+        expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
+        shoppingCartExpandableList.setAdapter(expandableListAdapter);
     }
 
     private Set<SimpleIngredient> getRequiredIngredients() {
@@ -131,7 +140,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
     private void setIngredientsInShoppingList(Set<SimpleIngredient> ingredientsRequired) {
         for (SimpleIngredient requiredIngredient : ingredientsRequired) {
             boolean consideredForShoppingList = false;
-            for (Ingredient ingredientInStorage : ingredientsInStorage) {
+            for (SimpleIngredient ingredientInStorage : ingredientsInStorage) {
                 if (ingredientInStorage.getDescription().equals(requiredIngredient.getDescription())) {
                     SimpleIngredient ingredientToPurchase = new SimpleIngredient();
                     ingredientToPurchase.setIngredientAmount(ConversionUtil.getMissingAmount(ingredientInStorage.getAmount(), requiredIngredient.getAmount()));
@@ -139,6 +148,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
                     ingredientToPurchase.setDescription(requiredIngredient.getDescription());
                     if (ingredientToPurchase.getAmountQuantity() > 0) {
                         ingredientsInShoppingList.add(ingredientToPurchase);
+
                     }
                     consideredForShoppingList = true;
                 }
@@ -149,6 +159,10 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
         }
     }
 
+    private void checkoutIngredient(SimpleIngredient ingredient) {
+        Ingredient newIngredient = new Ingredient(ingredient);
+        ingredientCollection.createDocument(newIngredient, this::refreshAll);
+    }
 
     private void createNavbar() {
         NavBar navBar = NavBar.newInstance(MenuItem.SHOPPING_CART);

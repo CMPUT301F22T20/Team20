@@ -3,6 +3,7 @@ package com.example.foodtracker.model.recipe;
 import com.example.foodtracker.model.IngredientUnit.IngredientAmount;
 import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.ingredient.Category;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.utils.ConversionUtil;
 
 import java.io.Serializable;
@@ -15,7 +16,13 @@ public class SimpleIngredient implements Serializable {
 
     public SimpleIngredient() {}
 
-    @Override
+    public SimpleIngredient(Ingredient ingredient) {
+        setIngredientAmount(ingredient.getAmount());
+        setDescription(ingredient.getDescription());
+        this.category = ingredient.getCategory();
+    }
+
+                            @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
