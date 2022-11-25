@@ -15,6 +15,10 @@ import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.ingredient.Location;
 import com.example.foodtracker.utils.Collection;
 
+/**
+ * An object of this class represents the dialog used to add a new Ingredient Category
+ * This class inherits from {@link DialogFragment}
+ */
 public class AddCategoryDialog extends DialogFragment {
 
     private EditText listItem;

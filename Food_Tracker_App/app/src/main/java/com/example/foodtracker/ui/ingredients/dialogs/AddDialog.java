@@ -15,6 +15,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.foodtracker.R;
 
+/**
+ * An object of this class represents the dialog fragment that allows user to choose between adding a new ingredient, ingredient location or ingredient category
+ * This class extends from {@link DialogFragment}
+ */
 public class AddDialog extends DialogFragment {
 
     public static final String ADD_INGREDIENT_SELECTION_TAG = "Add_ingredient";

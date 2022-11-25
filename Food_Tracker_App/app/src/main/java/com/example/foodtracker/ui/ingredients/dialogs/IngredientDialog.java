@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * An object of this class represents a dialog used to add a new {@link Ingredient}
+ */
 public class IngredientDialog extends DialogFragment {
 
     private EditText description;
