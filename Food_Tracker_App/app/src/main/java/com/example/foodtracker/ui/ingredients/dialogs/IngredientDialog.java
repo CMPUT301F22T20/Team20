@@ -81,7 +81,7 @@ public class IngredientDialog extends DialogFragment {
                 categoryAdapter.notifyDataSetChanged();
             }
             if (ingredient != null) {
-                category.setSelection(categoryAdapter.getPosition(ingredient.getCategoryName()));
+                category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
             }
         });
 
@@ -153,7 +153,7 @@ public class IngredientDialog extends DialogFragment {
 
     public void initializeIngredient(Ingredient ingredient) {
         description.setText(ingredient.getDescription());
-        quantity.setText(String.valueOf(ingredient.getAmountQuantity()));
+        quantity.setText(String.valueOf(ingredient.getAmount()));
         setDatePicker(ingredient);
     }
 

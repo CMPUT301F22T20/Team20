@@ -3,7 +3,6 @@ package com.example.foodtracker.model.mealplan;
 import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.Recipe;
-import com.example.foodtracker.model.recipe.SimpleIngredient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class MealPlanDay extends Document implements Serializable {
 
     public static final String MEALPLAN_COLLECTION_NAME = "MealPlan";
     private String day;
-    private ArrayList<SimpleIngredient> ingredients;
+    private ArrayList<Ingredient> ingredients;
     private ArrayList<Recipe> recipes;
 
     public MealPlanDay() {
@@ -23,7 +22,7 @@ public class MealPlanDay extends Document implements Serializable {
         recipes = new ArrayList<>();
     }
 
-    public MealPlanDay(String day, ArrayList<SimpleIngredient> ingredients, ArrayList<Recipe> recipes) {
+    public MealPlanDay(String day, ArrayList<Ingredient> ingredients, ArrayList<Recipe> recipes) {
         this.day = day;
         this.ingredients = ingredients;
         this.recipes = recipes;
@@ -51,11 +50,11 @@ public class MealPlanDay extends Document implements Serializable {
         this.day = day;
     }
 
-    public ArrayList<SimpleIngredient> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<SimpleIngredient> ingredients) {
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 

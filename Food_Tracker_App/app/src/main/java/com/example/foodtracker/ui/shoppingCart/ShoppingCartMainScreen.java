@@ -92,7 +92,9 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
     private Set<SimpleIngredient> getRequiredIngredients() {
         List<SimpleIngredient> requiredIngredients = new ArrayList<>();
         for (MealPlanDay mealPlanDay : mealPlanDays) {
-            requiredIngredients.addAll(mealPlanDay.getIngredients());
+            for (Ingredient ingredient : mealPlanDay.getIngredients()) {
+                requiredIngredients.add(new SimpleIngredient(ingredient));
+            }
             for (Recipe recipe : mealPlanDay.getRecipes()) {
                 requiredIngredients.addAll(recipe.getIngredients());
             }
