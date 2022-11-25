@@ -154,7 +154,7 @@ public class AddSimpleIngredient extends DialogFragment {
         String addQuantityStr = quantity.getText().toString();
         try {
             int addQuantityInt = Integer.parseInt(addQuantityStr);
-            ingredient.setAmount(addQuantityInt);
+            ingredient.setAmountQuantity(addQuantityInt);
         } catch (NumberFormatException e) {
             quantity.setError("Invalid amount");
             valid = false;
@@ -167,7 +167,7 @@ public class AddSimpleIngredient extends DialogFragment {
             valid = false;
         } else {
             String addCategory = category.getSelectedItem().toString();
-            ingredient.setCategory(addCategory);
+            ingredient.setCategoryName(addCategory);
         }
 
         return valid;

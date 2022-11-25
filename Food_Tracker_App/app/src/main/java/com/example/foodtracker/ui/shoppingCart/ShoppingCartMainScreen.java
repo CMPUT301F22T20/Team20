@@ -108,9 +108,13 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
             for (int j = i + 1; j < ingredients.size(); j++) {
                 SimpleIngredient ingredientB = ingredients.get(j);
                 if (i != j && ingredientA.equals(ingredientB)) {
-                    ingredientA.addIngredientAmount(ingredientB.getAmount());
-                    mergedIngredients.add(ingredientA);
-                    ingredientAdded = true;
+                    try {
+                        ingredientA.addIngredientAmount(ingredientB.getIngredientAmount());
+                        mergedIngredients.add(ingredientA);
+                        ingredientAdded = true;
+                    } catch (IllegalArgumentException illegalArgumentException) {
+                        // do nothing
+                    }
                 }
             }
             if (!ingredientAdded) {
@@ -143,8 +147,12 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
             for (SimpleIngredient ingredientInStorage : ingredientsInStorage) {
                 if (ingredientInStorage.getDescription().equals(requiredIngredient.getDescription())) {
                     SimpleIngredient ingredientToPurchase = new SimpleIngredient();
-                    ingredientToPurchase.setIngredientAmount(ConversionUtil.getMissingAmount(ingredientInStorage.getAmount(), requiredIngredient.getAmount()));
-                    ingredientToPurchase.setCategory(requiredIngredient.getCategory().getName());
+                    try {
+                        ingredientToPurchase.setIngredientAmount(ConversionUtil.getMissingAmount(ingredientInStorage.getIngredientAmount(), requiredIngredient.getIngredientAmount()));
+                    } catch (IllegalArgumentException illegalArgumentException) {
+                        ingredientToPurchase.setIngredientAmount(requiredIngredient.getIngredientAmount());
+                    }
+                    ingredientToPurchase.setCategoryName(requiredIngredient.getCategory().getName());
                     ingredientToPurchase.setDescription(requiredIngredient.getDescription());
                     if (ingredientToPurchase.getAmountQuantity() > 0) {
                         ingredientsInShoppingList.add(ingredientToPurchase);
