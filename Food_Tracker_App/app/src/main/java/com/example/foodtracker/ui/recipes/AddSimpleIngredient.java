@@ -75,7 +75,7 @@ public class AddSimpleIngredient extends DialogFragment {
      */
     public void initializeIngredient(SimpleIngredient ingredient) {
         description.setText(ingredient.getDescription());
-        quantity.setText(String.valueOf(ingredient.getAmount()));
+        quantity.setText(String.valueOf(ingredient.getAmountQuantity()));
         unit.setText(ingredient.getUnit());
     }
 
@@ -129,7 +129,7 @@ public class AddSimpleIngredient extends DialogFragment {
                 categoryAdapter.notifyDataSetChanged();
             }
             if (ingredient != null) {
-                category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
+                category.setSelection(categoryAdapter.getPosition(ingredient.getCategoryName()));
             }
         });
     }
@@ -154,7 +154,7 @@ public class AddSimpleIngredient extends DialogFragment {
         String addQuantityStr = quantity.getText().toString();
         try {
             int addQuantityInt = Integer.parseInt(addQuantityStr);
-            ingredient.setAmount(addQuantityInt);
+            ingredient.setAmountQuantity(addQuantityInt);
         } catch (NumberFormatException e) {
             quantity.setError("Invalid amount");
             valid = false;
@@ -167,7 +167,7 @@ public class AddSimpleIngredient extends DialogFragment {
             valid = false;
         } else {
             String addCategory = category.getSelectedItem().toString();
-            ingredient.setCategory(addCategory);
+            ingredient.setCategoryName(addCategory);
         }
 
         return valid;

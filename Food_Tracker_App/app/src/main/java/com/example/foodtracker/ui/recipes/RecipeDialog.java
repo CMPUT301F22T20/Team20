@@ -2,6 +2,7 @@ package com.example.foodtracker.ui.recipes;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -41,14 +42,30 @@ public class RecipeDialog extends AppCompatActivity implements
     private final List<String> categories = new ArrayList<>();
     private ImageView recipeImage;
     private Bitmap bitmap;
-    private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-            recipeImage.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    });
+
+    /**
+     * Allows us to launch and handle the result of choosing a picture from the gallery
+     * sets the image in the display based on the chosen picture
+     */
+    private final ActivityResultLauncher<String> imageGalleryResultHandler =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    recipeImage.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+    /**
+     * Allows us to launch and handle the result for taking a picture
+     */
+    private final ActivityResultLauncher<Void> takePictureResultHandler =
+            registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bitmap -> {
+                this.bitmap = bitmap;
+                recipeImage.setImageBitmap(this.bitmap);
+            });
+
     private ArrayAdapter<String> categoryAdapter;
     private Spinner categoryField;
 
@@ -129,21 +146,6 @@ public class RecipeDialog extends AppCompatActivity implements
         }
     }
 
-    /**
-     * Either shows the header or a no ingredients message
-     */
-    private void toggleRecipeIngredientsDisplay() {
-        TextView noIngredientsMessage = findViewById(R.id.no_ingredients);
-        LinearLayout ingredientHeaders = findViewById(R.id.ingredientHeaders);
-        if (View.VISIBLE == ingredientHeaders.getVisibility()) {
-            noIngredientsMessage.setVisibility(View.VISIBLE);
-            ingredientHeaders.setVisibility(View.GONE);
-        } else {
-            noIngredientsMessage.setVisibility(View.GONE);
-            ingredientHeaders.setVisibility(View.VISIBLE);
-        }
-    }
-
     @Override
     public void editRecipeIngredient(SimpleIngredient ingredient) {
         adapter.notifyItemChanged(ingredientList.indexOf(ingredient));
@@ -191,6 +193,21 @@ public class RecipeDialog extends AppCompatActivity implements
     }
 
     /**
+     * Either shows the header or a no ingredients message
+     */
+    private void toggleRecipeIngredientsDisplay() {
+        TextView noIngredientsMessage = findViewById(R.id.no_ingredients);
+        LinearLayout ingredientHeaders = findViewById(R.id.ingredientHeaders);
+        if (View.VISIBLE == ingredientHeaders.getVisibility()) {
+            noIngredientsMessage.setVisibility(View.VISIBLE);
+            ingredientHeaders.setVisibility(View.GONE);
+        } else {
+            noIngredientsMessage.setVisibility(View.GONE);
+            ingredientHeaders.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
      * Retrieves categories from firestore and populates a string array with the content
      */
     private void getCategories(@Nullable Recipe recipe) {
@@ -209,7 +226,8 @@ public class RecipeDialog extends AppCompatActivity implements
     }
 
     private void addImageFromGallery() {
-        imageGalleryResultHandler.launch("image/*");
+//        imageGalleryResultHandler.launch("image/*");
+        takePictureResultHandler.launch(null);
     }
 
     /**
