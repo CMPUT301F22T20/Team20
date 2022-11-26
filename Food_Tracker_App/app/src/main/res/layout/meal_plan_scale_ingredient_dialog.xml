@@ -56,7 +56,7 @@
         android:layout_height="48dp"
         android:ems="10"
         style="@style/inputField"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:hint="@string/quantity"/>
 
 
@@ -68,5 +68,6 @@
         style="@style/inputField"
         android:inputType="number"
         android:hint="Unit"/>
+
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -60,15 +61,34 @@ public class AddIngredientMPDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
+        /**
+         * when adding an ingredient to a meal plan
+         */
         if (getArguments().get("meal_plan_add_ingredient") != null) {
             Bundle selectedBundle = getArguments();
             Ingredient received_ingredient = (Ingredient) selectedBundle.get("meal_plan_add_ingredient");
+
             initializeFields(received_ingredient);
-            return builder.setView(view).setTitle("Add Meal plan ingredient")
-                    .setPositiveButton("Add", (dialogInterface, i) -> addClick(received_ingredient))
+
+            AlertDialog dialog = builder.setView(view).setTitle("Add Meal plan ingredient")
+                    .setPositiveButton("Add", null)
                     .create();
+
+            dialog.setOnShowListener(dialogInterface -> {
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(v -> {
+                    if (addClick(received_ingredient)) {
+                        dialog.dismiss();
+                    }
+                });
+            });
+
+            return dialog;
         }
 
+        /**
+         * when editing the amount of ingredient in a meal plan
+         */
         if (getArguments().get("meal_plan_edit_ingredient") != null) {
             Bundle bundle1 = (Bundle) getArguments().get("meal_plan_edit_ingredient");
             MealPlanDay received_meal_plan = (MealPlanDay) bundle1.get("meal_plan");
@@ -79,10 +99,22 @@ public class AddIngredientMPDialog extends DialogFragment {
 
             initializeFields(received_ingredient);
             amount.setText(String.valueOf(received_ingredient.getAmount()));
-            return builder.setView(view).setTitle("Edit Ingredient Amount")
-                    .setPositiveButton("Edit",
-                            (dialogInterface, i) -> editClick(received_meal_plan, received_ingredient_index))
+
+            AlertDialog dialog = builder.setView(view).setTitle("Change ingredient Amount")
+                    .setPositiveButton("Edit", null)
                     .create();
+
+            dialog.setOnShowListener(dialogInterface -> {
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(v -> {
+                    if (editClick(received_meal_plan, received_ingredient_index)) {
+                        dialog.dismiss();
+                    }
+                });
+            });
+
+            return dialog;
+
         }
 
         return builder.setView(view).setTitle("Add an ingredient")
@@ -96,7 +128,7 @@ public class AddIngredientMPDialog extends DialogFragment {
         unit.setText(ingredient.getUnit());
     }
 
-    public void addClick(Ingredient ingredient) {
+    public Boolean addClick(Ingredient ingredient) {
         Ingredient ingredientToAdd = new Ingredient();
 
         ingredientToAdd.setDescription(ingredient.getDescription());
@@ -108,14 +140,16 @@ public class AddIngredientMPDialog extends DialogFragment {
         if (setFields(ingredientToAdd)) {
             listener.onIngredientAdd(ingredientToAdd);
         }
+        return setFields(ingredientToAdd);
     }
 
-    public void editClick(MealPlanDay meal_plan, int index) {
+    public Boolean editClick(MealPlanDay meal_plan, int index) {
         Ingredient ingredient = meal_plan.getIngredients().get(index);
         if (setFields(ingredient)) {
             meal_plan.getIngredients().get(index).setAmount(ingredient.getAmount());
             listener.onIngredientEdit(meal_plan);
         }
+        return setFields(ingredient);
     }
 
 
@@ -129,12 +163,12 @@ public class AddIngredientMPDialog extends DialogFragment {
 
         String amount_str = amount.getText().toString();
         try {
-            int amountInt = Integer.parseInt(amount_str);
-            if (amountInt <= 0) {
+            double amountDouble = Double.parseDouble(amount_str);
+            if (amountDouble <= 0) {
                 amount.setError("Invalid amount");
                 return false;
             }
-            ingredient.setAmount(amountInt);
+            ingredient.setAmount(amountDouble);
         } catch (NumberFormatException e) {
             amount.setError("Invalid amount");
             valid = false;
