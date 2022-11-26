@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/top_bar" />
 
-    <androidx.fragment.app.FragmentContainerView
+    <Spinner
         android:id="@+id/sort_spinner_shopping"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -24,8 +24,7 @@
         app:layout_constraintBottom_toTopOf="@+id/shopping_list_expandable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topBarContainerView"
-        tools:layout="@layout/sort"/>
+        app:layout_constraintTop_toBottomOf="@+id/topBarContainerView" />
 
     <ExpandableListView
         android:id="@+id/shopping_list_expandable"

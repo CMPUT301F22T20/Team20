@@ -1,16 +1,24 @@
 package com.example.foodtracker.ui.shoppingCart;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.foodtracker.MainActivity;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealplan.MealPlanDay;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
+import com.example.foodtracker.model.recipe.SimpleIngredientNameComparator;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
@@ -23,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * This class is used to create an object that will be used to represent the Shopping Cart Main Screen
@@ -38,6 +48,8 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
     List<MealPlanDay> mealPlanDays = new ArrayList<>();
     ExpandableListView shoppingCartExpandableList;
     ExpandableShoppingListAdapter expandableListAdapter;
+    Spinner spinner;
+    String sortingFieldName;
     Map<String, Set<SimpleIngredient>> ingredientsByCategory;
 
     /**
@@ -47,7 +59,8 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_cart_main);
-
+        spinner = findViewById(R.id.sort_spinner_shopping);
+        initializeSpinner();
         shoppingCartExpandableList = findViewById(R.id.shopping_list_expandable);
 
         refreshAll();
@@ -74,7 +87,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
                 for (Ingredient ingredient : ingredients) {
                     simpleIngredients.add(new SimpleIngredient(ingredient));
                 }
-                ingredientsInStorage.addAll(combineLikewiseIngredients(simpleIngredients));
+                ingredientsInStorage.addAll(combineLikewiseIngredients(simpleIngredients, Boolean.FALSE));
                 refreshShoppingList();
             });
         });
@@ -84,7 +97,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
         ingredientsInShoppingList.clear();
         ingredientsByCategory = new HashMap<>();
         setIngredientsInShoppingList(getRequiredIngredients());
-        setIngredientsByCategory();
+        setIngredientsByCategory(Boolean.FALSE);
         expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
         shoppingCartExpandableList.setAdapter(expandableListAdapter);
     }
@@ -99,11 +112,17 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
                 requiredIngredients.addAll(recipe.getIngredients());
             }
         }
-        return combineLikewiseIngredients(requiredIngredients);
+        return combineLikewiseIngredients(requiredIngredients, Boolean.FALSE);
     }
 
-    private Set<SimpleIngredient> combineLikewiseIngredients(List<SimpleIngredient> ingredients) {
-        Set<SimpleIngredient> mergedIngredients = new HashSet<>();
+    private Set<SimpleIngredient> combineLikewiseIngredients(List<SimpleIngredient> ingredients, Boolean sorted) {
+        Set<SimpleIngredient> mergedIngredients;
+        if (sorted){
+            mergedIngredients = new TreeSet<>(new SimpleIngredientNameComparator());
+        }else{
+            mergedIngredients = new HashSet<>();
+        }
+
         for (int i = 0; i < ingredients.size(); i++) {
             boolean ingredientAdded = false;
             SimpleIngredient ingredientA = ingredients.get(i);
@@ -126,7 +145,7 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
         return mergedIngredients;
     }
 
-    private void setIngredientsByCategory() {
+    private void setIngredientsByCategory(Boolean sorted) {
         for (SimpleIngredient shoppingListIngredient : ingredientsInShoppingList) {
             String shoppingCategory = shoppingListIngredient.getCategory().getName();
             Set<SimpleIngredient> ingredientsInCategory;
@@ -134,9 +153,18 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
                 ingredientsInCategory = Objects.requireNonNull(ingredientsByCategory.get(shoppingCategory));
                 List<SimpleIngredient> categoryWithAddedIngredient = new ArrayList<>(ingredientsInCategory);
                 categoryWithAddedIngredient.add(shoppingListIngredient);
-                ingredientsInCategory = combineLikewiseIngredients(categoryWithAddedIngredient);
+                if (!sorted){
+                    ingredientsInCategory = combineLikewiseIngredients(categoryWithAddedIngredient, Boolean.FALSE);
+                }else{
+                    ingredientsInCategory = combineLikewiseIngredients(categoryWithAddedIngredient, Boolean.TRUE);
+                }
             } else {
-                ingredientsInCategory = new HashSet<>();
+                if (!sorted){
+                    ingredientsInCategory = new HashSet<>();
+                }else{
+                    ingredientsInCategory = new TreeSet<>(new SimpleIngredientNameComparator());
+                }
+
                 ingredientsInCategory.add(shoppingListIngredient);
             }
             ingredientsByCategory.put(shoppingCategory, ingredientsInCategory);
@@ -174,6 +202,20 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
         ingredientCollection.createDocument(newIngredient, this::refreshAll);
     }
 
+    private void initializeSpinner(){
+        spinner = (Spinner) findViewById(R.id.sort_spinner_shopping);
+        ArrayList<String> fields = new ArrayList<>();
+        fields.add("");
+        fields.add("Category");
+        fields.add("Description");
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(getApplicationContext(),  android.R.layout.simple_spinner_dropdown_item, fields);
+        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        initializeSelectedItemListener(spinner);
+    }
+
     private void createNavbar() {
         NavBar navBar = NavBar.newInstance(MenuItem.SHOPPING_CART);
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.shopping_cart_nav_bar, navBar).commit();
@@ -188,5 +230,50 @@ public class ShoppingCartMainScreen extends AppCompatActivity implements
                 .setReorderingAllowed(true)
                 .replace(R.id.topBarContainerView, topBar)
                 .commit();
+    }
+
+    private void initializeSelectedItemListener(Spinner sortSpinner) {
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView toSort = view.findViewById(android.R.id.text1);
+                sortingFieldName = toSort.getText().toString();
+                sortByFieldName();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                sortByFieldName();
+            }
+        });
+    }
+
+    public void sortByFieldName() {
+        if (sortingFieldName.equals("Category")){
+            ingredientsInShoppingList.clear();
+            ingredientsByCategory = new TreeMap<>();
+            setIngredientsInShoppingList(getRequiredIngredients());
+            setIngredientsByCategory(Boolean.FALSE);
+            expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
+            shoppingCartExpandableList.setAdapter(expandableListAdapter);
+        }
+
+        if (sortingFieldName.equals("")){
+            ingredientsInShoppingList.clear();
+            ingredientsByCategory = new HashMap<>();
+            setIngredientsInShoppingList(getRequiredIngredients());
+            setIngredientsByCategory(Boolean.FALSE);
+            expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
+            shoppingCartExpandableList.setAdapter(expandableListAdapter);
+        }
+
+        if (sortingFieldName.equals("Description")){
+            ingredientsInShoppingList.clear();
+            ingredientsByCategory = new HashMap<>();
+            setIngredientsInShoppingList(getRequiredIngredients());
+            setIngredientsByCategory(Boolean.TRUE);
+            expandableListAdapter = new ExpandableShoppingListAdapter(this, ingredientsByCategory.keySet(), ingredientsByCategory);
+            shoppingCartExpandableList.setAdapter(expandableListAdapter);
+        }
     }
 }
