@@ -3,9 +3,11 @@ package com.example.foodtracker.ui.ingredients.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -30,7 +32,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class IngredientDialog extends DialogFragment {
+public class IngredientDialog extends DialogFragment implements DialogInterface.OnDismissListener {
+
+    public static final String INGREDIENT_DIALOG_TAG = "ADD_INGREDIENT";
 
     private EditText description;
     private EditText quantity;
@@ -45,7 +49,6 @@ public class IngredientDialog extends DialogFragment {
     private ArrayAdapter<String> locationAdapter;
     private final Collection<Location> locationCollection = new Collection<>(Location.class, new Location());
     private final List<String> locations = new ArrayList<>();
-
 
     private Spinner category;
     private ArrayAdapter<String> categoryAdapter;
@@ -74,7 +77,10 @@ public class IngredientDialog extends DialogFragment {
      * Retrieves locations and categories from firestore and populates a string array with the content,
      * initializes the unit dropdown from {@link com.example.foodtracker.model.IngredientUnit.IngredientUnit} values
      */
-    private void initializeDropdowns(@Nullable Ingredient ingredient) {
+    private void refreshDropdowns(@Nullable Ingredient ingredient) {
+        categories.clear();
+        locations.clear();
+        ingredientUnits.clear();
         categoryCollection.getAll(list -> {
             for (Category category : list) {
                 categories.add(category.getName().toUpperCase());
@@ -132,19 +138,27 @@ public class IngredientDialog extends DialogFragment {
 
         expiry = view.findViewById(R.id.datePicker);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        Button locationButton = view.findViewById(R.id.add_location);
+        Button categoryButton = view.findViewById(R.id.add_ingredient_category);
+        locationButton.setOnClickListener(v -> {
+            new AddLocationDialog(this).show(getParentFragmentManager(), "Add_location");
+        });
+        categoryButton.setOnClickListener(v -> {
+            new AddCategoryDialog(this).show(getParentFragmentManager(), "Add_Category");
+        });
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         if (getArguments() != null) {
             Bundle selectedBundle = getArguments();
             ingredientToEdit = (Ingredient) selectedBundle.get("ingredient");
             initializeIngredient(ingredientToEdit);
-            initializeDropdowns(ingredientToEdit);
+            refreshDropdowns(ingredientToEdit);
             return builder.setView(view).setTitle("Edit ingredient")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
                     .create();
         }
-        initializeDropdowns(null);
+        refreshDropdowns(null);
         return builder.setView(view).setTitle("Add an ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", (dialogInterface, i) -> addClick())
@@ -197,6 +211,10 @@ public class IngredientDialog extends DialogFragment {
         this.expiry.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        refreshDropdowns(ingredientToEdit);
+    }
 
     /**
      * A listener interface which provides callbacks to interact with events occuring in the dialog

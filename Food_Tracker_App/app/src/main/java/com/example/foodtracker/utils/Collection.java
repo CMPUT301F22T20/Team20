@@ -84,6 +84,19 @@ public class Collection<T extends Document> {
         collection.document(document.getKey()).delete().addOnSuccessListener(taskResult -> onComplete.onComplete());
     }
 
+    /**
+     * Checks if a document exists
+     */
+    public void exists(T document, ResultTask onComplete) {
+        collection.document(document.getKey()).get().addOnSuccessListener(taskResult -> {
+            if (taskResult.exists()) {
+                onComplete.onResult(Boolean.TRUE);
+            } else {
+                onComplete.onResult(Boolean.FALSE);
+            }
+        });
+    }
+
     private OnCompleteListener<QuerySnapshot> getObjectsFromQuery(ListTask<T> onTaskComplete) {
         return queryResult -> {
             List<T> list = new ArrayList<>();
@@ -120,5 +133,16 @@ public class Collection<T extends Document> {
          * Callback on document task completion
          */
         void onComplete();
+    }
+
+    /**
+     * Functional interface providing callback on document task completion with result
+     */
+    public interface ResultTask {
+
+        /**
+         * Callback on document task completion
+         */
+        void onResult(Object result);
     }
 }

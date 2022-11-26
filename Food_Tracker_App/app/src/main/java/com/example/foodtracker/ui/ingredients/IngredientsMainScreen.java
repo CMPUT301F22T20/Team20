@@ -1,6 +1,6 @@
 package com.example.foodtracker.ui.ingredients;
 
-import static com.example.foodtracker.ui.ingredients.dialogs.AddDialog.ADD_INGREDIENT_SELECTION_TAG;
+import static com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog.INGREDIENT_DIALOG_TAG;
 
 import android.os.Bundle;
 
@@ -14,7 +14,6 @@ import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.Sort;
 import com.example.foodtracker.ui.TopBar;
-import com.example.foodtracker.ui.ingredients.dialogs.AddDialog;
 import com.example.foodtracker.ui.ingredients.dialogs.IngredientDialog;
 import com.example.foodtracker.utils.Collection;
 
@@ -109,7 +108,7 @@ public class IngredientsMainScreen extends AppCompatActivity implements
 
     @Override
     public void onAddClick() {
-        new AddDialog().show(getSupportFragmentManager(), ADD_INGREDIENT_SELECTION_TAG);
+        new IngredientDialog().show(getSupportFragmentManager(), INGREDIENT_DIALOG_TAG);
     }
 
 
