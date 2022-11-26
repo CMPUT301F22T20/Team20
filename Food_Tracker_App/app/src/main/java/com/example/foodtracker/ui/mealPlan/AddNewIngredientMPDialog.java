@@ -136,8 +136,8 @@ public class AddNewIngredientMPDialog extends DialogFragment {
 
         String addQuantityStr = quantity.getText().toString();
         try {
-            int addQuantityInt = Integer.parseInt(addQuantityStr);
-            ingredient.setAmount(addQuantityInt);
+            double addQuantityDouble = Double.parseDouble(addQuantityStr);
+            ingredient.setAmount(addQuantityDouble);
         } catch (NumberFormatException e) {
             quantity.setError("Invalid amount");
             valid = false;
