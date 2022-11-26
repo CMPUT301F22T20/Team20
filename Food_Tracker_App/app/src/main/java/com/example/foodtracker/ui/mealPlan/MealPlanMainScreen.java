@@ -109,7 +109,6 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         mealPlanRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mealPlanRecyclerView.setAdapter(adapter);
 
-
     }
 
     private void createNavBar(){
@@ -130,9 +129,8 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         int removedIndex = mealPlanDayArrayList.indexOf(mealPlanDay);
         mealPlanDayArrayList.remove(removedIndex);
 
-
         mealPlanDaysCollection.delete(mealPlanDay, () ->
-        adapter.notifyItemRemoved(removedIndex));
+        adapter.notifyDataSetChanged());
     }
 
     /**
@@ -170,14 +168,17 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
 
+        for (MealPlanDay clearMealPlanDay: mealPlanDayArrayList){
+            mealPlanDaysCollection.delete(clearMealPlanDay, () -> {});
+        }
+
         mealPlanDayArrayList.clear();
         for (String dates: listOfDates){
             MealPlanDay mealPlanDay = new MealPlanDay(dates, ingredientArrayList, recipeArrayList);
             mealPlanDayArrayList.add(mealPlanDay);
-            mealPlanDaysCollection.createDocument(mealPlanDay, () -> {} );
+            mealPlanDaysCollection.createDocument(mealPlanDay, () -> sort.sortByFieldName() );
         }
         adapter.notifyDataSetChanged();
-
 
     }
 
@@ -190,15 +191,16 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
 
         mealPlanDayArrayList.add(mealPlanDay);
         mealPlanDaysCollection.createDocument(mealPlanDay, () ->
-                adapter.notifyItemInserted(mealPlanDayArrayList.lastIndexOf(mealPlanDay)));
+          { adapter.notifyItemInserted(mealPlanDayArrayList.lastIndexOf(mealPlanDay));
+                sort.sortByFieldName();}
+        );
+
 
 
     }
 
     @Override
     public boolean isInList(String day) {
-    //TODO implement check to make sure there are no duplicates
-
         ArrayList<String> mealPlanDays = new ArrayList<>();
 
         for (MealPlanDay meal: mealPlanDayArrayList){
@@ -212,6 +214,10 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
 
     private void initializeSort() {
         sort = new Sort<>(this.mealPlanDaysCollection, this.adapter, this.mealPlanDayArrayList, MealPlanDay.FieldName.class);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.sort_spinnerMP, sort)
+                .commit();
     }
 
 

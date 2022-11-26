@@ -106,7 +106,6 @@ public class createMealPlanDialog extends DialogFragment {
             startDay.add(Calendar.DAY_OF_MONTH, 1);
 
             listDates.add(strDate);
-
         }
         mpDatesListener.addMP(listDates);
     }

@@ -83,7 +83,6 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
                 mpIngredientArrayListener.deleteIngredient(getAdapterPosition());
             });
 
-
         }
     }
 }

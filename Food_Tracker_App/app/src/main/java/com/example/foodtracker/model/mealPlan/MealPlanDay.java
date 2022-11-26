@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class MealPlanDay extends Document implements Serializable {
 
-    public static final String MEALPLAN_COLLECTION_NAME = "MealPlan";
+    public static final String MEALPLAN_COLLECTION_NAME = "MealPlan-Test";
     private String day;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<Recipe> recipes;

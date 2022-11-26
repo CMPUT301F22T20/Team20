@@ -1,5 +1,6 @@
 package com.example.foodtracker.ui.mealPlan;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
  * @see <a href=https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example">Stack Overflow</a>
  */
 public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanDayRecyclerViewAdapter.MealPlanDayHolder>{
+    private AlertDialog mDialog;
+
 
     public interface MealPlanDayArrayListener{
         //handles operations with MEAL PLAN
@@ -125,4 +128,8 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
             mealPlanListener.deleteRecipe(recipePosition,mealPlanDay);
         }
     }
+
+
+
+
 }
