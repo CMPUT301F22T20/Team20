@@ -58,9 +58,9 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
     public void onBindViewHolder(RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder ingredientHolder, int position) {
         SimpleIngredient ingredient = ingredientArrayList.get(position);
         ingredientHolder.description.setText(ingredient.getDescription());
-        ingredientHolder.amount.setText(String.format("%s", ingredient.getAmount()));
+        ingredientHolder.amount.setText(String.format("%s", ingredient.getAmountQuantity()));
         ingredientHolder.unit.setText(ingredient.getUnit());
-        ingredientHolder.category.setText(String.format("%s", ingredient.getCategory()));
+        ingredientHolder.category.setText(String.format("%s", ingredient.getCategoryName()));
     }
 
     @Override

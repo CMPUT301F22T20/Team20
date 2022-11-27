@@ -31,7 +31,6 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
         this.context = context;
         this.mpRecipesArrayListener= mpRecipesArrayListener;
 
-
     }
 
     @NonNull

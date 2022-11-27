@@ -1,14 +1,15 @@
 package com.example.foodtracker.ui.recipes;
 
 import static com.example.foodtracker.ui.recipes.RecipeDialog.RECIPE_KEY;
+
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
@@ -75,7 +76,6 @@ public class RecipesMainScreen extends AppCompatActivity implements
             editRecipe(received_recipe);
         }
     }
-
 
     @Override
     public void onAddClick() {

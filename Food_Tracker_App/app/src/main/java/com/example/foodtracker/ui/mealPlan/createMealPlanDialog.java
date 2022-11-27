@@ -25,8 +25,6 @@ import java.util.Date;
 public class createMealPlanDialog extends DialogFragment {
 
 
-
-
     public interface setMPDatesListener{
         void addMP(ArrayList<String> day);
     }
@@ -97,14 +95,13 @@ public class createMealPlanDialog extends DialogFragment {
 
     public void setDates(Calendar startDay, Calendar endDay) {
 
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         ArrayList<String> listDates = new ArrayList<>();
 
         while(startDay.compareTo(endDay) < 1){
             Date convertDate =  startDay.getTime();
             String strDate = dateFormat.format(convertDate);
             startDay.add(Calendar.DAY_OF_MONTH, 1);
-
             listDates.add(strDate);
         }
         mpDatesListener.addMP(listDates);

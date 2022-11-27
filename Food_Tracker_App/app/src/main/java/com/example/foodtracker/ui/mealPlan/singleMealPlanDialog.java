@@ -66,10 +66,9 @@ public class singleMealPlanDialog extends DialogFragment {
                     public void onClick(View view) {
                         Calendar cStart = Calendar.getInstance();
                         cStart.set(singleDate.getYear(), singleDate.getMonth(), singleDate.getDayOfMonth());
-                        String entryDay = String.format(Locale.CANADA, "%02d-%02d-%d", singleDate.getDayOfMonth()
-                                ,singleDate.getMonth() + 1, singleDate.getYear());
+                        String entryDay = String.format(Locale.CANADA, "%02d-%02d-%d",
+                                singleDate.getMonth() + 1,singleDate.getDayOfMonth(), singleDate.getYear());
 
-                        //TODO fix this
                         if (singleMPDatesListener.isInList(entryDay) == false){
                             setDay(cStart);
                             dialog.dismiss();
@@ -79,18 +78,17 @@ public class singleMealPlanDialog extends DialogFragment {
                             Toast.makeText(getContext(),message, Toast.LENGTH_LONG).show();
                         }
 
-                        //TODO: get the end date of mealplan array's values and compare.
                     }
                 });
             }
         });
         dialog.show();
-
         return dialog;
 
     }
+
     public void setDay(Calendar singleDay) {
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         Date convertDate =  singleDay.getTime();
         String strDate = dateFormat.format(convertDate);
 
