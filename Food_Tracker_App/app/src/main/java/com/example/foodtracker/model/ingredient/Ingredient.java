@@ -5,7 +5,6 @@ import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.DocumentableFieldName;
 import com.example.foodtracker.model.IngredientUnit.IngredientAmount;
 import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
-import com.example.foodtracker.model.recipe.SimpleIngredient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,13 +43,6 @@ public class Ingredient extends Document {
     private String expiry;
 
     public Ingredient() {
-    }
-
-    public Ingredient(SimpleIngredient simpleIngredient) {
-        setDescription(simpleIngredient.getDescription());
-        setUnit(simpleIngredient.getUnit());
-        setAmount(simpleIngredient.getAmount());
-        setCategory(simpleIngredient.getCategory());
     }
 
     //TODO: Had to add this back in to instantiate a new meal plan day object- delete later if not needed
