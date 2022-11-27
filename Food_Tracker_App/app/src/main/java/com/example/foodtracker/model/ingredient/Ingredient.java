@@ -25,7 +25,7 @@ public class Ingredient extends Document implements Serializable {
     /**
      * This variable is private and holds the description for an ingredient of type {@link String}
      */
-    private String description;
+    private String description = "";
     /**
      * Represents what quantity unit we have of this ingredient (i.e. kg, bags)
      */
@@ -33,19 +33,19 @@ public class Ingredient extends Document implements Serializable {
     /**
      * This variable is private and holds the location for an ingredient of type {@link String}
      */
-    private String location;
+    private String location = "";
     /**
      * This variable is private and holds the category for an ingredient of type {@link String}
      */
-    private String category;
+    private String category = "";
     /**
      * This variable is private and holds the amount for an ingredient of type {@link Integer}
      */
-    private int amount;
+    private double amount = 0;
     /**
      * This variable is private and holds the expiry for an ingredient of type {@link String}
      */
-    private String expiry;
+    private String expiry = "";
 
     /**
      * This is an empty constructor to instantiate an {@link Ingredient} object
@@ -61,7 +61,7 @@ public class Ingredient extends Document implements Serializable {
         setDescription(simpleIngredient.getDescription());
         setUnit(simpleIngredient.getUnit());
         setCategory(simpleIngredient.getCategoryName());
-        setAmount((int) simpleIngredient.getAmountQuantity());
+        setAmount(simpleIngredient.getAmountQuantity());
     }
 
     /**
@@ -97,7 +97,7 @@ public class Ingredient extends Document implements Serializable {
      *
      * @return This is the amount which is of type {@link Integer}
      */
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -106,7 +106,7 @@ public class Ingredient extends Document implements Serializable {
      *
      * @param amount This is the amount which is of type {@link Integer}
      */
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

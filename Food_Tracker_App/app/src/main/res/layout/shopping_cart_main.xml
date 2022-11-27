@@ -16,11 +16,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/top_bar" />
 
-    <Spinner
+    <include
         android:id="@+id/sort_spinner_shopping"
+        layout="@layout/sort"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:popupBackground="@color/background_light"
+        android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@+id/shopping_list_expandable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
