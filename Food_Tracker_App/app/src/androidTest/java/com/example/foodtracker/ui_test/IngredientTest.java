@@ -40,6 +40,7 @@ public class IngredientTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_ingredients));
         assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
+        solo.waitForText("Quantity");
     }
 
     /**
@@ -68,14 +69,17 @@ public class IngredientTest {
      */
     @Test
     public void addNewIngredient() {
+        solo.waitForText("Category");
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientSelectionButton));
         solo.enterText((EditText) solo.getView(R.id.ingredientDescription), " Frozen Buffalo Wings");
-        solo.enterText((EditText) solo.getView(R.id.ingredientUnit), "5.60");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
-        solo.pressSpinnerItem(0,0);
-        Spinner spinner = solo.getView(Spinner.class, 1);
+        Spinner spinner = solo.getView(Spinner.class, 0);
         spinner.setSelection(0, true);
+        Spinner spinner2 = solo.getView(Spinner.class, 1);
+        spinner2.setSelection(0, true);
+        Spinner spinner3 = solo.getView(Spinner.class, 2);
+        spinner3.setSelection(0, true);
         solo.setDatePicker(0, 2023, 12, 30);
         solo.clickOnView(solo.getView(android.R.id.button1));
         assertTrue(solo.waitForText("Frozen Buffalo Wings"));
@@ -143,7 +147,7 @@ public class IngredientTest {
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientLocationSelectionButton));
         assertTrue(solo.waitForText("New Location"));
-        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
+        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Shelf");
         solo.clickOnView(solo.getView(android.R.id.button2));
     }
 
@@ -155,7 +159,7 @@ public class IngredientTest {
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
         solo.clickOnView(solo.getView(R.id.addIngredientCategorySelectionButton));
         assertTrue(solo.waitForText("New Category"));
-        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Shelf");
+        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
         solo.clickOnView(solo.getView(android.R.id.button1));
     }
 
