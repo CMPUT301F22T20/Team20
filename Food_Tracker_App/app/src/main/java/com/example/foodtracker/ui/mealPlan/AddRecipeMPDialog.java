@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -65,17 +66,33 @@ public class AddRecipeMPDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
+        /**
+         * when a selected recipe is added to a meal plan
+         */
         if (getArguments().get("meal_plan_add_recipe") != null) {
             Bundle selectedBundle = getArguments();
             Recipe received_recipe = (Recipe) selectedBundle.get("meal_plan_add_recipe");
 
             initializeFields(received_recipe);
 
-            return builder.setView(view).setTitle("Add Meal plan recipe")
-                    .setPositiveButton("Add", (dialogInterface, i) -> addClick(received_recipe))
+            AlertDialog dialog = builder.setView(view).setTitle("Add Meal plan ingredient")
+                    .setPositiveButton("Add", null)
                     .create();
+
+            dialog.setOnShowListener(dialogInterface -> {
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(v -> {
+                    if (addClick(received_recipe)) {
+                        dialog.dismiss();
+                    }
+                });
+            });
+
         }
 
+        /**
+         * when a recipe in a meal plan is to change number of servings
+         */
         if (getArguments().get("meal_plan_edit_recipe") != null) {
             Bundle selectedBundle = getArguments();
             Recipe received_recipe = (Recipe) selectedBundle.get("meal_plan_edit_recipe");
@@ -83,9 +100,18 @@ public class AddRecipeMPDialog extends DialogFragment {
             initializeFields(received_recipe);
             serving.setText(String.valueOf(received_recipe.getServings()));
 
-            return builder.setView(view).setTitle("Edit Servings")
-                    .setPositiveButton("Edit", (dialogInterface, i) -> editClick(received_recipe))
+            AlertDialog dialog = builder.setView(view).setTitle("Edit Servings")
+                    .setPositiveButton("Add", null)
                     .create();
+
+            dialog.setOnShowListener(dialogInterface -> {
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(v -> {
+                    if (editClick(received_recipe)) {
+                        dialog.dismiss();
+                    }
+                });
+            });
 
         }
 
@@ -100,7 +126,7 @@ public class AddRecipeMPDialog extends DialogFragment {
     }
 
 
-    public void addClick(Recipe recipe) {
+    public Boolean addClick(Recipe recipe) {
         Recipe recipeToAdd = new Recipe();
 
         recipeToAdd.setTitle(recipe.getTitle());
@@ -113,13 +139,17 @@ public class AddRecipeMPDialog extends DialogFragment {
         if (setFields(recipeToAdd)) {
             listener.onRecipeAdd(recipeToAdd);
         }
+
+        return setFields(recipeToAdd);
     }
 
-    public void editClick(Recipe recipe) {
+    public Boolean editClick(Recipe recipe) {
 
         if (setFields(recipe)) {
             listener.onRecipeEdit(recipe);
         }
+
+        return setFields(recipe);
     }
 
     /**

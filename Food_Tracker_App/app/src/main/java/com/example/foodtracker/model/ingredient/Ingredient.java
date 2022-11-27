@@ -46,24 +46,6 @@ public class Ingredient extends Document {
     public Ingredient() {
     }
 
-    public Ingredient(SimpleIngredient simpleIngredient) {
-        setDescription(simpleIngredient.getDescription());
-        setUnit(simpleIngredient.getUnit());
-        setAmount(simpleIngredient.getAmount());
-        setCategory(simpleIngredient.getCategory());
-    }
-
-    //TODO: Had to add this back in to instantiate a new meal plan day object- delete later if not needed
-    public Ingredient(String description, String unit, String location, String category,
-                      int amount, String expiry) {
-        setDescription(description);
-        setUnit(unit);
-        setLocation(location);
-        setCategory(category);
-        setAmount(amount);
-        setExpiry(expiry);
-    }
-
     @Override
     public String getCollectionName() {
         return INGREDIENTS_COLLECTION_NAME;
@@ -143,7 +125,6 @@ public class Ingredient extends Document {
         CATEGORY("category", true),
         AMOUNT("amount", false),
         EXPIRY("expiry", true);
-
         private final String name;
         private final boolean sortable;
 
