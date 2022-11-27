@@ -12,8 +12,6 @@ public enum IngredientUnit {
     MILLILITRE("ML"),
     UNIT("UNIT");
 
-
-
     final String unitAbbreviation;
 
     IngredientUnit(String unitAbbreviation) {

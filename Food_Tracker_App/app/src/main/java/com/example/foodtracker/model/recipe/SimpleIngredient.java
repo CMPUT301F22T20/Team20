@@ -2,6 +2,7 @@ package com.example.foodtracker.model.recipe;
 
 import com.example.foodtracker.model.IngredientUnit.IngredientAmount;
 import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
+import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.utils.ConversionUtil;
 
@@ -10,8 +11,6 @@ import java.util.Objects;
 
 /**
  * Represents basic information about an ingredient
- *
- * @implNote the getters and setters in this class are used when mapping this class from firestore
  */
 public class SimpleIngredient implements Serializable {
 
@@ -116,4 +115,3 @@ public class SimpleIngredient implements Serializable {
         }
     }
 }
-
