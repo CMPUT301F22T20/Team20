@@ -30,6 +30,13 @@ public class SimpleIngredient implements Serializable {
     public SimpleIngredient() {
     }
 
+    public SimpleIngredient(Ingredient ingredient) {
+        setAmountQuantity(ingredient.getAmount());
+        setUnit(ingredient.getUnit());
+        setDescription(ingredient.getDescription());
+        setCategoryName(ingredient.getCategory());
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(getDescription());
@@ -93,10 +100,18 @@ public class SimpleIngredient implements Serializable {
     }
 
     public void setUnit(String unit) {
-        this.ingredientAmount.setUnit(IngredientUnit.valueOf(unit));
+        try {
+            this.ingredientAmount.setUnit(IngredientUnit.valueOf(unit));
+        } catch (IllegalArgumentException illegalArgumentException) {
+            // do nothing
+        }
     }
 
     public String getUnitAbbreviation() {
-        return ingredientAmount.getUnit().getUnitAbbreviation();
+        if (ingredientAmount.getUnit() != null) {
+            return ingredientAmount.getUnit().getUnitAbbreviation();
+        } else {
+            return "NONE";
+        }
     }
 }

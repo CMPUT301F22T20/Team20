@@ -3,6 +3,7 @@ package com.example.foodtracker.model.recipe;
 import com.example.foodtracker.model.Document;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -41,7 +42,7 @@ public class Category extends Document {
 
     @Override
     public String getKey() {
-        return getName();
+        return getName().toUpperCase(Locale.ROOT);
     }
 
     @Override
