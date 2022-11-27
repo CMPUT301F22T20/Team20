@@ -13,12 +13,11 @@
         android:orientation="vertical"
         android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/recipe_dialog_title"
-            style="@style/textHeader1"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/topBarContainerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp" />
+            tools:layout="@layout/top_bar" />
 
         <!-- Image and modification -->
         <LinearLayout

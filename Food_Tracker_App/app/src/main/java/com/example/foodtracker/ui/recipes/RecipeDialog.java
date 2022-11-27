@@ -25,6 +25,7 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.recipe.Category;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
+import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.BitmapUtil;
 import com.example.foodtracker.utils.Collection;
 
@@ -81,7 +82,6 @@ public class RecipeDialog extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_recipe);
 
-        TextView dialogTitle = findViewById(R.id.recipe_dialog_title);
         titleField = findViewById(R.id.recipe_title);
         timeField = findViewById(R.id.recipe_prep_time);
         servingsField = findViewById(R.id.recipe_servings);
@@ -112,7 +112,7 @@ public class RecipeDialog extends AppCompatActivity implements
 
         Button confirmButton = findViewById(R.id.recipes_confirm);
         if (getIntent().getExtras() != null) {
-            dialogTitle.setText(R.string.edit_recipe);
+            createTopBar(getResources().getString(R.string.edit_recipe));
             Recipe recipe = (Recipe) getIntent().getSerializableExtra("EDIT_RECIPE");
             getCategories(recipe);
             initializeEditRecipe(recipe);
@@ -127,7 +127,7 @@ public class RecipeDialog extends AppCompatActivity implements
             });
         } else {
             recipeImage.setBackgroundColor(getResources().getColor(R.color.background_dark));
-            dialogTitle.setText(R.string.add_recipe);
+            createTopBar(getResources().getString(R.string.add_recipe));
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 Recipe recipe = new Recipe();
@@ -282,5 +282,16 @@ public class RecipeDialog extends AppCompatActivity implements
             recipe.setImage(BitmapUtil.toString(bitmap));
         }
         return valid;
+    }
+
+    /**
+     * Instantiates the top bar fragment for the recipe display menu
+     */
+    private void createTopBar(String title) {
+        TopBar topBar = TopBar.newInstance(title, false, true);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
+                .commit();
     }
 }
