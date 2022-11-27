@@ -95,6 +95,12 @@ public class RecipeDialog extends AppCompatActivity implements
         ImageButton addRecipeFromCameraButton = findViewById(R.id.recipe_add_image_from_camera);
         addRecipeFromCameraButton.setOnClickListener(v -> addImageFromCamera());
 
+        ImageButton deleteRecipeImageButton = findViewById(R.id.recipe_remove_image);
+        deleteRecipeImageButton.setOnClickListener(v -> {
+            bitmap = null;
+            recipeImage.setImageBitmap(null);
+        });
+
         RecyclerView recipeIngredients = findViewById(R.id.recipe_ingredients);
         recipeIngredients.setLayoutManager(new LinearLayoutManager(this));
         ingredientList = new ArrayList<>();
@@ -113,15 +119,14 @@ public class RecipeDialog extends AppCompatActivity implements
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 boolean valid = setRecipeFields(recipe);
-
                 if (valid) {
                     intent.putExtra("EDIT_RECIPE", recipe);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
-
             });
         } else {
+            recipeImage.setBackgroundColor(getResources().getColor(R.color.background_dark));
             dialogTitle.setText(R.string.add_recipe);
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
@@ -139,7 +144,6 @@ public class RecipeDialog extends AppCompatActivity implements
 
         Button cancelButton = findViewById(R.id.recipes_cancel);
         cancelButton.setOnClickListener(view -> finish());
-
     }
 
     @Override
