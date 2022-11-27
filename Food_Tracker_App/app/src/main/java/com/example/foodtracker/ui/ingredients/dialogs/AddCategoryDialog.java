@@ -24,7 +24,7 @@ public class AddCategoryDialog extends DialogFragment {
     private final Collection<Category> categoryCollection = new Collection<>(Category.class, new Category());
     private final DialogInterface.OnDismissListener dismissListener;
 
-    AddCategoryDialog(DialogInterface.OnDismissListener dismissListener) {
+    public AddCategoryDialog(DialogInterface.OnDismissListener dismissListener) {
         this.dismissListener = dismissListener;
     }
 

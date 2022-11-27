@@ -3,6 +3,7 @@ package com.example.foodtracker.ui.recipes;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,7 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
+import com.example.foodtracker.ui.ingredients.dialogs.AddCategoryDialog;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class RecipeIngredientDialog extends DialogFragment {
     private Spinner unit;
     private ArrayAdapter<String> unitAdapter;
     private recipeIngredientDialogListener listener;
+    private SimpleIngredient ingredientToEdit;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -65,6 +68,10 @@ public class RecipeIngredientDialog extends DialogFragment {
         categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categories);
         category.setAdapter(categoryAdapter);
 
+        Button categoryButton = view.findViewById(R.id.smaller_add_ingredient_category);
+        categoryButton.setOnClickListener(v ->
+            new AddCategoryDialog(this).show(getParentFragmentManager(), "Add_Category"));
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -80,11 +87,11 @@ public class RecipeIngredientDialog extends DialogFragment {
      */
     public void initializeIngredient(SimpleIngredient ingredient) {
         description.setText(ingredient.getDescription());
-        quantity.setText(String.valueOf(ingredient.getAmount()));
+        quantity.setText(String.valueOf(ingredient.getAmountQuantity()));
     }
 
     private AlertDialog createAddRecipeIngredientDialog(View view, AlertDialog.Builder builder) {
-        initializeDropdowns(null);
+        refreshDropdowns(null);
         AlertDialog dialog = builder
                 .setView(view)
                 .setTitle("Add an ingredient")
@@ -104,9 +111,9 @@ public class RecipeIngredientDialog extends DialogFragment {
     }
 
     private AlertDialog createEditRecipeIngredientDialog(View view, AlertDialog.Builder builder, Bundle arguments) {
-        SimpleIngredient ingredientToEdit = (SimpleIngredient) arguments.get("selected_ingredient");
+        ingredientToEdit = (SimpleIngredient) arguments.get("selected_ingredient");
         initializeIngredient(ingredientToEdit);
-        initializeDropdowns(ingredientToEdit);
+        refreshDropdowns(ingredientToEdit);
         AlertDialog dialog = builder
                 .setView(view)
                 .setTitle("Add an ingredient")
@@ -127,14 +134,16 @@ public class RecipeIngredientDialog extends DialogFragment {
      * Retrieves categories from firestore and populates a string array with the content,
      * initializes the unit dropdown from {@link com.example.foodtracker.model.IngredientUnit.IngredientUnit} values
      */
-    private void initializeDropdowns(@Nullable SimpleIngredient ingredient) {
+    private void refreshDropdowns(@Nullable SimpleIngredient ingredient) {
+        categories.clear();
+        ingredientUnits.clear();
         categoryCollection.getAll(list -> {
             for (Category category : list) {
                 categories.add(category.getName().toUpperCase());
                 categoryAdapter.notifyDataSetChanged();
             }
             if (ingredient != null) {
-                category.setSelection(categoryAdapter.getPosition(ingredient.getCategory()));
+                category.setSelection(categoryAdapter.getPosition(ingredient.getCategoryName()));
             }
         });
 
@@ -167,7 +176,7 @@ public class RecipeIngredientDialog extends DialogFragment {
         String addQuantityStr = quantity.getText().toString();
         try {
             int addQuantityInt = Integer.parseInt(addQuantityStr);
-            ingredient.setAmount(addQuantityInt);
+            ingredient.setAmountQuantity(addQuantityInt);
         } catch (NumberFormatException e) {
             quantity.setError("Invalid amount");
             valid = false;
@@ -183,7 +192,7 @@ public class RecipeIngredientDialog extends DialogFragment {
             valid = false;
         } else {
             String addCategory = category.getSelectedItem().toString();
-            ingredient.setCategory(addCategory);
+            ingredient.setCategoryName(addCategory);
         }
 
         return valid;
@@ -219,6 +228,10 @@ public class RecipeIngredientDialog extends DialogFragment {
         return valid;
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        refreshDropdowns(ingredientToEdit);
+    }
 
     /**
      * A listener interface which provides callbacks to interact with events occurring in the dialog

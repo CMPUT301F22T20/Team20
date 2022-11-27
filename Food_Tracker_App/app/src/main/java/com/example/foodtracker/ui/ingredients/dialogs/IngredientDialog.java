@@ -139,13 +139,11 @@ public class IngredientDialog extends DialogFragment implements DialogInterface.
         expiry = view.findViewById(R.id.datePicker);
 
         Button locationButton = view.findViewById(R.id.add_location);
+        locationButton.setOnClickListener(v ->
+            new AddLocationDialog(this).show(getParentFragmentManager(), "Add_location"));
         Button categoryButton = view.findViewById(R.id.add_ingredient_category);
-        locationButton.setOnClickListener(v -> {
-            new AddLocationDialog(this).show(getParentFragmentManager(), "Add_location");
-        });
-        categoryButton.setOnClickListener(v -> {
-            new AddCategoryDialog(this).show(getParentFragmentManager(), "Add_Category");
-        });
+        categoryButton.setOnClickListener(v ->
+            new AddCategoryDialog(this).show(getParentFragmentManager(), "Add_Category"));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         if (getArguments() != null) {

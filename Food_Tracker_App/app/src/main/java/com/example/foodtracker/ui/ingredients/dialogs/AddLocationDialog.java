@@ -22,7 +22,7 @@ public class AddLocationDialog extends DialogFragment {
     private final DialogInterface.OnDismissListener dismissListener;
     private EditText listItem;
 
-    AddLocationDialog(DialogInterface.OnDismissListener dismissListener) {
+    public AddLocationDialog(DialogInterface.OnDismissListener dismissListener) {
         this.dismissListener = dismissListener;
     }
 
