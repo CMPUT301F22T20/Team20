@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.mealPlan.MealPlanDay;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,7 +26,10 @@ import java.util.Date;
 public class createMealPlanDialog extends DialogFragment {
 
 
-
+    /**
+     * Interface that passes the range of days selected by user, in order to instantiate new
+     * {@link MealPlanDay} objects
+     */
     public interface setMPDatesListener{
         void addMP(ArrayList<String> day);
     }
@@ -38,14 +42,12 @@ public class createMealPlanDialog extends DialogFragment {
         mpDatesListener= (setMPDatesListener) context;
     }
 
-
     /**
-     * https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+     * Retrieves user input and checks if input is valid
      *
-     * This dialog builder initializes the meal plan days chosen by the user.
-     *
-     * @param savedInstanceState
-     * @return AlertDialog
+     * @see <a href="https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked">
+     *     Preventing dialog exit when value is invalid </a>
+     *  Copyright: CC BY-SA 3.0 (Original: Tom Bollwitt, Edit by: Daniel Nugent)
      */
     @NonNull
     @Override
@@ -94,16 +96,16 @@ public class createMealPlanDialog extends DialogFragment {
     }
 
     /**
-     * This function converts the days set by the user into strings, and adds the dates into an ArrayList
-     *
-     * Copyright:  CC BY-SA 3.0
-     * https://stackoverflow.com/questions/23966950/how-to-get-a-list-of-specific-dates-between-two-datesstart-and-end-in-android
+     * This function converts the days set by the user into {@link  String} types and adds the dates into an {@link ArrayList} of strings
+     * to pass to {@link MealPlanMainScreen}.
+     * @see <a href="https://stackoverflow.com/questions/23966950/how-to-get-a-list-of-specific-dates-between-two-datesstart-and-end-in-android">
+     *  Retrieve list of dates between a given range </a>
+     * Copyright:  CC BY-SA 3.0 (Dave Pile)
      *
      * @param startDay
      * @param endDay
      */
-
-    public void setDates(Calendar startDay, Calendar endDay) {
+    private void setDates(Calendar startDay, Calendar endDay) {
 
         DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         ArrayList<String> listDates = new ArrayList<>();
@@ -116,5 +118,6 @@ public class createMealPlanDialog extends DialogFragment {
         }
         mpDatesListener.addMP(listDates);
     }
+
 
 }

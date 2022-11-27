@@ -93,7 +93,6 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
      * @param recipe
      * @param position
      */
-
     private void confirmRecipeDelete(Context context,Recipe recipe, int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 

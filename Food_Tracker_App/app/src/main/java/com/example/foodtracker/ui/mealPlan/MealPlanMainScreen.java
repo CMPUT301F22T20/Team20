@@ -91,6 +91,9 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
 
     }
 
+    /**
+     * Deletes a single {@link MealPlanDay} object from the meal plan.
+     */
     @Override
     public void deleteMealPlan(MealPlanDay mealPlanDay) {
         int removedIndex = mealPlanDayArrayList.indexOf(mealPlanDay);
@@ -127,6 +130,11 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
     }
 
+    /**
+     * Creates multiple {@link MealPlanDay} objects all at once, given a list of values.
+     * @param listOfDates
+     */
+
     @Override
     public void addMP(ArrayList<String> listOfDates) {
 
@@ -154,6 +162,11 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         }
     }
 
+    /**
+     * Creates a single {@link MealPlanDay} object.
+     * @param day
+     */
+
     @Override
     public void addSingle(String day) {
         ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
@@ -170,6 +183,11 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
         );
     }
 
+    /**
+     * Checks if user input is in current meal plan.
+     * @param day
+     * @return
+     */
     @Override
     public boolean isInList(String day) {
         ArrayList<String> mealPlanDays = new ArrayList<>();

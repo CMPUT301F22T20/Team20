@@ -23,16 +23,28 @@ import java.util.Date;
 import java.util.Locale;
 
 
+/**
+ *  This dialog allows a user to add one day to their meal plan.
+ */
+
 public class singleMealPlanDialog extends DialogFragment {
 
     public interface setSingleMPDatesListener{
+        /**
+         * Adds a day to the meal plan, based on selected date in dialog
+         * @param day
+         */
         void addSingle(String day);
+
+        /**
+         * Checks if a given day is in the current meal plan.
+         * @param day
+         * @return
+         */
         boolean isInList(String day);
     }
 
     setSingleMPDatesListener singleMPDatesListener;
-    public static final String SINGLE_MEAL_PLAN_TAG = "Create_single_meal_plan";
-
 
     @Override
     public void onAttach(Context context) {
@@ -46,11 +58,10 @@ public class singleMealPlanDialog extends DialogFragment {
         View view = getLayoutInflater().inflate(R.layout.single_meal_plan_dialog,null);
         DatePicker singleDate = view.findViewById(R.id.mealPlanSingleDate);
 
-
         final AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
                 .setTitle("Create meal plan")
-                .setPositiveButton("Add", null) //Set to null. We override the onclick
+                .setPositiveButton("Add", null)
                 .setNegativeButton("Cancel", null)
                 .create();
 
@@ -64,13 +75,13 @@ public class singleMealPlanDialog extends DialogFragment {
 
                     @Override
                     public void onClick(View view) {
-                        Calendar cStart = Calendar.getInstance();
-                        cStart.set(singleDate.getYear(), singleDate.getMonth(), singleDate.getDayOfMonth());
+                        Calendar singleMPDay= Calendar.getInstance();
+                        singleMPDay.set(singleDate.getYear(), singleDate.getMonth(), singleDate.getDayOfMonth());
                         String entryDay = String.format(Locale.CANADA, "%02d-%02d-%d",
                                 singleDate.getMonth() + 1,singleDate.getDayOfMonth(), singleDate.getYear());
 
                         if (singleMPDatesListener.isInList(entryDay) == false){
-                            setDay(cStart);
+                            setDay(singleMPDay);
                             dialog.dismiss();
                         }
                         else {
@@ -87,13 +98,20 @@ public class singleMealPlanDialog extends DialogFragment {
 
     }
 
-    public void setDay(Calendar singleDay) {
+
+    /**
+     * This function converts the date chosen by the user to a {@link String} type
+     * and passes the string to {@link MealPlanMainScreen}
+     * @param singleDay
+     */
+    private void setDay(Calendar singleDay) {
         DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         Date convertDate =  singleDay.getTime();
         String strDate = dateFormat.format(convertDate);
 
         singleMPDatesListener.addSingle(strDate);
     }
+
 
 
 }

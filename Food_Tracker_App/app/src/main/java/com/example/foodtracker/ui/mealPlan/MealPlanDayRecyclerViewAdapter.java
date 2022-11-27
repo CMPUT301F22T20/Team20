@@ -24,19 +24,29 @@ import java.util.ArrayList;
  *
  * @see <a href=https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example">Stack Overflow</a>
  */
-public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanDayRecyclerViewAdapter.MealPlanDayHolder>{
-    private AlertDialog mDialog;
+public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPlanDayRecyclerViewAdapter.MealPlanDayHolder>{ private AlertDialog mDialog;
 
 
     public interface MealPlanDayArrayListener{
-        //handles operations with MEAL PLAN
+        /**
+         * Handles deletion of {@link MealPlanDay} objects.
+         * @param mealPlanDay
+         */
         void deleteMealPlan(MealPlanDay mealPlanDay);
 
-
-        //handles with Ingredient operations
+        /**
+         * Handles deletion of meal plan ingredients.
+         * @param ingredientPosition
+         * @param object
+         */
         void deleteIngredient(int ingredientPosition,MealPlanDay object);
 
-        //handles Recipe operations
+        /**
+         * Handles deletion of meal plan recipes.
+         * @param recipePosition
+         * @param object
+         */
+
         void deleteRecipe(int recipePosition,MealPlanDay object);
 
     }

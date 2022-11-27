@@ -12,6 +12,10 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
 
+/**
+ * Dialog that asks user if they would like to create a meal plan or to add a single day to the
+ * current meal plan.
+ */
 public class AddMealPlanDialog extends DialogFragment{
 
     public static final String CREATE_MEAL_PLAN_TAG = "Create_meal_plan";

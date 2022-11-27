@@ -34,7 +34,6 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
         this.mpIngredientArrayListener= mpIngredientArrayListener;
     }
 
-
     @NonNull
     @Override
     public MealPlanIngredientsRecyclerViewAdapter.MealPlanIngredientHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
