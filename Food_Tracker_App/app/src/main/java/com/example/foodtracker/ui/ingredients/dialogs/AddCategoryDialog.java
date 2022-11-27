@@ -36,7 +36,7 @@ public class AddCategoryDialog extends DialogFragment {
         listItem.setHint("Add a category");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         AlertDialog dialog = builder.setView(view)
-                .setTitle("New Location")
+                .setTitle("New category")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", null).create();
         dialog.setOnShowListener(dialogInterface -> {
@@ -47,7 +47,7 @@ public class AddCategoryDialog extends DialogFragment {
                     if (Boolean.FALSE.equals(result)) {
                         categoryCollection.createDocument(category, this::dismiss);
                     } else {
-                        listItem.setError("Location already exists");
+                        listItem.setError("Category already exists");
                     }
                 });
             });
