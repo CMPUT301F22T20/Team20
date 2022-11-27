@@ -2,6 +2,7 @@ package com.example.foodtracker.ui.mealPlan;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,7 +112,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
             super(itemView);
             mealPlanDayDelete.setOnClickListener(onClick -> {
                 MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
-                mealPlanListener.deleteMealPlan(mealPlan);
+                confirmDelete(itemView.getContext(),mealPlan);
             });
             
         }
@@ -127,6 +128,25 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
             MealPlanDay mealPlanDay = mealPlanDayArrayList.get(getAdapterPosition());
             mealPlanListener.deleteRecipe(recipePosition,mealPlanDay);
         }
+    }
+
+    /**
+     * Confirms with the user if they would like to delete a day from the meal plan
+     * @param context
+     * @param mealPlan
+     */
+    private void confirmDelete(Context context,MealPlanDay mealPlan){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle("Delete Date");
+        builder.setMessage("Are you sure you want to delete this date from your meal plan?");
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                mealPlanListener.deleteMealPlan(mealPlan);
+            }
+        });
+        builder.setNegativeButton("Cancel",null);
+        builder.show();
     }
 
 

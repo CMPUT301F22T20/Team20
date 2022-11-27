@@ -1,6 +1,8 @@
 package com.example.foodtracker.ui.mealPlan;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,10 +80,34 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
             super(itemView);
             deleteRecipe.setOnClickListener(onClick -> {
                 Recipe recipe = recipeArrayList.get(getAdapterPosition());
-                recipeArrayList.remove(recipe);
-                mpRecipesArrayListener.deleteRecipe(getAdapterPosition());
+                confirmRecipeDelete(itemView.getContext(),recipe,getAdapterPosition());
+
             });
 
         }
     }
+
+    /**
+     * Confirms deletion of a recipe from a meal plan
+     * @param context
+     * @param recipe
+     * @param position
+     */
+
+    private void confirmRecipeDelete(Context context,Recipe recipe, int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle("Confirm Delete Recipe");
+        builder.setMessage("Are you sure you want to delete this recipe from your meal plan?");
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                recipeArrayList.remove(recipe);
+                mpRecipesArrayListener.deleteRecipe(position);
+            }
+        });
+        builder.setNegativeButton("Cancel",null);
+        builder.show();
+    }
+
+
 }

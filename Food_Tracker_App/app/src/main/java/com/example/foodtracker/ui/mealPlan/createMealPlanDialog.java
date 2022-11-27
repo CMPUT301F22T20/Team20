@@ -25,6 +25,7 @@ import java.util.Date;
 public class createMealPlanDialog extends DialogFragment {
 
 
+
     public interface setMPDatesListener{
         void addMP(ArrayList<String> day);
     }
@@ -40,8 +41,11 @@ public class createMealPlanDialog extends DialogFragment {
 
     /**
      * https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+     *
+     * This dialog builder initializes the meal plan days chosen by the user.
+     *
      * @param savedInstanceState
-     * @return
+     * @return AlertDialog
      */
     @NonNull
     @Override
@@ -54,32 +58,30 @@ public class createMealPlanDialog extends DialogFragment {
         final AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
                 .setTitle("Create meal plan")
-                .setPositiveButton("Add", null) //Set to null. We override the onclick
+                .setPositiveButton("Add", null)
                 .setNegativeButton("Cancel", null)
                 .create();
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
             @Override
             public void onShow(DialogInterface dialogInterface) {
 
                 Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(new View.OnClickListener() {
-
                     @Override
                     public void onClick(View view) {
-                        Calendar cStart = Calendar.getInstance();
-                        cStart.set(startDayPicker.getYear(), startDayPicker.getMonth(), startDayPicker.getDayOfMonth());
+                        Calendar mpStart = Calendar.getInstance();
+                        mpStart.set(startDayPicker.getYear(), startDayPicker.getMonth(), startDayPicker.getDayOfMonth());
 
-                        Calendar cEnd = Calendar.getInstance();
-                        cEnd.set(endDayPicker.getYear(), endDayPicker.getMonth(), endDayPicker.getDayOfMonth());
+                        Calendar mpEnd = Calendar.getInstance();
+                        mpEnd.set(endDayPicker.getYear(), endDayPicker.getMonth(), endDayPicker.getDayOfMonth());
 
-                        if (cStart.after(cEnd)){
+                        if (mpStart.after(mpEnd)){
                             String message = "Start day cannot be after end day";
                             Toast.makeText(getContext(),message, Toast.LENGTH_LONG).show();
                         }
                         else {
-                            setDates(cStart,cEnd);
+                            setDates(mpStart,mpEnd);
                             dialog.dismiss();
                         }
 
@@ -88,10 +90,18 @@ public class createMealPlanDialog extends DialogFragment {
             }
         });
         dialog.show();
-
         return dialog;
     }
 
+    /**
+     * This function converts the days set by the user into strings, and adds the dates into an ArrayList
+     *
+     * Copyright:  CC BY-SA 3.0
+     * https://stackoverflow.com/questions/23966950/how-to-get-a-list-of-specific-dates-between-two-datesstart-and-end-in-android
+     *
+     * @param startDay
+     * @param endDay
+     */
 
     public void setDates(Calendar startDay, Calendar endDay) {
 

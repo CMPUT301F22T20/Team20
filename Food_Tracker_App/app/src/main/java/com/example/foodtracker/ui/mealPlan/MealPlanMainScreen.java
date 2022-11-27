@@ -47,9 +47,10 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  setContentView(R.layout.meal_plan_main);
+        setContentView(R.layout.meal_plan_main);
         initializeData();
         initializeSort();
+
 
         if (savedInstanceState == null){
             createRecyclerView();
@@ -67,6 +68,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
          mealPlanDayArrayList.addAll(list);
          adapter.notifyItemRangeInserted(0, mealPlanDayArrayList.size());
         });
+
     }
 
     private void createRecyclerView() {
@@ -128,11 +130,8 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     @Override
     public void addMP(ArrayList<String> listOfDates) {
 
-        //TODO clear the database when there are items
-
         ArrayList<Ingredient> ingredientArrayList1 = new ArrayList<>();
         ArrayList<Recipe> recipeArrayList1 = new ArrayList<>();
-
 
 
         for (MealPlanDay clearMealPlanDay: mealPlanDayArrayList){
@@ -148,12 +147,11 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
             MealPlanDay mealPlanDay = new MealPlanDay(dates, ingredientArrayList1, recipeArrayList1);
             mealPlanDayArrayList.add(mealPlanDay);
             mealPlanDaysCollection.createDocument(mealPlanDay, () ->
-                    {sort.sortByFieldName();}
+                    { adapter.notifyDataSetChanged();
+                        sort.sortByFieldName();}
             );
 
-            adapter.notifyDataSetChanged();
         }
-
     }
 
     @Override
@@ -165,12 +163,11 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
 
         mealPlanDayArrayList.add(mealPlanDay);
         mealPlanDaysCollection.createDocument(mealPlanDay, () ->
-          { adapter.notifyItemInserted(mealPlanDayArrayList.lastIndexOf(mealPlanDay));
-                sort.sortByFieldName();}
+                {
+                    adapter.notifyItemInserted(mealPlanDayArrayList.lastIndexOf(mealPlanDay));
+                    sort.sortByFieldName();
+                }
         );
-
-
-
     }
 
     @Override
