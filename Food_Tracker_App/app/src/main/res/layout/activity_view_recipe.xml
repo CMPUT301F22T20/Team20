@@ -206,7 +206,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="BACK"
+        android:text="CANCEL"
         app:backgroundTint="@color/negative"
         app:layout_constraintBottom_toTopOf="@id/recipe_display_nav_bar"
         app:layout_constraintEnd_toStartOf="@id/recipeEditButton"
