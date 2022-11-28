@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
-
-    <ImageButton
-        android:id="@+id/closeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -21,50 +13,43 @@
         android:layout_gravity="center"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_egg_alt_fill0_wght400_grad0_opsz48_black" />
+        app:srcCompat="@drawable/ic_egg_alt_fill0_wght400_grad0_opsz48_black"
+        app:tint="@color/primary_dark" />
 
-    <TextView
-        android:id="@+id/ingredientTextView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:text="Description"
-        style="@style/inputField"/>
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
-    <TextView
-        android:id="@+id/QuantityTextView"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:paddingTop = "16dp"
-        android:paddingLeft = "8dp"
-        android:paddingRight = "8dp"
-        android:paddingBottom = "0dp"
-        android:layout_marginTop = "16dp"
-        android:layout_marginLeft = "16dp"
-        android:layout_marginRight = "16dp"
-        android:layout_marginBottom = "0dp"
-        android:text="Ingredient Amount:" />
+        <TextView
+            android:id="@+id/QuantityTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="0.3"
+            android:text="@string/amount"
+            android:textStyle="bold" />
 
+        <EditText
+            android:id="@+id/ingredientAmount"
+            style="@style/inputField"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:hint="@string/quantity"
+            android:inputType="numberDecimal" />
 
-    <EditText
-        android:id="@+id/ingredientAmount"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        style="@style/inputField"
-        android:inputType="numberDecimal"
-        android:hint="@string/quantity"/>
-
-
-    <TextView
-        android:id="@+id/ingredientUnit"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        style="@style/inputField"
-        android:inputType="number"
-        android:hint="Unit"/>
-
+        <TextView
+            android:id="@+id/ingredientUnit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:layout_marginHorizontal="16dp"
+            android:textAlignment="viewEnd"/>
+    </LinearLayout>
 
 </LinearLayout>

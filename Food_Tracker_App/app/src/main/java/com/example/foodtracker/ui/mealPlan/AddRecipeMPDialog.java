@@ -24,15 +24,14 @@ import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This dialog is for confirming the number of servings when a recipe is added to a meal plan
  */
 public class AddRecipeMPDialog extends DialogFragment {
 
-    private TextView title;
     private EditText serving;
-    private ImageButton closeButton;
 
     private MealPlanRecipeDialogListener listener;
 
@@ -56,16 +55,7 @@ public class AddRecipeMPDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.add_recipe_meal_plan_dialog, null);
-        title = view.findViewById(R.id.recipeTitle);
         serving = view.findViewById(R.id.recipeServings);
-        closeButton = view.findViewById(R.id.closeButton);
-
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -75,8 +65,6 @@ public class AddRecipeMPDialog extends DialogFragment {
         if (getArguments().get("meal_plan_add_recipe") != null) {
             Bundle selectedBundle = getArguments();
             Recipe received_recipe = (Recipe) selectedBundle.get("meal_plan_add_recipe");
-
-            initializeFields(received_recipe);
 
             AlertDialog dialog = builder.setView(view).setTitle("Add Meal plan recipe")
                     .setPositiveButton("Add", null)
@@ -102,11 +90,11 @@ public class AddRecipeMPDialog extends DialogFragment {
             Bundle selectedBundle = getArguments();
             Recipe received_recipe = (Recipe) selectedBundle.get("meal_plan_edit_recipe");
 
-            initializeFields(received_recipe);
             serving.setText(String.valueOf(received_recipe.getServings()));
 
-            AlertDialog dialog = builder.setView(view).setTitle("Edit Servings")
+            AlertDialog dialog = builder.setView(view).setTitle(String.format("Adjust servings for %s", received_recipe.getTitle()))
                     .setPositiveButton("Add", null)
+                    .setNegativeButton("Cancel", null)
                     .create();
 
             dialog.setOnShowListener(dialogInterface -> {
@@ -122,14 +110,6 @@ public class AddRecipeMPDialog extends DialogFragment {
 
         }
 
-    }
-
-    /**
-     * The title field in the dialog is the title of the selected recipe
-     * @param recipe the recipe selected
-     */
-    public void initializeFields(Recipe recipe) {
-        title.setText(recipe.getTitle());
     }
 
 

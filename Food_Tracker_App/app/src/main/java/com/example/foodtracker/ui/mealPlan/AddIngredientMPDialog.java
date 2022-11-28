@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,19 +17,14 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 
+import java.util.Locale;
+
 public class AddIngredientMPDialog extends DialogFragment {
 
-    private TextView description;
     private EditText amount;
     private TextView unit;
-    private ImageButton closeButton;
 
     private MealPlanIngredientDialogListener listener;
-
-    public interface MealPlanIngredientDialogListener {
-        void onIngredientAdd(Ingredient meal_plan_add_ingredient);
-        void onIngredientEdit(MealPlanDay meal_plan_edit_ingredient);
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -47,17 +41,8 @@ public class AddIngredientMPDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.meal_plan_scale_ingredient_dialog, null);
-        description = view.findViewById(R.id.ingredientTextView);
         amount = view.findViewById(R.id.ingredientAmount);
         unit = view.findViewById(R.id.ingredientUnit);
-        closeButton = view.findViewById(R.id.closeButton);
-
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -84,12 +69,7 @@ public class AddIngredientMPDialog extends DialogFragment {
             });
 
             return dialog;
-        }
-
-        /**
-         * when editing the amount of ingredient in a meal plan
-         */
-        else {
+        } else {
             Bundle bundle1 = (Bundle) getArguments().get("meal_plan_edit_ingredient");
             MealPlanDay received_meal_plan = (MealPlanDay) bundle1.get("meal_plan");
 
@@ -100,8 +80,9 @@ public class AddIngredientMPDialog extends DialogFragment {
             initializeFields(received_ingredient);
             amount.setText(String.valueOf(received_ingredient.getAmount()));
 
-            AlertDialog dialog = builder.setView(view).setTitle("Change ingredient Amount")
+            AlertDialog dialog = builder.setView(view).setTitle(String.format("Adjust %s quantity", received_ingredient.getDescription().toUpperCase(Locale.ROOT)))
                     .setPositiveButton("Edit", null)
+                    .setNegativeButton("Cancel", null)
                     .create();
 
             dialog.setOnShowListener(dialogInterface -> {
@@ -120,7 +101,6 @@ public class AddIngredientMPDialog extends DialogFragment {
     }
 
     public void initializeFields(Ingredient ingredient) {
-        description.setText(ingredient.getDescription());
         unit.setText(ingredient.getUnit());
     }
 
@@ -148,9 +128,9 @@ public class AddIngredientMPDialog extends DialogFragment {
         return setFields(ingredient);
     }
 
-
     /**
      * Checking if the input amount field of the ingredient valid
+     *
      * @param ingredient
      * @return {@link Boolean} valid return true if the amount is int and greater than 0
      */
@@ -172,6 +152,13 @@ public class AddIngredientMPDialog extends DialogFragment {
 
         return valid;
 
+    }
+
+
+    public interface MealPlanIngredientDialogListener {
+        void onIngredientAdd(Ingredient meal_plan_add_ingredient);
+
+        void onIngredientEdit(MealPlanDay meal_plan_edit_ingredient);
     }
 
 }
