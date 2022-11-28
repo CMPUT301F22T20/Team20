@@ -1,9 +1,10 @@
 package com.example.foodtracker.ui_test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ public class IngredientTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_ingredients));
         assertTrue(solo.waitForActivity(IngredientsMainScreen.class));
-        solo.waitForText("Quantity");
+        solo.waitForText("Category");
     }
 
     /**
@@ -49,7 +50,7 @@ public class IngredientTest {
     @Test
     public void checkIngredientListExpandOnClick(){
         solo.clickInRecyclerView(0);
-        assertTrue(solo.searchText("Quantity"));
+        assertTrue(solo.searchText("Amount"));
         solo.clickInRecyclerView(0);
     }
 
@@ -71,15 +72,14 @@ public class IngredientTest {
     public void addNewIngredient() {
         solo.waitForText("Category");
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
-        solo.clickOnView(solo.getView(R.id.addIngredientSelectionButton));
         solo.enterText((EditText) solo.getView(R.id.ingredientDescription), " Frozen Buffalo Wings");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
         Spinner spinner = solo.getView(Spinner.class, 0);
         spinner.setSelection(0, true);
         Spinner spinner2 = solo.getView(Spinner.class, 1);
-        spinner2.setSelection(0, true);
+        spinner2.setSelection(1, true);
         Spinner spinner3 = solo.getView(Spinner.class, 2);
-        spinner3.setSelection(0, true);
+        spinner3.setSelection(4, true);
         solo.setDatePicker(0, 2023, 12, 30);
         solo.clickOnView(solo.getView(android.R.id.button1));
         assertTrue(solo.waitForText("Frozen Buffalo Wings"));
@@ -94,13 +94,14 @@ public class IngredientTest {
         solo.clickOnView(solo.getView(R.id.edit_ingredient));
         solo.clearEditText((EditText) solo.getView(R.id.ingredientDescription));
         solo.clearEditText((EditText) solo.getView(R.id.ingredientQuantity));
-        solo.clearEditText((EditText) solo.getView(R.id.ingredientUnit));
         solo.enterText((EditText) solo.getView(R.id.ingredientDescription), "Oreo Thins");
-        solo.enterText((EditText) solo.getView(R.id.ingredientUnit), "1.60");
         solo.enterText((EditText) solo.getView(R.id.ingredientQuantity), "3");
-        solo.pressSpinnerItem(0,0);
-        Spinner spinner = solo.getView(Spinner.class, 1);
+        Spinner spinner = solo.getView(Spinner.class, 0);
         spinner.setSelection(0, true);
+        Spinner spinner2 = solo.getView(Spinner.class, 1);
+        spinner2.setSelection(0, true);
+        Spinner spinner3 = solo.getView(Spinner.class, 2);
+        spinner3.setSelection(0, true);
         solo.setDatePicker(0, 2023, 12, 30);
         solo.clickOnView(solo.getView(android.R.id.button1));
         assertTrue(solo.waitForText("Oreo Thins"));
@@ -111,8 +112,9 @@ public class IngredientTest {
      */
     @Test
     public void clickOnDeleteButton() {
+        String clickedItemDescription;
         ArrayList<TextView> textViews = solo.clickInRecyclerView(0);
-        String clickedItemDescription = String.valueOf(textViews.get(0).getText());
+        clickedItemDescription = String.valueOf(textViews.get(0).getText());
         solo.clickOnView(solo.getView(R.id.delete_ingredient));
         solo.waitForCondition(() -> !solo.searchText(clickedItemDescription), 2000);
     }
@@ -127,41 +129,17 @@ public class IngredientTest {
     }
 
     /**
-     * Test to add a new ingredient location
-     */
-    @Test
-    public void addIngredientLocation(){
-        solo.clickOnView(solo.getView(R.id.top_bar_add_button));
-        solo.clickOnView(solo.getView(R.id.addIngredientLocationSelectionButton));
-        assertTrue(solo.waitForText("New Location"));
-        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
-        solo.clickOnView(solo.getView(android.R.id.button1));
-
-    }
-
-    /**
      * Test to click on add new ingredient location and cancel
      */
     @Test
     public void cancelAddIngredientLocation(){
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
-        solo.clickOnView(solo.getView(R.id.addIngredientLocationSelectionButton));
+        solo.clickOnView(solo.getView(R.id.add_location));
         assertTrue(solo.waitForText("New Location"));
         solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Shelf");
         solo.clickOnView(solo.getView(android.R.id.button2));
     }
 
-    /**
-     * Test to add new ingredient category
-     */
-    @Test
-    public void addIngredientCategory(){
-        solo.clickOnView(solo.getView(R.id.top_bar_add_button));
-        solo.clickOnView(solo.getView(R.id.addIngredientCategorySelectionButton));
-        assertTrue(solo.waitForText("New Category"));
-        solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
-        solo.clickOnView(solo.getView(android.R.id.button1));
-    }
 
     /**
      * Test to click on add new ingredient category and then cancel
@@ -169,7 +147,7 @@ public class IngredientTest {
     @Test
     public void cancelAddIngredientCategory(){
         solo.clickOnView(solo.getView(R.id.top_bar_add_button));
-        solo.clickOnView(solo.getView(R.id.addIngredientCategorySelectionButton));
+        solo.clickOnView(solo.getView(R.id.add_ingredient_category));
         assertTrue(solo.waitForText("New Category"));
         solo.enterText((EditText) solo.getView(R.id.singleton_list_add), "Frozen");
         solo.clickOnView(solo.getView(android.R.id.button2));
@@ -190,18 +168,17 @@ public class IngredientTest {
      */
     public void checkSort(){
         int count = getCount();
+        Log.d("Count", Integer.toString(count));
         if(count > 1) {
             ArrayList<TextView> textView = solo.clickInRecyclerView(0);
             String clickedRecipeTitle = String.valueOf(textView.get(0).getText());
-            solo.clickOnView(solo.getView(R.id.top_bar_back_button));
 
             solo.clickOnView(solo.getView(R.id.sorting_direction));
             solo.sleep(1000);
 
-            ArrayList<TextView> textView1 = solo.clickInRecyclerView(count - 1);
+            ArrayList<TextView> textView1 = solo.clickInRecyclerView(0);
             String clickedRecipeTitle2 = String.valueOf(textView1.get(0).getText());
-
-            assertEquals(clickedRecipeTitle, clickedRecipeTitle2);
+            assertNotEquals(clickedRecipeTitle, clickedRecipeTitle2);
         }
     }
 
