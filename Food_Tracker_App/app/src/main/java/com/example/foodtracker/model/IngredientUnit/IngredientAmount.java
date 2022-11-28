@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class IngredientAmount implements Serializable {
 
-    double amount;
+    double amount = 0;
     IngredientUnit unit;
 
     public IngredientAmount() {

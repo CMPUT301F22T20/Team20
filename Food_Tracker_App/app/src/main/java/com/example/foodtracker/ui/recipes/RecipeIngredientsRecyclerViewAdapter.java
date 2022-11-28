@@ -59,7 +59,7 @@ public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<R
         SimpleIngredient ingredient = ingredientArrayList.get(position);
         ingredientHolder.description.setText(ingredient.getDescription());
         ingredientHolder.amount.setText(String.format("%s", ingredient.getAmountQuantity()));
-        ingredientHolder.unit.setText(ingredient.getUnit());
+        ingredientHolder.unit.setText(ingredient.getUnitAbbreviation());
         ingredientHolder.category.setText(String.format("%s", ingredient.getCategoryName()));
     }
 

@@ -11,12 +11,12 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.ArrayListener;
-import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
-import com.example.foodtracker.ui.ingredients.IngredientRecyclerViewAdapter;
+import com.example.foodtracker.model.recipe.SimpleIngredientNameComparator;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -25,10 +25,6 @@ import java.util.Set;
 
 public class ExpandableShoppingListAdapter extends BaseExpandableListAdapter {
 
-    public interface ShoppingListListener {
-        void onCheck(SimpleIngredient ingredient);
-    }
-
     private final Context context;
     private final List<String> categories = new ArrayList<>();
     private final Map<String, List<SimpleIngredient>> ingredientsByCategory = new HashMap<>();
@@ -36,11 +32,7 @@ public class ExpandableShoppingListAdapter extends BaseExpandableListAdapter {
 
     public ExpandableShoppingListAdapter(Context context, Set<String> categories, Map<String, Set<SimpleIngredient>> ingredientsByCategory) {
         this.context = context;
-        this.categories.addAll(categories);
-        for (Map.Entry<String, Set<SimpleIngredient>> ingredientSetByCategory : ingredientsByCategory.entrySet()) {
-            List<SimpleIngredient> ingredients = new ArrayList<>(ingredientSetByCategory.getValue());
-            this.ingredientsByCategory.put(ingredientSetByCategory.getKey(), ingredients);
-        }
+        refreshData(categories, ingredientsByCategory);
         shoppingListListener = (ShoppingListListener) context;
     }
 
@@ -112,12 +104,49 @@ public class ExpandableShoppingListAdapter extends BaseExpandableListAdapter {
         CheckBox box = convertView.findViewById(R.id.shopping_check_box);
         itemName.setText(ingredient.getDescription());
         ingredientAmount.setText(format(Locale.CANADA, "%.2f x %s", ingredient.getAmountQuantity(), ingredient.getUnitAbbreviation()));
-        box.setOnClickListener(onClick -> shoppingListListener.onCheck(ingredient));
+        box.setOnClickListener(onClick -> {
+            box.setChecked(false);
+            shoppingListListener.onCheck(ingredient);
+        });
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
+    }
+
+    public void sort(SortingField sortingField, Query.Direction sortingDirection) {
+        switch (sortingField) {
+            case CATEGORY:
+                Collections.sort(this.categories, (categoryA, categoryB) ->
+                        Query.Direction.DESCENDING.equals(sortingDirection) ?
+                                categoryA.compareToIgnoreCase(categoryB) :
+                                categoryB.compareToIgnoreCase(categoryA));
+                break;
+            case DESCRIPTION:
+                for (List<SimpleIngredient> ingredientsInCategory : this.ingredientsByCategory.values()) {
+                    Collections.sort(ingredientsInCategory, (ingredientA, ingredientB) -> Query.Direction.DESCENDING.equals(sortingDirection) ?
+                            new SimpleIngredientNameComparator().compare(ingredientA, ingredientB) :
+                            new SimpleIngredientNameComparator().compare(ingredientB, ingredientA)
+                    );
+                }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void refreshData(Set<String> categories, Map<String, Set<SimpleIngredient>> ingredientsByCategory) {
+        this.ingredientsByCategory.clear();
+        this.categories.clear();
+        this.categories.addAll(categories);
+        for (Map.Entry<String, Set<SimpleIngredient>> ingredientSetByCategory : ingredientsByCategory.entrySet()) {
+            List<SimpleIngredient> ingredients = new ArrayList<>(ingredientSetByCategory.getValue());
+            this.ingredientsByCategory.put(ingredientSetByCategory.getKey(), ingredients);
+        }
+        notifyDataSetChanged();
+    }
+
+    public interface ShoppingListListener {
+        void onCheck(SimpleIngredient ingredient);
     }
 }

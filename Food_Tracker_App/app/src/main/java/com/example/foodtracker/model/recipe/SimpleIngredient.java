@@ -14,20 +14,27 @@ import java.util.Objects;
  */
 public class SimpleIngredient implements Serializable {
 
-    public SimpleIngredient() {}
+    /**
+     * A brief description of what the ingredient is
+     */
+    private String description = "";
+    /**
+     * The category that represents this ingredient (i.e. Fruit)
+     */
+    private Category category = new Category();
+    /**
+     * The amount that we have of this ingredient
+     */
+    private IngredientAmount ingredientAmount = new IngredientAmount();
 
-    public SimpleIngredient(Ingredient ingredient) {
-        setIngredientAmount(ingredient.getAmount());
-        setDescription(ingredient.getDescription());
-        this.category = ingredient.getCategory();
+    public SimpleIngredient() {
     }
 
-                            @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SimpleIngredient that = (SimpleIngredient) o;
-        return getDescription().equalsIgnoreCase(that.getDescription());
+    public SimpleIngredient(Ingredient ingredient) {
+        setAmountQuantity(ingredient.getAmount());
+        setUnit(ingredient.getUnit());
+        setDescription(ingredient.getDescription());
+        setCategoryName(ingredient.getCategory());
     }
 
     @Override
@@ -35,20 +42,13 @@ public class SimpleIngredient implements Serializable {
         return Objects.hash(getDescription());
     }
 
-    /**
-     * A brief description of what the ingredient is
-     */
-    private String description;
-
-    /**
-     * The category that represents this ingredient (i.e. Fruit)
-     */
-    private Category category;
-
-    /**
-     * The amount that we have of this ingredient
-     */
-    private IngredientAmount amount = new IngredientAmount();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SimpleIngredient that = (SimpleIngredient) o;
+        return getDescription().equalsIgnoreCase(that.getDescription()) && getUnit().equals(that.getUnit());
+    }
 
     public String getDescription() {
         return description;
@@ -62,43 +62,56 @@ public class SimpleIngredient implements Serializable {
         return this.category.getName();
     }
 
+    public void setCategoryName(String category) {
+        this.category.setName(category);
+    }
+
     public Category getCategory() {
         return this.category;
     }
 
-    public void setCategory(String category) {
-        this.category = new Category(category);
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public double getAmountQuantity() {
-        return amount.getAmount();
+        return ingredientAmount.getAmount();
     }
 
-    public IngredientAmount getAmount() {
-        return amount;
+    public void setAmountQuantity(double ingredientAmount) {
+        this.ingredientAmount.setAmount(ingredientAmount);
+    }
+
+    public IngredientAmount getIngredientAmount() {
+        return ingredientAmount;
     }
 
     public void setIngredientAmount(IngredientAmount amount) {
-        this.amount = amount;
+        this.ingredientAmount = amount;
     }
 
-    public void addIngredientAmount(IngredientAmount toAdd) {
-        IngredientAmount converted = ConversionUtil.convertAmount(toAdd, this.amount.getUnit());
-        setAmount(getAmountQuantity() + converted.getAmount());
-    }
-    public void setAmount(double amount) {
-        this.amount.setAmount(amount);
+    public void addIngredientAmount(IngredientAmount toAdd) throws IllegalArgumentException {
+        IngredientAmount converted = ConversionUtil.convertAmount(toAdd, this.ingredientAmount.getUnit());
+        setAmountQuantity(getAmountQuantity() + converted.getAmount());
     }
 
     public String getUnit() {
-        return amount.getUnit().name();
-    }
-
-    public String getUnitAbbreviation() {
-        return amount.getUnit().getUnitAbbreviation();
+        return ingredientAmount.getUnit().name();
     }
 
     public void setUnit(String unit) {
-        this.amount.setUnit(IngredientUnit.valueOf(unit));
+        try {
+            this.ingredientAmount.setUnit(IngredientUnit.valueOf(unit));
+        } catch (IllegalArgumentException illegalArgumentException) {
+            // do nothing
+        }
+    }
+
+    public String getUnitAbbreviation() {
+        if (ingredientAmount.getUnit() != null) {
+            return ingredientAmount.getUnit().getUnitAbbreviation();
+        } else {
+            return "NONE";
+        }
     }
 }
