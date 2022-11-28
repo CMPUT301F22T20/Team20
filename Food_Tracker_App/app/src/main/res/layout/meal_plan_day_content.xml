@@ -1,124 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parentMealPlan"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:cardView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="horizontal"
+    cardView:cardBackgroundColor="@color/background_dark"
+    cardView:cardCornerRadius="20dp"
+    cardView:contentPadding="16dp">
 
-    <TextView
-        android:id="@+id/mealPlanDay"
-        style="@style/textHeader1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Day"
-        app:layout_constraintBottom_toTopOf="@id/mealPlanAddButtons"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/parentMealPlan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-
-    <ImageButton
-        android:id="@+id/mealPlanDeleteDayButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48" />
-
-    <LinearLayout
-        android:id="@+id/mealPlanAddButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mealPlanDay">
-
-        <Button
-            android:id="@+id/mealPlanAddIngredientButton"
-            style="@style/textButton"
+        <TextView
+            android:id="@+id/mealPlanDay"
+            style="@style/textHeader1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="+ Ingredient"
-            app:backgroundTint="@color/positive"
-            app:layout_constraintBottom_toTopOf="parent"
+            android:text="Day"
+            app:layout_constraintBottom_toTopOf="@id/mealPlanAddButtons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageButton
+            android:id="@+id/mealPlanDeleteDayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/mealPlanIngredients"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close_fill0_wght400_grad0_opsz48" />
 
-        <Button
-            android:id="@+id/mealPlanAddRecipeButton"
-            style="@style/textButton"
+        <LinearLayout
+            android:id="@+id/mealPlanAddButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="+ Recipe"
-            app:backgroundTint="@color/positive"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/mealPlanAddIngredientButton"
-            app:layout_constraintStart_toEndOf="@id/mealPlanRecipes"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mealPlanDay">
+
+            <Button
+                android:id="@+id/mealPlanAddIngredientButton"
+                style="@style/textButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="+ Ingredient"
+                app:backgroundTint="@color/positive"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/mealPlanIngredients"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/mealPlanAddRecipeButton"
+                style="@style/textButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="+ Recipe"
+                app:backgroundTint="@color/positive"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/mealPlanAddIngredientButton"
+                app:layout_constraintStart_toEndOf="@id/mealPlanRecipes"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/ingredientText"
-        style="@style/textHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Ingredients"
-        app:layout_constraintBottom_toTopOf="@id/mealPlanIngredients"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mealPlanAddButtons" />
-
-    <LinearLayout
-        android:id="@+id/mealPlanIngredients"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/recipeText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ingredientText">
-
-        <!--Child RecyclerView Ingredients-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mealPlanIngredientsList"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/ingredientText"
+            style="@style/textHeader2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_nav_bar" />
+            android:layout_marginStart="16dp"
+            android:text="Ingredients"
+            app:layout_constraintBottom_toTopOf="@id/mealPlanIngredients"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mealPlanAddButtons" />
 
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/recipeText"
-        style="@style/textHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Recipes"
-        app:layout_constraintBottom_toTopOf="@id/mealPlanRecipes"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mealPlanIngredients" />
-
-    <LinearLayout
-        android:id="@+id/mealPlanRecipes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recipeText">
-
-        <!--Child RecyclerView Recipes-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mealPlanRecipesList"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/mealPlanIngredients"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_nav_bar" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/recipeText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ingredientText">
 
+            <!--Child RecyclerView Ingredients-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mealPlanIngredientsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_nav_bar" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/recipeText"
+            style="@style/textHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Recipes"
+            app:layout_constraintBottom_toTopOf="@id/mealPlanRecipes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mealPlanIngredients" />
+
+        <LinearLayout
+            android:id="@+id/mealPlanRecipes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipeText">
+
+            <!--Child RecyclerView Recipes-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mealPlanRecipesList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_nav_bar" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
