@@ -14,6 +14,7 @@ import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
 import com.example.foodtracker.ui.TopBar;
+import com.example.foodtracker.ui.recipes.RecipeIngredientDialog;
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class SelectIngredient extends AppCompatActivity implements
         AddIngredientMPDialog.MealPlanIngredientDialogListener,
         TopBar.TopBarListener,
-        AddNewIngredientMPDialog.smallIngredientListener {
+        RecipeIngredientDialog.recipeIngredientDialogListener{
 
     ListView ingredientListView;
     ArrayList<Ingredient> ingredientArrayList;
@@ -108,13 +109,29 @@ public class SelectIngredient extends AppCompatActivity implements
         /**
          *add a new ingredient which is not in the ingredient storage
          */
-        AddNewIngredientMPDialog addNewIngredientMPDialog = new AddNewIngredientMPDialog();
+        Bundle args = new Bundle();
+        Ingredient new_ingredient = new Ingredient();
+        args.putSerializable("MEAL_PLAN_NEW_INGREDIENT", new_ingredient);
+        RecipeIngredientDialog addNewIngredientMPDialog = new RecipeIngredientDialog();
+        addNewIngredientMPDialog.setArguments(args);
         addNewIngredientMPDialog.show(getSupportFragmentManager(), "ADD_NEW_MEAL_PLAN_INGREDIENT");
+
+    }
+
+
+    @Override
+    public void addRecipeIngredient(SimpleIngredient ingredient) {
+        //do nothing
     }
 
     @Override
-    public void addRecipeIngredient(Ingredient new_ingredient) {
-        mealPlan.getIngredients().add(new_ingredient);
+    public void editRecipeIngredient(SimpleIngredient ingredient) {
+        //do nothing
+    }
+
+    @Override
+    public void addMealPlanIngredient(Ingredient ingredient) {
+        mealPlan.getIngredients().add(ingredient);
         Intent intent1 = new Intent(getApplicationContext(), MealPlanMainScreen.class);
         intent1.putExtra("meal_plan_after_ingredient_add", mealPlan);
         startActivity(intent1);

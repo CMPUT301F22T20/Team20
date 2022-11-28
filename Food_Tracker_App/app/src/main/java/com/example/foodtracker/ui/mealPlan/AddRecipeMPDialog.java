@@ -98,7 +98,7 @@ public class AddRecipeMPDialog extends DialogFragment {
         /**
          * when a recipe in a meal plan is to change number of servings
          */
-        if (getArguments().get("meal_plan_edit_recipe") != null) {
+        else {
             Bundle selectedBundle = getArguments();
             Recipe received_recipe = (Recipe) selectedBundle.get("meal_plan_edit_recipe");
 
@@ -121,10 +121,6 @@ public class AddRecipeMPDialog extends DialogFragment {
             return dialog;
 
         }
-
-        return builder.setView(view).setTitle("Add a Recipe")
-                .setPositiveButton("Add", null)
-                .create();
 
     }
 
