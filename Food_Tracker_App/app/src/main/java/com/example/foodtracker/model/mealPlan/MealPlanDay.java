@@ -5,12 +5,11 @@ import com.example.foodtracker.model.DocumentableFieldName;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.Recipe;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MealPlanDay extends Document implements Serializable {
+public class MealPlanDay extends Document{
 
     public static final String MEALPLAN_COLLECTION_NAME = "MealPlan";
     private String day;

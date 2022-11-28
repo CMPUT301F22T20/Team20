@@ -22,17 +22,6 @@ public class Recipe extends Document {
     }
 
 
-    // TODO: Added this back in to instantiate meal plan objects - delete later if not needed
-    public Recipe(String image, String title, int prepTime, int servings, String category, String comment, ArrayList<SimpleIngredient> ingredients) {
-        this.image = image;
-        this.title = title;
-        this.prepTime = prepTime;
-        this.servings = servings;
-        setCategory(category);
-        this.comment = comment;
-        this.ingredients = ingredients;
-    }
-
 
     /**
      * @see <a href=https://www.geeksforgeeks.org/overriding-equals-method-in-java/%22%3EGeeks for Geeks</a>
