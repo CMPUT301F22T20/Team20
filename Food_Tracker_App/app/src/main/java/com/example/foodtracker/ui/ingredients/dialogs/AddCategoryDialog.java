@@ -41,18 +41,24 @@ public class AddCategoryDialog extends DialogFragment {
                 .setPositiveButton("Add", null).create();
         dialog.setOnShowListener(dialogInterface -> {
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(v -> {
-                Category category = new Category(listItem.getText().toString());
-                categoryCollection.exists(category, result -> {
-                    if (Boolean.FALSE.equals(result)) {
-                        categoryCollection.createDocument(category, this::dismiss);
-                    } else {
-                        listItem.setError("Category already exists");
-                    }
-                });
-            });
+            button.setOnClickListener(v -> submitCategory());
         });
         return dialog;
+    }
+
+    private void submitCategory() {
+        Category category = new Category(listItem.getText().toString());
+        if (category.getName().isEmpty()) {
+            listItem.setError("Category is required!");
+            return;
+        }
+        categoryCollection.exists(category, result -> {
+            if (Boolean.FALSE.equals(result)) {
+                categoryCollection.createDocument(category, this::dismiss);
+            } else {
+                listItem.setError("Category already exists");
+            }
+        });
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.ingredient.Location;
+import com.example.foodtracker.model.recipe.SimpleIngredient;
 import com.example.foodtracker.utils.Collection;
 
 import java.text.ParseException;
@@ -149,18 +150,50 @@ public class IngredientDialog extends DialogFragment implements DialogInterface.
         if (getArguments() != null) {
             Bundle selectedBundle = getArguments();
             ingredientToEdit = (Ingredient) selectedBundle.get("ingredient");
-            initializeIngredient(ingredientToEdit);
-            refreshDropdowns(ingredientToEdit);
-            return builder.setView(view).setTitle("Edit ingredient")
-                    .setNegativeButton("Cancel", null)
-                    .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
-                    .create();
+            return initializeEditIngredientDialog(view, builder);
         }
-        refreshDropdowns(null);
-        return builder.setView(view).setTitle("Add an ingredient")
+        return initializeAddIngredientDialog(view, builder);
+    }
+
+    @NonNull
+    private AlertDialog initializeEditIngredientDialog(View view, AlertDialog.Builder builder) {
+        initializeIngredient(ingredientToEdit);
+        refreshDropdowns(ingredientToEdit);
+        AlertDialog dialog = builder
+                .setView(view)
+                .setTitle("Edit ingredient")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Add", (dialogInterface, i) -> addClick())
-                .create();
+                .setPositiveButton("Edit", null).create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> {
+                if (editClick(ingredientToEdit)) {
+                    dialog.dismiss();
+                }
+            });
+        });
+        return dialog;
+    }
+
+    @NonNull
+    private AlertDialog initializeAddIngredientDialog(View view, AlertDialog.Builder builder) {
+        refreshDropdowns(null);
+        AlertDialog dialog = builder
+                .setView(view)
+                .setTitle("Add ingredient")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Add", null).create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> {
+                if (addClick()) {
+                    dialog.dismiss();
+                }
+            });
+        });
+        return dialog;
     }
 
     public void initializeIngredient(Ingredient ingredient) {
@@ -169,31 +202,48 @@ public class IngredientDialog extends DialogFragment implements DialogInterface.
         setDatePicker(ingredient);
     }
 
-    public void editClick(Ingredient ingredient) {
-        setIngredientFields(ingredient);
-        listener.onIngredientEdit(ingredient);
-    }
-
-    public void addClick() {
-        Ingredient ingredient = new Ingredient();
-        setIngredientFields(ingredient);
-        listener.onIngredientAdd(ingredient);
-    }
-
-    private void setIngredientFields(Ingredient ingredient) {
-        ingredient.setDescription(description.getText().toString());
-        String quantityString = quantity.getText().toString();
-        int quantity = 1;
-        try {
-            quantity = Integer.parseInt(quantityString);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+    public boolean editClick(Ingredient ingredient) {
+        if (setIngredientFields(ingredient)) {
+            listener.onIngredientEdit(ingredient);
+            return true;
         }
-        ingredient.setAmount(quantity);
+        return false;
+    }
+
+    public boolean addClick() {
+        Ingredient ingredient = new Ingredient();
+        if (setIngredientFields(ingredient)) {
+            listener.onIngredientAdd(ingredient);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean setIngredientFields(Ingredient ingredient) {
+        if (description.getText().length() == 0) {
+            description.setError("Description is required!");
+            return false;
+        } else {
+            ingredient.setDescription(description.getText().toString());
+        }
+
+        if (quantity.getText().length() == 0) {
+            quantity.setError("Quantity is required!");
+            return false;
+        } else {
+            int quantity = 1;
+            try {
+                quantity = Integer.parseInt(this.quantity.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            ingredient.setAmount(quantity);
+        }
         ingredient.setUnit(unit.getSelectedItem().toString());
         ingredient.setLocation(location.getSelectedItem().toString());
         ingredient.setCategory(category.getSelectedItem().toString());
         ingredient.setExpiry(String.format(Locale.CANADA, "%02d-%02d-%d",  expiry.getDayOfMonth(),expiry.getMonth() + 1, expiry.getYear()));
+        return true;
     }
 
     private void setDatePicker(Ingredient ingredient) {
