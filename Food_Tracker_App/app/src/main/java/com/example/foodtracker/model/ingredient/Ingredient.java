@@ -46,13 +46,6 @@ public class Ingredient extends Document {
     public Ingredient() {
     }
 
-    public Ingredient(SimpleIngredient simpleIngredient) {
-        setDescription(simpleIngredient.getDescription());
-        setUnit(simpleIngredient.getUnit());
-        setAmount(simpleIngredient.getAmount());
-        setCategory(simpleIngredient.getCategory());
-    }
-
     @Override
     public String getCollectionName() {
         return INGREDIENTS_COLLECTION_NAME;

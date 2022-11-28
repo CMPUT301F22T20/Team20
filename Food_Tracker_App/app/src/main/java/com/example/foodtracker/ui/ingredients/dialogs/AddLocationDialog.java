@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.foodtracker.R;
-import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.ingredient.Location;
 import com.example.foodtracker.utils.Collection;
 
@@ -22,8 +22,13 @@ import com.example.foodtracker.utils.Collection;
  */
 public class AddLocationDialog extends DialogFragment {
 
-    private EditText listItem;
     private final Collection<Location> locationCollection = new Collection<>(Location.class, new Location());
+    private final DialogInterface.OnDismissListener dismissListener;
+    private EditText listItem;
+
+    public AddLocationDialog(DialogInterface.OnDismissListener dismissListener) {
+        this.dismissListener = dismissListener;
+    }
 
     @NonNull
     @Override
@@ -32,15 +37,30 @@ public class AddLocationDialog extends DialogFragment {
         listItem = view.findViewById(R.id.singleton_list_add);
         listItem.setHint("Add a location");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        return builder
-                .setView(view)
+        AlertDialog dialog = builder.setView(view)
                 .setTitle("New Location")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Add", (dialog, i) -> {
-                    Location location = new Location(listItem.getText().toString());
-                    locationCollection.createDocument(location, this::dismiss);
-                })
-                .create();
+                .setPositiveButton("Add", null).create();
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> {
+                Location location = new Location(listItem.getText().toString());
+                locationCollection.exists(location, result -> {
+                    if (Boolean.FALSE.equals(result)) {
+                        locationCollection.createDocument(location, this::dismiss);
+                    } else {
+                        listItem.setError("Location already exists");
+                    }
+                });
+            });
+        });
+        return dialog;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        if (dismissListener != null) {
+            dismissListener.onDismiss(dialog);
+        }
     }
 }

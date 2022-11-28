@@ -25,6 +25,7 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.recipe.Category;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
+import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.BitmapUtil;
 import com.example.foodtracker.utils.Collection;
 
@@ -41,14 +42,30 @@ public class RecipeDialog extends AppCompatActivity implements
     private final List<String> categories = new ArrayList<>();
     private ImageView recipeImage;
     private Bitmap bitmap;
-    private final ActivityResultLauncher<String> imageGalleryResultHandler = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-            recipeImage.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    });
+
+    /**
+     * Allows us to launch and handle the result of choosing a picture from the gallery
+     * sets the image in the display based on the chosen picture
+     */
+    private final ActivityResultLauncher<String> imageGalleryResultHandler =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    recipeImage.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+    /**
+     * Allows us to launch and handle the result for taking a picture
+     */
+    private final ActivityResultLauncher<Void> takePictureResultHandler =
+            registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bitmap -> {
+                this.bitmap = bitmap;
+                recipeImage.setImageBitmap(this.bitmap);
+            });
+
     private ArrayAdapter<String> categoryAdapter;
     private Spinner categoryField;
 
@@ -70,10 +87,19 @@ public class RecipeDialog extends AppCompatActivity implements
         servingsField = findViewById(R.id.recipe_servings);
         getCategories(null);
         commentsField = findViewById(R.id.recipeComments);
-
-        ImageButton addRecipeImageButton = findViewById(R.id.recipe_image_button);
         recipeImage = findViewById(R.id.recipe_image);
-        addRecipeImageButton.setOnClickListener(v -> addImageFromGallery());
+
+        ImageButton addRecipeImageFromGalleryButton = findViewById(R.id.recipe_add_image_from_gallery);
+        addRecipeImageFromGalleryButton.setOnClickListener(v -> addImageFromGallery());
+
+        ImageButton addRecipeFromCameraButton = findViewById(R.id.recipe_add_image_from_camera);
+        addRecipeFromCameraButton.setOnClickListener(v -> addImageFromCamera());
+
+        ImageButton deleteRecipeImageButton = findViewById(R.id.recipe_remove_image);
+        deleteRecipeImageButton.setOnClickListener(v -> {
+            bitmap = null;
+            recipeImage.setImageBitmap(null);
+        });
 
         RecyclerView recipeIngredients = findViewById(R.id.recipe_ingredients);
         recipeIngredients.setLayoutManager(new LinearLayoutManager(this));
@@ -86,21 +112,22 @@ public class RecipeDialog extends AppCompatActivity implements
 
         Button confirmButton = findViewById(R.id.recipes_confirm);
         if (getIntent().getExtras() != null) {
+            createTopBar(getResources().getString(R.string.edit_recipe));
             Recipe recipe = (Recipe) getIntent().getSerializableExtra("EDIT_RECIPE");
             getCategories(recipe);
             initializeEditRecipe(recipe);
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 boolean valid = setRecipeFields(recipe);
-
                 if (valid) {
                     intent.putExtra("EDIT_RECIPE", recipe);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
-
             });
         } else {
+            recipeImage.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            createTopBar(getResources().getString(R.string.add_recipe));
             confirmButton.setOnClickListener(view -> {
                 Intent intent = new Intent();
                 Recipe recipe = new Recipe();
@@ -117,7 +144,6 @@ public class RecipeDialog extends AppCompatActivity implements
 
         Button cancelButton = findViewById(R.id.recipes_cancel);
         cancelButton.setOnClickListener(view -> finish());
-
     }
 
     @Override
@@ -126,21 +152,6 @@ public class RecipeDialog extends AppCompatActivity implements
         adapter.notifyItemChanged(ingredientList.size());
         if (ingredientList.size() == 1) {
             toggleRecipeIngredientsDisplay();
-        }
-    }
-
-    /**
-     * Either shows the header or a no ingredients message
-     */
-    private void toggleRecipeIngredientsDisplay() {
-        TextView noIngredientsMessage = findViewById(R.id.no_ingredients);
-        LinearLayout ingredientHeaders = findViewById(R.id.ingredientHeaders);
-        if (View.VISIBLE == ingredientHeaders.getVisibility()) {
-            noIngredientsMessage.setVisibility(View.VISIBLE);
-            ingredientHeaders.setVisibility(View.GONE);
-        } else {
-            noIngredientsMessage.setVisibility(View.GONE);
-            ingredientHeaders.setVisibility(View.VISIBLE);
         }
     }
 
@@ -191,6 +202,21 @@ public class RecipeDialog extends AppCompatActivity implements
     }
 
     /**
+     * Either shows the header or a no ingredients message
+     */
+    private void toggleRecipeIngredientsDisplay() {
+        TextView noIngredientsMessage = findViewById(R.id.no_ingredients);
+        LinearLayout ingredientHeaders = findViewById(R.id.ingredientHeaders);
+        if (View.VISIBLE == ingredientHeaders.getVisibility()) {
+            noIngredientsMessage.setVisibility(View.VISIBLE);
+            ingredientHeaders.setVisibility(View.GONE);
+        } else {
+            noIngredientsMessage.setVisibility(View.GONE);
+            ingredientHeaders.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
      * Retrieves categories from firestore and populates a string array with the content
      */
     private void getCategories(@Nullable Recipe recipe) {
@@ -210,6 +236,10 @@ public class RecipeDialog extends AppCompatActivity implements
 
     private void addImageFromGallery() {
         imageGalleryResultHandler.launch("image/*");
+    }
+
+    private void addImageFromCamera() {
+        takePictureResultHandler.launch(null);
     }
 
     /**
@@ -252,5 +282,16 @@ public class RecipeDialog extends AppCompatActivity implements
             recipe.setImage(BitmapUtil.toString(bitmap));
         }
         return valid;
+    }
+
+    /**
+     * Instantiates the top bar fragment for the recipe display menu
+     */
+    private void createTopBar(String title) {
+        TopBar topBar = TopBar.newInstance(title, false, true);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.topBarContainerView, topBar)
+                .commit();
     }
 }

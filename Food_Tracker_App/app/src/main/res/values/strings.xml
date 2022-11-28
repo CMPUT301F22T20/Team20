@@ -61,4 +61,10 @@
     <string name="remove_icon_text">X</string>
     <string name="amount_abbreviation">Amt.</string>
     <string name="no_ingredients">No ingredients</string>
+    <string name="add_from_gallery">Add from gallery</string>
+    <string name="add_from_camera">Add from camera</string>
+    <string name="edit_recipe">Edit recipe</string>
+    <string name="add_recipe">Add recipe</string>
+    <string name="remove_image_from_recipe">Remove image from recipe</string>
+    <string name="remove_image">Remove image</string>
 </resources>
