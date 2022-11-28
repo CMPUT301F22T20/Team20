@@ -12,7 +12,6 @@ import com.example.foodtracker.ui.NavBar;
  * This class extends from {@link AppCompatActivity}
  */
 public class ShoppingCartMainScreen extends AppCompatActivity {
-
     /**
      * @param savedInstanceState This is of type {@link Bundle}
      */

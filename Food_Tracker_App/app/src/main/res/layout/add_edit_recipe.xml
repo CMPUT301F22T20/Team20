@@ -165,7 +165,7 @@
                 android:id="@+id/recipe_prep_time"
                 style="@style/inputField"
                 android:hint="@string/preparation_time_minutes_descriptor"
-                android:inputType="text" />
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout
@@ -186,7 +186,7 @@
                 android:id="@+id/recipe_servings"
                 style="@style/inputField"
                 android:hint="@string/servings"
-                android:inputType="text" />
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout

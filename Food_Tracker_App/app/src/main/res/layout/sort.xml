@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_arrow_downward_24"
+        android:src="@drawable/ic_baseline_arrow_upward_24"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/changes_sorting_direction" />

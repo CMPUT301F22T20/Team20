@@ -13,7 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodTracker"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.mealPlan.ViewRecipe"
+            android:exported="false" />
+        <activity
+            android:name=".ui.mealPlan.SelectRecipe"
+            android:exported="false" />
+        <activity
+            android:name=".ui.mealPlan.SelectIngredient"
+            android:exported="false" />
         <activity
             android:name=".ui.recipes.RecipeDialog"
             android:exported="false" />
