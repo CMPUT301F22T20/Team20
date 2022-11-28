@@ -25,6 +25,9 @@ import com.example.foodtracker.utils.Collection;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This dialog is for confirming the number of servings when a recipe is added to a meal plan
+ */
 public class AddRecipeMPDialog extends DialogFragment {
 
     private TextView title;
@@ -75,7 +78,7 @@ public class AddRecipeMPDialog extends DialogFragment {
 
             initializeFields(received_recipe);
 
-            AlertDialog dialog = builder.setView(view).setTitle("Add Meal plan ingredient")
+            AlertDialog dialog = builder.setView(view).setTitle("Add Meal plan recipe")
                     .setPositiveButton("Add", null)
                     .create();
 
@@ -87,6 +90,8 @@ public class AddRecipeMPDialog extends DialogFragment {
                     }
                 });
             });
+
+            return dialog;
 
         }
 
@@ -113,19 +118,30 @@ public class AddRecipeMPDialog extends DialogFragment {
                 });
             });
 
+            return dialog;
+
         }
 
-        return builder.setView(view).setTitle("Add an ingredient")
+        return builder.setView(view).setTitle("Add a Recipe")
                 .setPositiveButton("Add", null)
                 .create();
 
     }
 
+    /**
+     * The title field in the dialog is the title of the selected recipe
+     * @param recipe the recipe selected
+     */
     public void initializeFields(Recipe recipe) {
         title.setText(recipe.getTitle());
     }
 
 
+    /**
+     * When the add button in the dialog is clicked
+     * @param recipe the recipe to be added to the meal plan
+     * @return {@link Boolean} true if the required fields are valid; false otherwise
+     */
     public Boolean addClick(Recipe recipe) {
         Recipe recipeToAdd = new Recipe();
 
@@ -143,6 +159,12 @@ public class AddRecipeMPDialog extends DialogFragment {
         return setFields(recipeToAdd);
     }
 
+    /**
+     * For changing the number of servings of a recipe in a meal plan
+     * When the edit button in the dialog is clicked
+     * @param recipe the recipe to be changed with number of servings
+     * @return {@link Boolean} true if the required fields are valid; false otherwise
+     */
     public Boolean editClick(Recipe recipe) {
 
         if (setFields(recipe)) {
@@ -182,6 +204,11 @@ public class AddRecipeMPDialog extends DialogFragment {
 
     }
 
+    /**
+     * Scaling the amount of ingredients for a recipe when the number of servings of a recipe is changed
+     * @param recipe the recipe has the number of servings changed
+     * @param old_servings the number of servings of the recipe before changing
+     */
     public void scaleRecipeIngredients(Recipe recipe, int old_servings) {
         int new_servings = recipe.getServings();
         double old_double = old_servings;
@@ -190,12 +217,12 @@ public class AddRecipeMPDialog extends DialogFragment {
         double ratio = new_double / old_double;
 
         double old_ingredient_amount;
-        int new_amount_int;
+        double new_amount_double;
 
         for (int i=0; i<recipe.getIngredients().size(); i++) {
-            old_ingredient_amount = recipe.getIngredients().get(i).getAmount();
-            new_amount_int = (int) Math.ceil(ratio * old_ingredient_amount);
-            recipe.getIngredients().get(i).setAmount(new_amount_int);
+            old_ingredient_amount = recipe.getIngredients().get(i).getAmountQuantity();
+            new_amount_double = ratio * old_ingredient_amount;
+            recipe.getIngredients().get(i).setAmountQuantity(new_amount_double);
         }
     }
 

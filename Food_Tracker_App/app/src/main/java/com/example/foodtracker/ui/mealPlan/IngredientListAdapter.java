@@ -1,5 +1,7 @@
 package com.example.foodtracker.ui.mealPlan;
 
+import static java.lang.String.format;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,14 +40,14 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
         Ingredient ingredient = ingredientArrayList.get(position);
 
         TextView ingredientName = view.findViewById(R.id.ingredient_name);
-        TextView ingredientAmount = view.findViewById(R.id.text_ingredient_amount);
+        TextView ingredientAmount = view.findViewById(R.id.text_ingredient_quantity);
         TextView ingredientLocation = view.findViewById(R.id.text_ingredient_location);
         TextView ingredientCategory = view.findViewById(R.id.text_ingredient_category);
-        TextView ingredientUnit = view.findViewById(R.id.text_ingredient_unit);
         TextView ingredientDate = view.findViewById(R.id.text_ingredient_expiry);
 
         ingredientName.setText(ingredient.getDescription());
-//        ingredientAmount.setText(String.valueOf(ingredient.getAmount()));
+        ingredientAmount.setText(String.format("Quantity: %s %s",
+                ingredient.getAmount(), ingredient.getUnit()));
         ingredientLocation.setText(ingredient.getLocation());
         ingredientCategory.setText(ingredient.getCategory());
         ingredientDate.setText(ingredient.getExpiry());

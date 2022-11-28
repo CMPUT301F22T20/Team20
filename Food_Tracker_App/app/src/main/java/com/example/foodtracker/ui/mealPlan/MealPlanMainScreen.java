@@ -94,7 +94,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements
 
     private void createData() {
         ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
-        ingredientArrayList.add(new Ingredient("apple", "", "pantry", "snack", 2, ""));
+        //ingredientArrayList.add(new Ingredient("apple", "", "pantry", "snack", 2, ""));
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         //recipeArrayList.add(new Recipe("", "Soup", 90, 6, "Dinner", "", ingredientArrayList));
         MealPlanDay mealPlanDay = new MealPlanDay("11-20-2022", ingredientArrayList, recipeArrayList);
@@ -161,9 +161,9 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     }
 
     /**
-     * change the amount of ingredients in a meal plan
-     * @param ingredientPosition
-     * @param object
+     * When a ingredient in a meal plan is clicked, change the amount of ingredients
+     * @param ingredientPosition the position of the ingredient in a meal plan
+     * @param object the meal plan containing the ingredient to change the amount
      */
     @Override
     public void scaleIngredient(int ingredientPosition, MealPlanDay object) {
@@ -187,9 +187,9 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     }
 
     /**
-     * when a recipe is clicked to show the recipe details and then change the # of servings
-     * @param recipePosition
-     * @param object
+     * When a recipe is clicked to show the recipe details and then change the # of servings
+     * @param recipePosition the position of the recipe in the meal plan
+     * @param object the meal plan containing the recipe
      */
     @Override
     public void scaleRecipe(int recipePosition, MealPlanDay object) {
@@ -200,26 +200,20 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     }
 
 
+    /**
+     * When "add an ingredient" is clicked, the list of ingredients will show up to be selected
+     * @param mealPlan where the ingredient is added to
+     */
     @Override
     public void onAddIngredientClick(MealPlanDay mealPlan) {
-        /*
-        Bundle args = new Bundle();
-        args.putSerializable("meal_plan_add_ingredient", mealPlan);
-
-        AddIngredientMPDialog addIngredientMPDialog = new AddIngredientMPDialog();
-        addIngredientMPDialog.setArguments(args);
-        addIngredientMPDialog.show(getSupportFragmentManager(), "ADD_MEAL_PLAN_INGREDIENT");
-
-         */
         Intent intent = new Intent(getApplicationContext(), SelectIngredient.class);
         intent.putExtra("meal_plan_for_ingredient_add", mealPlan);
         startActivity(intent);
-
     }
 
     /**
-     * When add recipe button is clicked
-     * @param mealPlan where recipe is added to
+     * When add recipe button is clicked, the list of recipes will show up to be selected
+     * @param mealPlan where the recipe is added to
      */
     @Override
     public void onAddRecipeClick(MealPlanDay mealPlan) {
@@ -230,11 +224,19 @@ public class MealPlanMainScreen extends AppCompatActivity implements
 
     }
 
+    /**
+     * When an ingredient is added to a meal plan
+     * @param meal_plan_add_ingredient the meal plan with ingredient already added to ingredient arraylist
+     */
     public void addIngredient(MealPlanDay meal_plan_add_ingredient) {
         int editIndex = mealPlanDayArrayList.indexOf(meal_plan_add_ingredient);
         mealPlanDaysCollection.updateDocument(meal_plan_add_ingredient, () -> adapter.notifyItemChanged(editIndex));
     }
 
+    /**
+     * When a recipe is added to a meal plan
+     * @param meal_plan_add_recipe the meal plan with recipe already added to recipe arraylist
+     */
     public void addRecipe(MealPlanDay meal_plan_add_recipe) {
         int editIndex = mealPlanDayArrayList.indexOf(meal_plan_add_recipe);
         mealPlanDaysCollection.updateDocument(meal_plan_add_recipe, () -> adapter.notifyItemChanged(editIndex));
@@ -245,6 +247,10 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         //do nothing
     }
 
+    /**
+     * When the amount of an ingredient in a meal plan is changed
+     * @param meal_plan_edit_ingredient the meal plan with changed amount of ingredient
+     */
     @Override
     public void onIngredientEdit(MealPlanDay meal_plan_edit_ingredient) {
         int editIndex = mealPlanDayArrayList.indexOf(meal_plan_edit_ingredient);
@@ -252,8 +258,8 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     }
 
     /**
-     * Edit the number of servings in a meal plan
-     * @param meal_plan_edit_recipe
+     * When the number of servings in a meal plan is changed
+     * @param meal_plan_edit_recipe the meal plan with changed servings of recipe
      */
     public void editRecipe(MealPlanDay meal_plan_edit_recipe) {
         int editIndex = mealPlanDayArrayList.indexOf(meal_plan_edit_recipe);

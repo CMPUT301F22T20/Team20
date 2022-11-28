@@ -44,9 +44,9 @@ public class RecipeListAdapter extends ArrayAdapter<Recipe> {
         TextView recipeTime = view.findViewById(R.id.recipe_preptime);
 
         recipeTitle.setText(recipe.getTitle());
-        recipeCategory.setText(recipe.getCategory());
-        recipeServing.setText(String.valueOf(recipe.getServings()));
-        recipeTime.setText(String.valueOf(recipe.getPrepTime()));
+        recipeCategory.setText(String.format("%s", recipe.getCategory()));
+        recipeServing.setText(String.format("Servings: %s", recipe.getServings()));
+        recipeTime.setText(String.format("Prep Time: %s mins", recipe.getPrepTime()));
 
         return view;
     }

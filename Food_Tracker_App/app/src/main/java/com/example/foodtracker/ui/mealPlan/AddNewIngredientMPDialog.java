@@ -20,12 +20,15 @@ import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.ingredient.Location;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
-import com.example.foodtracker.ui.recipes.AddSimpleIngredient;
+
 import com.example.foodtracker.utils.Collection;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This dialog is for when an ingredient not in the storage is to be added to a meal plan
+ */
 public class AddNewIngredientMPDialog extends DialogFragment {
 
     private Spinner category;
