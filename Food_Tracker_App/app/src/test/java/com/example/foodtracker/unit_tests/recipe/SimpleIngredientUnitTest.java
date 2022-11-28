@@ -90,7 +90,9 @@ public class SimpleIngredientUnitTest {
     public void testEquals(){
         SimpleIngredient mockSimpleIngredient = getMockSimpleIngredient();
         mockSimpleIngredient.setDescription("Salt");
+        mockSimpleIngredient.setUnit(IngredientUnit.TABLESPOON.name());
         SimpleIngredient mockSimpleIngredient2 = getMockSimpleIngredient();
+        mockSimpleIngredient2.setUnit(IngredientUnit.TABLESPOON.name());
         mockSimpleIngredient2.setDescription("Sugar");
         assertTrue(mockSimpleIngredient.equals(mockSimpleIngredient));
         assertFalse(mockSimpleIngredient.equals(mockSimpleIngredient2));
