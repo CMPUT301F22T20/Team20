@@ -8,19 +8,13 @@
         android:id="@+id/createMealPlan"
         style="@style/addChoiceButton"
         android:textColor="@color/background_light"
-        android:text = "Create Meal Plan" />
+        android:text = "Create/Reset Meal Plan" />
 
     <Button
         android:id="@+id/addMealIngredient"
         style="@style/addChoiceButton"
         android:textColor="@color/background_light"
-        android:text="Add Ingredient" />
-
-    <Button
-        android:id="@+id/addMealRecipe"
-        style="@style/addChoiceButton"
-        android:textColor="@color/background_light"
-        android:text= "Add Recipe" />
+        android:text="Add Meal Plan Day" />
 
 
 </LinearLayout>

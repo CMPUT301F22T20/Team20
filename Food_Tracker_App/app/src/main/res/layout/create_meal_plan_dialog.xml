@@ -42,13 +42,13 @@
         android:endYear="2100"
         android:startYear="2022" />
 
-    <EditText
-        android:id="@+id/editTextNumber"
-        style = "@style/inputField"
-        android:layout_gravity="center_horizontal"
-        android:ems="10"
-        android:hint="Enter the number of meals"
-        android:inputType="number" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:text="WARNING: This will erase your current meal plan. If you want to extend your meal plan, choose the Add Meal Plan Day button instead" />
 
 
 </LinearLayout>

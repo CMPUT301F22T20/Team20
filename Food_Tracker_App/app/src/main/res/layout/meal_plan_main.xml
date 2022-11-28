@@ -10,20 +10,33 @@
         android:id="@+id/topBarContainerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/sort_spinnerMP"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/top_bar" />
 
-    <ScrollView
-        android:id="@+id/MealPlanContent"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/meal_plan_nav_bar"
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/sort_spinnerMP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:popupBackground="@color/background_light"
+        app:layout_constraintBottom_toTopOf="@+id/MealPlanContent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBarContainerView">
+        app:layout_constraintTop_toBottomOf="@+id/topBarContainerView"
+        tools:layout="@layout/sort" />
 
+    <ScrollView
+        android:id="@+id/MealPlanContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/meal_plan_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sort_spinnerMP">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,13 +44,12 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mealPlanDays"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tools:layout="@layout/fragment_nav_bar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -47,9 +59,10 @@
         android:id="@+id/meal_plan_nav_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MealPlanContent"
         tools:layout="@layout/fragment_nav_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

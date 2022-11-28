@@ -1,6 +1,6 @@
 package com.example.foodtracker.ui.recipes;
 
-import static com.example.foodtracker.ui.recipes.AddRecipeActivity.RECIPE_KEY;
+import static com.example.foodtracker.ui.recipes.RecipeDialog.RECIPE_KEY;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,6 @@ import java.util.ArrayList;
  * This class extends {@link AppCompatActivity}
  */
 public class RecipesMainScreen extends AppCompatActivity implements
-        RecipeRecyclerViewAdapter.RecipeArrayListener,
         RecyclerViewInterface,
         TopBar.TopBarListener {
 
@@ -40,10 +39,12 @@ public class RecipesMainScreen extends AppCompatActivity implements
             deleteRecipe(recipeToDelete);
         }
     });
+
     /**
      * Allows us to sort by a selected field name and refresh the data in the view
      */
     private Sort<Recipe.FieldName, RecipeRecyclerViewAdapter, Recipe> sort;
+
     private final ActivityResultLauncher<Intent> recipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
         if (activityResult.getData() != null && activityResult.getData().getExtras() != null) {
             Recipe receivedRecipe = (Recipe) activityResult.getData().getSerializableExtra(RECIPE_KEY);
@@ -71,26 +72,14 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
         Intent intent = getIntent();
         if (getIntent().getExtras() != null) {
-            Recipe received_recipe = (Recipe) intent.getSerializableExtra("recipe_key");
-            addRecipe(received_recipe);
+            Recipe received_recipe = (Recipe) intent.getSerializableExtra("EDITED_RECIPE");
+            editRecipe(received_recipe);
         }
-
     }
-
-    @Override
-    public void onEdit(Recipe object) {
-
-    }
-
-    @Override
-    public void onDelete(Recipe object) {
-
-    }
-
 
     @Override
     public void onAddClick() {
-        Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RecipeDialog.class);
         recipeActivityResultLauncher.launch(intent);
     }
 
@@ -100,6 +89,11 @@ public class RecipesMainScreen extends AppCompatActivity implements
         Recipe recipe = recipeArrayList.get(position);
         intent.putExtra("RECIPE", recipe);
         recipeDisplayResultLauncher.launch(intent);
+    }
+
+    public void editRecipe(Recipe recipe) {
+        int editIndex = recipeArrayList.indexOf(recipe);
+        recipesCollection.updateDocument(recipe, () -> adapter.notifyItemChanged(editIndex));
     }
 
     public void deleteRecipe(Recipe recipe) {
