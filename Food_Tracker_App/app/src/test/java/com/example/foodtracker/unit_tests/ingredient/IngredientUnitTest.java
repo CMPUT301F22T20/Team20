@@ -2,6 +2,7 @@ package com.example.foodtracker.unit_tests.ingredient;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.example.foodtracker.model.ingredient.Ingredient;
@@ -11,11 +12,19 @@ import org.junit.Test;
 
 import java.util.Map;
 
+/**
+ * Test to check the functionality of Ingredient class, it's attributes and functions
+ */
 public class IngredientUnitTest {
+    /**
+     * Function to return an Ingredient object
+     * @return Object of type {@link Ingredient}
+     */
     private Ingredient getMockIngredient(){
         Ingredient mockIngredient = new Ingredient();
         return mockIngredient;
     }
+
 
     @Test
     public void testSetAndGetAmount(){
@@ -87,5 +96,15 @@ public class IngredientUnitTest {
         Ingredient mockIngredient = new Ingredient();
         mockIngredient.setUnit("GRAM");
         assertEquals(mockIngredient.getUnitAbbreviation(), "G");
+    }
+
+    @Test
+    public void testIsMissingFields(){
+        Ingredient mockIngredient = new Ingredient();
+        assertTrue(mockIngredient.isMissingFields());
+        mockIngredient.setExpiry("123");
+        assertTrue(mockIngredient.isMissingFields());
+        mockIngredient.setLocation("Pantry");
+        assertFalse(mockIngredient.isMissingFields());
     }
 }
