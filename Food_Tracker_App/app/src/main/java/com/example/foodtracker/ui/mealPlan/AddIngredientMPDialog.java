@@ -70,7 +70,7 @@ public class AddIngredientMPDialog extends DialogFragment {
 
             initializeFields(received_ingredient);
 
-            AlertDialog dialog = builder.setView(view).setTitle("Add Meal plan ingredient")
+            AlertDialog dialog = builder.setView(view).setTitle("Add ingredient to meal plan")
                     .setPositiveButton("Add", null)
                     .create();
 

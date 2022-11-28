@@ -60,7 +60,7 @@ public class singleMealPlanDialog extends DialogFragment {
 
         final AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
-                .setTitle("Create meal plan")
+                .setTitle("Add meal plan day")
                 .setPositiveButton("Add", null)
                 .setNegativeButton("Cancel", null)
                 .create();
