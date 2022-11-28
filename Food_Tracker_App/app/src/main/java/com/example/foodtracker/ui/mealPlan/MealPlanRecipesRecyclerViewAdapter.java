@@ -108,7 +108,7 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
         builder.setMessage("Are you sure you want to delete this recipe from your meal plan?");
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                recipeArrayList.remove(recipe);
+                recipeArrayList.remove(position);
                 mpRecipesArrayListener.deleteRecipe(position);
             }
         });
