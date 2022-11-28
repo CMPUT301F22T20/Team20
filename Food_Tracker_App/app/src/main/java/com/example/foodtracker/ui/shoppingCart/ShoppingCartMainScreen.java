@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.ingredient.Ingredient;
-import com.example.foodtracker.model.mealplan.MealPlanDay;
+import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
 import com.example.foodtracker.ui.NavBar;
