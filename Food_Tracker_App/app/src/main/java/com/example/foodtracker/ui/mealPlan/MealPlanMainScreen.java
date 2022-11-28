@@ -14,8 +14,6 @@ import com.example.foodtracker.model.MenuItem;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
 import com.example.foodtracker.model.recipe.Recipe;
-import com.example.foodtracker.model.ingredient.Ingredient;
-import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
 import com.example.foodtracker.ui.Sort;
 import com.example.foodtracker.ui.TopBar;
@@ -59,7 +57,6 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_main);
         initializeSort();
-        //initializeData();
 
         if (savedInstanceState == null){
             createRecyclerView();
@@ -86,16 +83,6 @@ public class MealPlanMainScreen extends AppCompatActivity implements
             }
         }
 
-    }
-
-    /**
-     * Adds some initial data to the list
-     */
-    private void initializeData() {
-        mealPlanDaysCollection.getAll(list -> {
-            mealPlanDayArrayList.addAll(list);
-            adapter.notifyItemRangeInserted(0, mealPlanDayArrayList.size());
-        });
     }
 
     private void createRecyclerView() {
