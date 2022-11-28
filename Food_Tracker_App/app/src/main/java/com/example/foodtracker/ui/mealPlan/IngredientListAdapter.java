@@ -47,7 +47,7 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
 
         ingredientName.setText(ingredient.getDescription());
         ingredientAmount.setText(String.format("Quantity: %s %s",
-                ingredient.getAmount(), ingredient.getUnit()));
+                ingredient.getAmount(), ingredient.getUnitAbbreviation()));
         ingredientLocation.setText(ingredient.getLocation());
         ingredientCategory.setText(ingredient.getCategory());
         ingredientDate.setText(ingredient.getExpiry());
