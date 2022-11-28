@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.Category;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
@@ -158,6 +159,11 @@ public class RecipeDialog extends AppCompatActivity implements
     @Override
     public void editRecipeIngredient(SimpleIngredient ingredient) {
         adapter.notifyItemChanged(ingredientList.indexOf(ingredient));
+    }
+
+    @Override
+    public void addMealPlanIngredient(Ingredient ingredient) {
+        //do nothing
     }
 
     @Override
