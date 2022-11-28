@@ -3,83 +3,61 @@ package com.example.foodtracker.model.ingredient;
 
 import com.example.foodtracker.model.Document;
 import com.example.foodtracker.model.DocumentableFieldName;
+import com.example.foodtracker.model.IngredientUnit.IngredientAmount;
+import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class creates an object to represent an Ingredient with:
- * Description of the Ingredient
- * Cost of the Ingredient
- * Location of the Ingredient
- * Category of the Ingredient
- * Amount of the Ingredient
- * Expiry Date of the Ingredient
+ * Represents an ingredient in our storage
  * {@link Document} allows objects to be used as Firebase instances
  */
-public class Ingredient extends Document implements Serializable {
-
-    public static String INGREDIENTS_COLLECTION_NAME = "Ingredients";
-    /**
-     * This variable is private and holds the description for an ingredient of type {@link String}
-     */
-    private String description = "";
-    /**
-     * Represents what quantity unit we have of this ingredient (i.e. kg, bags)
-     */
-    private String unit;
-    /**
-     * This variable is private and holds the location for an ingredient of type {@link String}
-     */
-    private String location = "";
-    /**
-     * This variable is private and holds the category for an ingredient of type {@link String}
-     */
-    private String category = "";
-    /**
-     * This variable is private and holds the amount for an ingredient of type {@link Integer}
-     */
-    private double amount = 0;
-    /**
-     * This variable is private and holds the expiry for an ingredient of type {@link String}
-     */
-    private String expiry = "";
+public class Ingredient extends Document {
 
     /**
-     * This is an empty constructor to instantiate an {@link Ingredient} object
+     * Represents the collection name in Firebase
      */
+    public static String INGREDIENTS_COLLECTION_NAME = "Ingredients-V1.0.0";
+    /**
+     * Represents the amount we have of this ingredient
+     */
+    private final IngredientAmount ingredientAmount = new IngredientAmount();
+    /**
+     * The name of the ingredient
+     */
+    private String description;
+    /**
+     * Represents where this ingredient is stored
+     */
+    private Location location = new Location();
+
+    /**
+     * Represents what category we lump this ingredient into, i.e. Fruit
+     */
+    private Category category = new Category();
+
+    /**
+     * Represents the expiry date of our ingredient
+     */
+    private String expiry;
+
     public Ingredient() {
     }
 
-    /**
-     * This is a constructor to instantiate a {@link Ingredient} object
-     *
-     */
-    public Ingredient(SimpleIngredient simpleIngredient) {
-        setDescription(simpleIngredient.getDescription());
-        setUnit(simpleIngredient.getUnit());
-        setCategory(simpleIngredient.getCategoryName());
-        setAmount(simpleIngredient.getAmountQuantity());
+    public Ingredient(SimpleIngredient ingredient) {
+        setAmount(ingredient.getAmountQuantity());
+        setUnit(ingredient.getUnit());
+        setDescription(ingredient.getDescription());
+        setCategory(ingredient.getCategoryName());
     }
 
-    /**
-     * This function returns the collection name for the class of ingredients
-     *
-     * @return This is the name of the collection of ingredients of type {@link String}
-     */
     @Override
     public String getCollectionName() {
         return INGREDIENTS_COLLECTION_NAME;
     }
 
-    /**
-     * This function returns key value pair of an ingredient as "Description: #descriptionofingredient""
-     * This function is the implementation of a function from the interface {@link Document}
-     *
-     * @return This is the key-value pair of type {@link Map}
-     */
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> data = new HashMap<>();
@@ -92,108 +70,64 @@ public class Ingredient extends Document implements Serializable {
         return data;
     }
 
-    /**
-     * This function returns the amount of the ingredient
-     *
-     * @return This is the amount which is of type {@link Integer}
-     */
     public double getAmount() {
-        return amount;
+        return ingredientAmount.getAmount();
     }
 
-    /**
-     * This function sets the amount of the ingredient
-     *
-     * @param amount This is the amount which is of type {@link Integer}
-     */
     public void setAmount(double amount) {
-        this.amount = amount;
+        this.ingredientAmount.setAmount(amount);
     }
 
-    /**
-     * This function returns the category of the ingredient
-     *
-     * @return This is the category which is of type {@link String}
-     */
     public String getCategory() {
-        return category;
+        return category.getName();
     }
 
-    /**
-     * This function sets the category of the ingredient
-     *
-     * @param category This is the amount which is of type {@link String}
-     */
     public void setCategory(String category) {
-        this.category = category;
+        this.category = new Category(category);
     }
 
-    /**
-     * This function returns the description of the ingredient
-     *
-     * @return This is the description which is of type {@link String}
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * This function sets the description of the ingredient
-     *
-     * @param description This is the description which is of type {@link String}
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * This function returns the location of the ingredient
-     *
-     * @return This is the location which is of type {@link String}
-     */
     public String getLocation() {
-        return location;
+        return location.getName();
     }
 
-    /**
-     * This function sets the location of the ingredient
-     *
-     * @param location This is the location which is of type {@link String}
-     */
     public void setLocation(String location) {
-        this.location = location;
+        this.location = new Location(location);
     }
 
-    /**
-     * This function returns the unit of the ingredient
-     */
     public String getUnit() {
-        return unit;
+        return this.ingredientAmount.getUnit().toString();
     }
 
-    /**
-     * This function sets the unit of the ingredient
-     */
-    public void setUnit(String cost) {
-        this.unit = cost;
+    public void setUnit(String unit) {
+        this.ingredientAmount.setUnit(IngredientUnit.valueOf(unit));
     }
 
-    /**
-     * This function returns the expiry date of the ingredient
-     *
-     * @return This is the expiry date which is of type {@link String}
-     */
+    public String getUnitAbbreviation() {
+        return this.ingredientAmount.getUnit().getUnitAbbreviation();
+    }
+
     public String getExpiry() {
         return expiry;
     }
 
-    /**
-     * This function sets the expiry of the ingredient
-     *
-     * @param expiry This is the expiry which is of type {@link String}
-     */
     public void setExpiry(String expiry) {
         this.expiry = expiry;
+    }
+
+    /**
+     * Returns true if certain fields are missing on the ingredient
+     * notably checks the fields that will not be set when creating an ingredient from a {@link SimpleIngredient}
+     */
+    public boolean isMissingFields() {
+        return location.getName().isEmpty() || expiry.isEmpty();
     }
 
     /**

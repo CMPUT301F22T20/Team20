@@ -3,9 +3,11 @@ package com.example.foodtracker.ui.ingredients.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -19,6 +21,7 @@ import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.ingredient.Category;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.ingredient.Location;
+import com.example.foodtracker.model.recipe.SimpleIngredient;
 import com.example.foodtracker.utils.Collection;
 
 import java.text.ParseException;
@@ -30,7 +33,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class IngredientDialog extends DialogFragment {
+public class IngredientDialog extends DialogFragment implements DialogInterface.OnDismissListener {
+
+    public static final String INGREDIENT_DIALOG_TAG = "ADD_INGREDIENT";
 
     private EditText description;
     private EditText quantity;
@@ -45,7 +50,6 @@ public class IngredientDialog extends DialogFragment {
     private ArrayAdapter<String> locationAdapter;
     private final Collection<Location> locationCollection = new Collection<>(Location.class, new Location());
     private final List<String> locations = new ArrayList<>();
-
 
     private Spinner category;
     private ArrayAdapter<String> categoryAdapter;
@@ -74,7 +78,10 @@ public class IngredientDialog extends DialogFragment {
      * Retrieves locations and categories from firestore and populates a string array with the content,
      * initializes the unit dropdown from {@link com.example.foodtracker.model.IngredientUnit.IngredientUnit} values
      */
-    private void initializeDropdowns(@Nullable Ingredient ingredient) {
+    private void refreshDropdowns(@Nullable Ingredient ingredient) {
+        categories.clear();
+        locations.clear();
+        ingredientUnits.clear();
         categoryCollection.getAll(list -> {
             for (Category category : list) {
                 categories.add(category.getName().toUpperCase());
@@ -132,23 +139,61 @@ public class IngredientDialog extends DialogFragment {
 
         expiry = view.findViewById(R.id.datePicker);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        Button locationButton = view.findViewById(R.id.add_location);
+        locationButton.setOnClickListener(v ->
+            new AddLocationDialog(this).show(getParentFragmentManager(), "Add_location"));
+        Button categoryButton = view.findViewById(R.id.add_ingredient_category);
+        categoryButton.setOnClickListener(v ->
+            new AddCategoryDialog(this).show(getParentFragmentManager(), "Add_Category"));
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         if (getArguments() != null) {
             Bundle selectedBundle = getArguments();
             ingredientToEdit = (Ingredient) selectedBundle.get("ingredient");
-            initializeIngredient(ingredientToEdit);
-            initializeDropdowns(ingredientToEdit);
-            return builder.setView(view).setTitle("Edit ingredient")
-                    .setNegativeButton("Cancel", null)
-                    .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
-                    .create();
+            return initializeEditIngredientDialog(view, builder);
         }
-        initializeDropdowns(null);
-        return builder.setView(view).setTitle("Add an ingredient")
+        return initializeAddIngredientDialog(view, builder);
+    }
+
+    @NonNull
+    private AlertDialog initializeEditIngredientDialog(View view, AlertDialog.Builder builder) {
+        initializeIngredient(ingredientToEdit);
+        refreshDropdowns(ingredientToEdit);
+        AlertDialog dialog = builder
+                .setView(view)
+                .setTitle("Edit ingredient")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Add", (dialogInterface, i) -> addClick())
-                .create();
+                .setPositiveButton("Edit", null).create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> {
+                if (editClick(ingredientToEdit)) {
+                    dialog.dismiss();
+                }
+            });
+        });
+        return dialog;
+    }
+
+    @NonNull
+    private AlertDialog initializeAddIngredientDialog(View view, AlertDialog.Builder builder) {
+        refreshDropdowns(null);
+        AlertDialog dialog = builder
+                .setView(view)
+                .setTitle("Add ingredient")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Add", null).create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> {
+                if (addClick()) {
+                    dialog.dismiss();
+                }
+            });
+        });
+        return dialog;
     }
 
     public void initializeIngredient(Ingredient ingredient) {
@@ -157,31 +202,48 @@ public class IngredientDialog extends DialogFragment {
         setDatePicker(ingredient);
     }
 
-    public void editClick(Ingredient ingredient) {
-        setIngredientFields(ingredient);
-        listener.onIngredientEdit(ingredient);
-    }
-
-    public void addClick() {
-        Ingredient ingredient = new Ingredient();
-        setIngredientFields(ingredient);
-        listener.onIngredientAdd(ingredient);
-    }
-
-    private void setIngredientFields(Ingredient ingredient) {
-        ingredient.setDescription(description.getText().toString());
-        String quantityString = quantity.getText().toString();
-        int quantity = 1;
-        try {
-            quantity = Integer.parseInt(quantityString);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+    public boolean editClick(Ingredient ingredient) {
+        if (setIngredientFields(ingredient)) {
+            listener.onIngredientEdit(ingredient);
+            return true;
         }
-        ingredient.setAmount(quantity);
+        return false;
+    }
+
+    public boolean addClick() {
+        Ingredient ingredient = new Ingredient();
+        if (setIngredientFields(ingredient)) {
+            listener.onIngredientAdd(ingredient);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean setIngredientFields(Ingredient ingredient) {
+        if (description.getText().length() == 0) {
+            description.setError("Description is required!");
+            return false;
+        } else {
+            ingredient.setDescription(description.getText().toString());
+        }
+
+        if (quantity.getText().length() == 0) {
+            quantity.setError("Quantity is required!");
+            return false;
+        } else {
+            int quantity = 1;
+            try {
+                quantity = Integer.parseInt(this.quantity.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            ingredient.setAmount(quantity);
+        }
         ingredient.setUnit(unit.getSelectedItem().toString());
         ingredient.setLocation(location.getSelectedItem().toString());
         ingredient.setCategory(category.getSelectedItem().toString());
         ingredient.setExpiry(String.format(Locale.CANADA, "%02d-%02d-%d",  expiry.getDayOfMonth(),expiry.getMonth() + 1, expiry.getYear()));
+        return true;
     }
 
     private void setDatePicker(Ingredient ingredient) {
@@ -197,6 +259,10 @@ public class IngredientDialog extends DialogFragment {
         this.expiry.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        refreshDropdowns(ingredientToEdit);
+    }
 
     /**
      * A listener interface which provides callbacks to interact with events occuring in the dialog

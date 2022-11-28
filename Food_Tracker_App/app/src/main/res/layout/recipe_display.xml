@@ -45,9 +45,9 @@
             <ImageView
                 android:id="@+id/recipe_display_image"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:background="@color/background_light"
+                android:background="@color/background_dark"
                 android:contentDescription="@string/recipe_image_description"
                 android:paddingVertical="16dp"
                 android:maxHeight="200dp"

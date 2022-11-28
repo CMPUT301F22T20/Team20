@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:importantForAutofill="noExcludeDescendants">
+    android:importantForAutofill="noExcludeDescendants"
+    tools:ignore="NestedWeights">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,22 +13,118 @@
         android:orientation="vertical"
         android:scrollbars="vertical">
 
-        <ImageView
-            android:id="@+id/recipe_image"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/topBarContainerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/recipe_image_description" />
+            tools:layout="@layout/top_bar" />
 
-        <ImageButton
-            android:id="@+id/recipe_image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:background="@drawable/circular_background"
-            android:contentDescription="@string/add_recipe_image_description"
-            android:src="@drawable/ic_baseline_camera_alt_24" />
+        <!-- Image and modification -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/recipe_image"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:adjustViewBounds="true"
+                android:background="@color/background_dark"
+                android:contentDescription="@string/recipe_image_description"
+                android:maxHeight="160dp"
+                android:paddingVertical="64dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:background="@color/background_light"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/recipe_add_image_from_camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/circular_background"
+                        android:contentDescription="@string/add_recipe_image_description"
+                        android:src="@drawable/ic_baseline_camera_alt_24"
+                        app:tint="@color/background_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_from_camera"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/recipe_add_image_from_gallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/circular_background"
+                        android:contentDescription="@string/add_recipe_image_description"
+                        android:src="@drawable/ic_baseline_image_search_24"
+                        app:tint="@color/background_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_from_gallery"
+                        android:textAlignment="center" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/recipe_remove_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/circular_background"
+                        android:contentDescription="@string/remove_image_from_recipe"
+                        android:src="@drawable/ic_baseline_delete_24"
+                        app:tint="@color/background_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/remove_image"
+                        android:textAlignment="center" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,22 +244,22 @@
             android:id="@+id/no_ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/primary"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/no_ingredients"/>
+            android:text="@string/no_ingredients"
+            android:textColor="@color/primary" />
 
         <LinearLayout
             android:id="@+id/ingredientHeaders"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginHorizontal="16dp"
             android:background="@color/primary_dark"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="16dp"
             android:paddingHorizontal="8dp"
             android:paddingVertical="16dp"
-            android:weightSum="1"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/recipeDisplayDescriptionHeader"
