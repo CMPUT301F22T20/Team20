@@ -231,9 +231,9 @@ public class IngredientDialog extends DialogFragment implements DialogInterface.
             quantity.setError("Quantity is required!");
             return false;
         } else {
-            int quantity = 1;
+            double quantity = 1;
             try {
-                quantity = Integer.parseInt(this.quantity.getText().toString());
+                quantity = Double.parseDouble(this.quantity.getText().toString());
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
