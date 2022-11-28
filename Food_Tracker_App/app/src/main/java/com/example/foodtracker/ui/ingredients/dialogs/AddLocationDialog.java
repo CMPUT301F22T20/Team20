@@ -43,18 +43,24 @@ public class AddLocationDialog extends DialogFragment {
                 .setPositiveButton("Add", null).create();
         dialog.setOnShowListener(dialogInterface -> {
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(v -> {
-                Location location = new Location(listItem.getText().toString());
-                locationCollection.exists(location, result -> {
-                    if (Boolean.FALSE.equals(result)) {
-                        locationCollection.createDocument(location, this::dismiss);
-                    } else {
-                        listItem.setError("Location already exists");
-                    }
-                });
-            });
+            button.setOnClickListener(v -> submitLocation());
         });
         return dialog;
+    }
+
+    private void submitLocation() {
+        Location location = new Location(listItem.getText().toString());
+        if (location.getName().isEmpty()) {
+            listItem.setError("Location is required!");
+            return;
+        }
+        locationCollection.exists(location, result -> {
+            if (Boolean.FALSE.equals(result)) {
+                locationCollection.createDocument(location, this::dismiss);
+            } else {
+                listItem.setError("Location already exists");
+            }
+        });
     }
 
     @Override

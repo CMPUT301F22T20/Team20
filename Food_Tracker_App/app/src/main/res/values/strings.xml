@@ -67,4 +67,6 @@
     <string name="add_recipe">Add recipe</string>
     <string name="remove_image_from_recipe">Remove image from recipe</string>
     <string name="remove_image">Remove image</string>
+    <string name="warning_icon_notifying_missing_information_on_the_ingredient">Warning icon notifying missing information on the ingredient</string>
+    <string name="missing_fields">Missing fields</string>
 </resources>
