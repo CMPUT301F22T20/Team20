@@ -18,6 +18,9 @@ import com.example.foodtracker.model.recipe.SimpleIngredient;
 
 import java.util.ArrayList;
 
+/**
+ * This is a custom adapter for the recycler view for ingredients inside the recipe
+ */
 public class RecipeIngredientsRecyclerViewAdapter extends RecyclerView.Adapter<RecipeIngredientsRecyclerViewAdapter.RecipeIngredientHolder> {
 
     /**

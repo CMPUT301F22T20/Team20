@@ -33,6 +33,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+
+/**
+ * An object of this class represents a dialog used to add a new {@link Ingredient}
+ */
 public class IngredientDialog extends DialogFragment implements DialogInterface.OnDismissListener {
 
     public static final String INGREDIENT_DIALOG_TAG = "ADD_INGREDIENT";

@@ -16,6 +16,10 @@ import com.example.foodtracker.R;
 import com.example.foodtracker.model.ingredient.Location;
 import com.example.foodtracker.utils.Collection;
 
+/**
+ * An object of this represents the dialog created to add a new Ingredient location
+ * This class extends from {@link DialogFragment}
+ */
 public class AddLocationDialog extends DialogFragment {
 
     private final Collection<Location> locationCollection = new Collection<>(Location.class, new Location());

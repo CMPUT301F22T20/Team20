@@ -78,7 +78,7 @@ public class singleMealPlanDialog extends DialogFragment {
                         Calendar singleMPDay= Calendar.getInstance();
                         singleMPDay.set(singleDate.getYear(), singleDate.getMonth(), singleDate.getDayOfMonth());
                         String entryDay = String.format(Locale.CANADA, "%02d-%02d-%d",
-                                singleDate.getMonth() + 1,singleDate.getDayOfMonth(), singleDate.getYear());
+                                singleDate.getMonth(),singleDate.getDayOfMonth(), singleDate.getYear());
 
                         if (singleMPDatesListener.isInList(entryDay) == false){
                             setDay(singleMPDay);

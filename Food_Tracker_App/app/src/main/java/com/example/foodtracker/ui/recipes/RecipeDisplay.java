@@ -24,6 +24,10 @@ import com.example.foodtracker.utils.BitmapUtil;
 
 import java.util.Locale;
 
+/**
+ * An object of this class is used to represent an activity which is opened when a recipe is clicked
+ * This class extends from {@link AppCompatActivity}
+ */
 public class RecipeDisplay extends AppCompatActivity {
 
     private final ActivityResultLauncher<Intent> editRecipeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
@@ -35,6 +39,8 @@ public class RecipeDisplay extends AppCompatActivity {
         }
     });
 
+    //private ArrayAdapter<Ingredient> adapter;
+    private RecipeIngredientsRecyclerViewAdapter adapter;
     private Recipe recipe;
 
     @Override

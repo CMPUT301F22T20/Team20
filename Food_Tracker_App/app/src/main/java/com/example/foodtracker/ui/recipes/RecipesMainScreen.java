@@ -77,12 +77,21 @@ public class RecipesMainScreen extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Called when add button is clicked
+     * Starts a new activity {@link RecipeDialog} to add a new recipe
+     */
     @Override
     public void onAddClick() {
         Intent intent = new Intent(getApplicationContext(), RecipeDialog.class);
         recipeActivityResultLauncher.launch(intent);
     }
 
+    /**
+     * Called When an item in recylerview is clicked
+     * Starts a new {@link RecipeDisplay} activity that displays recipe details
+     * @param position
+     */
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getApplicationContext(), RecipeDisplay.class);
@@ -91,11 +100,19 @@ public class RecipesMainScreen extends AppCompatActivity implements
         recipeDisplayResultLauncher.launch(intent);
     }
 
+    /**
+     * Editing recipe in Firebase
+     * @param recipe The edited {@link Recipe}
+     */
     public void editRecipe(Recipe recipe) {
         int editIndex = recipeArrayList.indexOf(recipe);
         recipesCollection.updateDocument(recipe, () -> adapter.notifyItemChanged(editIndex));
     }
 
+    /**
+     * Deleting recipe in Firebase
+     * @param recipe The {@link Recipe} to be deleted
+     */
     public void deleteRecipe(Recipe recipe) {
         int removedIndex = recipeArrayList.indexOf(recipe);
         recipeArrayList.remove(removedIndex);
@@ -104,6 +121,10 @@ public class RecipesMainScreen extends AppCompatActivity implements
 
     }
 
+    /**
+     * Adding recipe to Firebase
+     * @param recipe The {@link Recipe} to be added
+     */
     private void addRecipe(Recipe recipe) {
         recipeArrayList.add(recipe);
         recipesCollection.createDocument(recipe, () -> {
@@ -118,13 +139,16 @@ public class RecipesMainScreen extends AppCompatActivity implements
         recipeRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Instantiates Navigaton bar fragment for the Recipe Menu
+     */
     private void createNavbar() {
         NavBar navBar = NavBar.newInstance(MenuItem.RECIPES);
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.recipes_nav_bar, navBar).commit();
     }
 
     /**
-     * Instantiates the top bar fragment for the ingredients menu
+     * Instantiates the top bar fragment for the Recipe menu
      */
     private void createTopBar() {
         TopBar topBar = TopBar.newInstance("Recipes", true, false);
@@ -134,6 +158,9 @@ public class RecipesMainScreen extends AppCompatActivity implements
                 .commit();
     }
 
+    /**
+     * Instantiates sorting bar fragment for the Recipe Menu
+     */
     private void initializeSort() {
         sort = new Sort<>(this.recipesCollection, this.adapter, this.recipeArrayList, Recipe.FieldName.class);
         getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).replace(R.id.sort_spinnerRecipe, sort).commit();
