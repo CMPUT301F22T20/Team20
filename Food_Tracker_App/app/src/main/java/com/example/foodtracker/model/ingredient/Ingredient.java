@@ -116,6 +116,14 @@ public class Ingredient extends Document {
     }
 
     /**
+     * Returns true if certain fields are missing on the ingredient
+     * notably checks the fields that will not be set when creating an ingredient from a {@link SimpleIngredient}
+     */
+    public boolean isMissingFields() {
+        return location.getName().isEmpty() || expiry.isEmpty();
+    }
+
+    /**
      * Contains the names of the ingredient class fields
      */
     public enum FieldName implements DocumentableFieldName {
