@@ -48,8 +48,8 @@ public class MealPlanMainScreen extends AppCompatActivity implements TopBar.TopB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_main);
-        initializeData();
         initializeSort();
+       // initializeData();
 
 
         if (savedInstanceState == null){

@@ -50,7 +50,7 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
         holder.description.setText(ingredient.getDescription());
         holder.category.setText(String.format("%s", ingredient.getCategory()));
         holder.amount.setText(String.format("Quantity: %s", ingredient.getAmount()));
-        holder.unit.setText(ingredient.getUnit());
+        holder.unit.setText(ingredient.getUnitAbbreviation());
 
     }
 
