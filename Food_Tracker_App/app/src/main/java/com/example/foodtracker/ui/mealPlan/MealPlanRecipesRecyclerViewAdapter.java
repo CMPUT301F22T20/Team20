@@ -24,6 +24,7 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
 
     public interface MPRecipesArrayListener{
         void deleteRecipe(int recipePosition);
+        void scaleRecipe(int recipePosition);
     }
     private MealPlanRecipesRecyclerViewAdapter.MPRecipesArrayListener mpRecipesArrayListener;
 
@@ -82,6 +83,13 @@ public class MealPlanRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Mea
                 Recipe recipe = recipeArrayList.get(getAdapterPosition());
                 confirmRecipeDelete(itemView.getContext(),recipe,getAdapterPosition());
 
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mpRecipesArrayListener.scaleRecipe(getAdapterPosition());
+                }
             });
 
         }

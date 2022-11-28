@@ -125,7 +125,6 @@ public class Ingredient extends Document {
         CATEGORY("category", true),
         AMOUNT("amount", false),
         EXPIRY("expiry", true);
-
         private final String name;
         private final boolean sortable;
 

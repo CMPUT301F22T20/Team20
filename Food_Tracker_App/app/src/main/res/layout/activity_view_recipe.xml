@@ -19,7 +19,7 @@
         android:id="@+id/RecipeContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/recipeDeleteButton"
+        app:layout_constraintBottom_toTopOf="@id/recipeReturnButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBarContainerView">
@@ -45,9 +45,9 @@
             <ImageView
                 android:id="@+id/recipe_display_image"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:background="@color/background_dark"
+                android:background="@color/background_light"
                 android:contentDescription="@string/recipe_image_description"
                 android:paddingVertical="16dp"
                 android:maxHeight="200dp"
@@ -201,12 +201,12 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/recipeDeleteButton"
+        android:id="@+id/recipeReturnButton"
         style="@style/textButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="DELETE"
+        android:text="BACK"
         app:backgroundTint="@color/negative"
         app:layout_constraintBottom_toTopOf="@id/recipe_display_nav_bar"
         app:layout_constraintEnd_toStartOf="@id/recipeEditButton"
@@ -223,7 +223,7 @@
         app:backgroundTint="@color/positive"
         app:layout_constraintBottom_toTopOf="@id/recipe_display_nav_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/recipeDeleteButton"
+        app:layout_constraintStart_toEndOf="@id/recipeReturnButton"
         app:layout_constraintTop_toBottomOf="@id/RecipeContent" />
 
     <androidx.fragment.app.FragmentContainerView

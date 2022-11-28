@@ -23,6 +23,7 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
 
     public interface MPIngredientArrayListener{
         void deleteIngredient(int ingredientPosition);
+        void scaleIngredient(int ingredientPosition);
     }
 
    private MPIngredientArrayListener mpIngredientArrayListener;
@@ -80,6 +81,16 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
                 confirmIngredientDelete(itemView.getContext(),ingredient,getAdapterPosition());
             });
 
+            /**
+             * change amount of ingredient
+             */
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mpIngredientArrayListener.scaleIngredient(getAdapterPosition());
+                }
+            });
+
         }
     }
 
@@ -97,4 +108,5 @@ public class MealPlanIngredientsRecyclerViewAdapter extends RecyclerView.Adapter
         builder.setNegativeButton("Cancel",null);
         builder.show();
     }
+
 }

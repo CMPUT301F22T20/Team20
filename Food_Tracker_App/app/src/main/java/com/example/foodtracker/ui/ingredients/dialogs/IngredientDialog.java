@@ -151,16 +151,38 @@ public class IngredientDialog extends DialogFragment implements DialogInterface.
             ingredientToEdit = (Ingredient) selectedBundle.get("ingredient");
             initializeIngredient(ingredientToEdit);
             refreshDropdowns(ingredientToEdit);
-            return builder.setView(view).setTitle("Edit ingredient")
+
+            AlertDialog dialog = builder.setView(view).setTitle("Edit ingredient")
                     .setNegativeButton("Cancel", null)
-                    .setPositiveButton("Edit", (dialogInterface, i) -> editClick(ingredientToEdit))
+                    .setPositiveButton("Add", null)
                     .create();
+
+            dialog.setOnShowListener(dialogInterface -> {
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(v -> {
+                    if (editClick(ingredientToEdit)) {
+                        dialog.dismiss();
+                    }
+                });
+            });
+
+            return dialog;
         }
         refreshDropdowns(null);
-        return builder.setView(view).setTitle("Add an ingredient")
+        AlertDialog dialog = builder.setView(view).setTitle("Add an ingredient")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Add", (dialogInterface, i) -> addClick())
+                .setPositiveButton("Add", null)
                 .create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> {
+                if (addClick()) {
+                    dialog.dismiss();
+                }
+            });
+        });
+        return dialog;
     }
 
     public void initializeIngredient(Ingredient ingredient) {
@@ -169,23 +191,36 @@ public class IngredientDialog extends DialogFragment implements DialogInterface.
         setDatePicker(ingredient);
     }
 
-    public void editClick(Ingredient ingredient) {
-        setIngredientFields(ingredient);
-        listener.onIngredientEdit(ingredient);
+    public Boolean editClick(Ingredient ingredient) {
+        Boolean valid = setIngredientFields(ingredient);
+        if (valid) {
+            listener.onIngredientEdit(ingredient);
+        }
+        return valid;
     }
 
-    public void addClick() {
+    public Boolean addClick() {
         Ingredient ingredient = new Ingredient();
-        setIngredientFields(ingredient);
-        listener.onIngredientAdd(ingredient);
+        Boolean valid = setIngredientFields(ingredient);
+        if (valid) {
+            listener.onIngredientAdd(ingredient);
+        }
+        return valid;
     }
 
-    private void setIngredientFields(Ingredient ingredient) {
-        ingredient.setDescription(description.getText().toString());
+    private Boolean setIngredientFields(Ingredient ingredient) {
+        Boolean valid = true;
+        String ingredient_description = description.getText().toString();
+        ingredient.setDescription(ingredient_description);
+        if (ingredient_description.isEmpty()) {
+            description.setError("Invalid amount");
+            return false;
+        }
+
         String quantityString = quantity.getText().toString();
-        int quantity = 1;
+        double quantity = 0;
         try {
-            quantity = Integer.parseInt(quantityString);
+            quantity = Double.parseDouble(quantityString);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -194,6 +229,8 @@ public class IngredientDialog extends DialogFragment implements DialogInterface.
         ingredient.setLocation(location.getSelectedItem().toString());
         ingredient.setCategory(category.getSelectedItem().toString());
         ingredient.setExpiry(String.format(Locale.CANADA, "%02d-%02d-%d",  expiry.getDayOfMonth(),expiry.getMonth() + 1, expiry.getYear()));
+
+        return valid;
     }
 
     private void setDatePicker(Ingredient ingredient) {

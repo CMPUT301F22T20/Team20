@@ -94,7 +94,7 @@ public class RecipeIngredientDialog extends DialogFragment {
         refreshDropdowns(null);
         AlertDialog dialog = builder
                 .setView(view)
-                .setTitle("Add an ingredient")
+                .setTitle("Add ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", null).create();
 
@@ -116,9 +116,9 @@ public class RecipeIngredientDialog extends DialogFragment {
         refreshDropdowns(ingredientToEdit);
         AlertDialog dialog = builder
                 .setView(view)
-                .setTitle("Add an ingredient")
+                .setTitle("Edit ingredient")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Add", null).create();
+                .setPositiveButton("Edit", null).create();
         dialog.setOnShowListener(dialogInterface -> {
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(v -> {
