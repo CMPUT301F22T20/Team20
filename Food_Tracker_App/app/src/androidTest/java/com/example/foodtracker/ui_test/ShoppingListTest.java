@@ -74,11 +74,4 @@ public class ShoppingListTest {
         assertNotEquals(clickedRecipeTitle, clickedRecipeTitle2);
     }
 
-    @Test
-    public void testSortByDescription(){
-        solo.pressSpinnerItem(0,1);
-        solo.clickInList(0);
-
-    }
-
 }
