@@ -70,4 +70,8 @@
     <string name="remove_image">Remove image</string>
     <string name="warning_icon_notifying_missing_information_on_the_ingredient">Warning icon notifying missing information on the ingredient</string>
     <string name="missing_fields">Missing fields</string>
+    <string name="day">Day</string>
+    <string name="deletes_a_meal_plan_day">Deletes a meal plan day</string>
+    <string name="add_recipe_button">+ Recipe</string>
+    <string name="add_ingredient_button">+ Ingredient</string>
 </resources>
