@@ -66,20 +66,6 @@ public class IngredientUnitTest {
     }
 
     @Test
-    public void testConstructor(){
-        SimpleIngredient simpleIngredient = new SimpleIngredient();
-        simpleIngredient.setDescription("Apple");
-        simpleIngredient.setUnit("GRAM");
-        simpleIngredient.setAmount(1000);
-        simpleIngredient.setCategory("Fruit");
-        Ingredient mockIngredient = new Ingredient(simpleIngredient);
-        assertTrue(mockIngredient.getDescription() == "Apple");
-        assertTrue(mockIngredient.getUnit() == "GRAM");
-        assertTrue(mockIngredient.getCategory() == "Fruit");
-        assertTrue(mockIngredient.getAmount() == 1000);
-    }
-
-    @Test
     public void testGetData(){
         Ingredient mockIngredient = new Ingredient();
         mockIngredient.setDescription("Apple");
@@ -94,5 +80,12 @@ public class IngredientUnitTest {
         assertEquals(data.get("amount"), 350.0);
         assertTrue(data.get("category") == "Fruit");
         assertTrue(data.get("location") == "Pantry");
+    }
+
+    @Test
+    public void testGetUnitAbbreviation(){
+        Ingredient mockIngredient = new Ingredient();
+        mockIngredient.setUnit("GRAM");
+        assertEquals(mockIngredient.getUnitAbbreviation(), "G");
     }
 }
