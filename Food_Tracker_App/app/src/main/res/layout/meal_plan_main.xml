@@ -21,7 +21,6 @@
         android:id="@+id/sort_spinnerMP"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
         android:popupBackground="@color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/MealPlanContent"
         app:layout_constraintEnd_toEndOf="parent"

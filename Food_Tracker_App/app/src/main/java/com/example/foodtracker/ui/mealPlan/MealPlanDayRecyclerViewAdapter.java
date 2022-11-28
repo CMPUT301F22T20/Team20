@@ -2,12 +2,11 @@ package com.example.foodtracker.ui.mealPlan;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,24 +28,19 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
 
     private AlertDialog mDialog;
 
-    public interface MealPlanDayArrayListener{
+    public interface MealPlanDayArrayListener {
         /**
          * Handles deletion of {@link MealPlanDay} objects.
-         * @param mealPlanDay
          */
         void deleteMealPlan(MealPlanDay mealPlanDay);
 
         /**
          * Handles deletion of meal plan ingredients.
-         * @param ingredientPosition
-         * @param object
          */
         void deleteIngredient(int ingredientPosition,MealPlanDay object);
 
         /**
          * Handles deletion of meal plan recipes.
-         * @param recipePosition
-         * @param object
          */
         void deleteRecipe(int recipePosition,MealPlanDay object);
 
@@ -66,9 +60,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
     private final ArrayList<MealPlanDay> mealPlanDayArrayList;
     private final Context context;
     private final MealPlanDayArrayListener mealPlanListener;
-    private MealPlanArrayListener mealPlanArrayListener;
-
-
+    private final MealPlanArrayListener mealPlanArrayListener;
 
     MealPlanDayRecyclerViewAdapter(Context context, ArrayList<MealPlanDay> mealPlanDayArrayList) {
         this.context = context;
@@ -76,7 +68,6 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         mealPlanListener= (MealPlanDayArrayListener) context;
         mealPlanArrayListener = (MealPlanArrayListener) context;
     }
-
 
     @NonNull
     @Override
@@ -113,7 +104,7 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         MealPlanRecipesRecyclerViewAdapter childItemAdapter2 = new MealPlanRecipesRecyclerViewAdapter(mealPlanDay.getRecipes(),context,holder);
         holder.mealPlanDayRecipesList.setLayoutManager(layoutManager);
         holder.mealPlanDayRecipesList.setAdapter(childItemAdapter2);
-
+        holder.toggleTitles(mealPlanDay);
     }
 
     @Override
@@ -132,26 +123,22 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
         protected RecyclerView mealPlanDayIngredientsList = itemView.findViewById(R.id.mealPlanIngredientsList);
         protected RecyclerView mealPlanDayRecipesList = itemView.findViewById(R.id.mealPlanRecipesList);
         protected ImageButton mealPlanDayDelete = itemView.findViewById(R.id.mealPlanDeleteDayButton);
+        protected TextView ingredientsTitle = itemView.findViewById(R.id.meal_plan_ingredient_title);
+        protected TextView recipesTitle = itemView.findViewById(R.id.meal_plan_recipe_title);
 
         public MealPlanDayHolder(View itemView, MealPlanArrayListener mealPlanArrayListener) {
             super(itemView);
             Button mealPlanAddIngredientButton = itemView.findViewById(R.id.mealPlanAddIngredientButton);
             Button mealPlanAddRecipeButton = itemView.findViewById(R.id.mealPlanAddRecipeButton);
 
-            mealPlanAddIngredientButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
-                    mealPlanArrayListener.onAddIngredientClick(mealPlan);
-                }
+            mealPlanAddIngredientButton.setOnClickListener(view -> {
+                MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
+                mealPlanArrayListener.onAddIngredientClick(mealPlan);
             });
 
-            mealPlanAddRecipeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
-                    mealPlanArrayListener.onAddRecipeClick(mealPlan);
-                }
+            mealPlanAddRecipeButton.setOnClickListener(view -> {
+                MealPlanDay mealPlan = mealPlanDayArrayList.get(getAdapterPosition());
+                mealPlanArrayListener.onAddRecipeClick(mealPlan);
             });
 
             mealPlanDayDelete.setOnClickListener(onClick -> {
@@ -159,6 +146,11 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
                 confirmDelete(itemView.getContext(),mealPlan);
             });
 
+        }
+
+        public void toggleTitles(MealPlanDay mealPlanDay) {
+            recipesTitle.setVisibility(mealPlanDay.getRecipes().isEmpty() ? View.GONE : View.VISIBLE);
+            ingredientsTitle.setVisibility(mealPlanDay.getIngredients().isEmpty() ? View.GONE : View.VISIBLE);
         }
 
         @Override
@@ -188,22 +180,15 @@ public class MealPlanDayRecyclerViewAdapter extends RecyclerView.Adapter<MealPla
 
     }
 
-
     /**
      * Confirms with the user if they would like to delete a day from the meal plan
-     * @param context
-     * @param mealPlan
      */
     private void confirmDelete(Context context,MealPlanDay mealPlan){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         builder.setTitle("Delete Date");
         builder.setMessage("Are you sure you want to delete this date from your meal plan?");
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                mealPlanListener.deleteMealPlan(mealPlan);
-            }
-        });
+        builder.setPositiveButton("Confirm", (dialog, which) -> mealPlanListener.deleteMealPlan(mealPlan));
         builder.setNegativeButton("Cancel",null);
         builder.show();
     }
