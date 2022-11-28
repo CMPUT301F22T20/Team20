@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.MenuItem;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.mealPlan.MealPlanDay;
+import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.Recipe;
 import com.example.foodtracker.ui.NavBar;
+import com.example.foodtracker.ui.Sort;
 import com.example.foodtracker.ui.TopBar;
 import com.example.foodtracker.utils.Collection;
 
@@ -30,6 +33,8 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         TopBar.TopBarListener,
         MealPlanDayRecyclerViewAdapter.MealPlanDayArrayListener,
         MealPlanDayRecyclerViewAdapter.MealPlanArrayListener,
+        createMealPlanDialog.setMPDatesListener,
+        singleMealPlanDialog.setSingleMPDatesListener,
         AddIngredientMPDialog.MealPlanIngredientDialogListener
 {
     public static final String MEAL_PLAN_AFTER_INGREDIENT_ADD = "meal_plan_after_ingredient_add";
@@ -39,6 +44,7 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     private final ArrayList<MealPlanDay> mealPlanDayArrayList = new ArrayList<>();
     private final MealPlanDayRecyclerViewAdapter adapter = new MealPlanDayRecyclerViewAdapter(this, mealPlanDayArrayList);
 
+    private Sort<MealPlanDay.FieldName,MealPlanDayRecyclerViewAdapter,MealPlanDay> sort;
 
 
     public MealPlanMainScreen() {
@@ -52,10 +58,10 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_main);
-        initializeData();
+        initializeSort();
+        //initializeData();
 
-        if (savedInstanceState == null) {
-            //createData();
+        if (savedInstanceState == null){
             createRecyclerView();
             createNavBar();
             createTopBar();
@@ -92,22 +98,11 @@ public class MealPlanMainScreen extends AppCompatActivity implements
         });
     }
 
-    private void createData() {
-        ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
-        //ingredientArrayList.add(new Ingredient("apple", "", "pantry", "snack", 2, ""));
-        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-        //recipeArrayList.add(new Recipe("", "Soup", 90, 6, "Dinner", "", ingredientArrayList));
-        MealPlanDay mealPlanDay = new MealPlanDay("11-20-2022", ingredientArrayList, recipeArrayList);
-        mealPlanDayArrayList.add(mealPlanDay);
-        mealPlanDaysCollection.createDocument(mealPlanDay, () -> {
-            adapter.notifyItemInserted(mealPlanDayArrayList.indexOf(mealPlanDay));
-        });
-    }
-
     private void createRecyclerView() {
         RecyclerView mealPlanRecyclerView = findViewById(R.id.mealPlanDays);
         mealPlanRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mealPlanRecyclerView.setAdapter(adapter);
+
     }
 
     private void createNavBar(){
@@ -123,14 +118,16 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     }
 
 
+    /**
+     * Deletes a single {@link MealPlanDay} object from the meal plan.
+     */
     @Override
     public void deleteMealPlan(MealPlanDay mealPlanDay) {
         int removedIndex = mealPlanDayArrayList.indexOf(mealPlanDay);
         mealPlanDayArrayList.remove(removedIndex);
 
-
         mealPlanDaysCollection.delete(mealPlanDay, () ->
-        adapter.notifyItemRemoved(removedIndex));
+        adapter.notifyDataSetChanged());
     }
 
     /**
@@ -159,6 +156,86 @@ public class MealPlanMainScreen extends AppCompatActivity implements
     public void deleteRecipe(int recipePosition, MealPlanDay mealPlan) {
         mealPlanDaysCollection.updateDocument(mealPlan, () -> adapter.notifyDataSetChanged());
     }
+
+    /**
+     * Creates multiple {@link MealPlanDay} objects all at once, given a list of values.
+     * @param listOfDates
+     */
+
+    @Override
+    public void addMP(ArrayList<String> listOfDates) {
+
+        ArrayList<Ingredient> ingredientArrayList1 = new ArrayList<>();
+        ArrayList<Recipe> recipeArrayList1 = new ArrayList<>();
+
+
+        for (MealPlanDay clearMealPlanDay: mealPlanDayArrayList){
+            mealPlanDaysCollection.delete(clearMealPlanDay, () -> {});
+        }
+
+        if (!mealPlanDayArrayList.isEmpty()){
+            mealPlanDayArrayList.clear();
+            adapter.notifyDataSetChanged();
+        }
+
+        for (String dates: listOfDates){
+            MealPlanDay mealPlanDay = new MealPlanDay(dates, ingredientArrayList1, recipeArrayList1);
+            mealPlanDayArrayList.add(mealPlanDay);
+            mealPlanDaysCollection.createDocument(mealPlanDay, () ->
+                    { adapter.notifyDataSetChanged();
+                        sort.sortByFieldName();}
+            );
+
+        }
+    }
+
+    /**
+     * Creates a single {@link MealPlanDay} object.
+     * @param day
+     */
+
+    @Override
+    public void addSingle(String day) {
+        ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+
+        MealPlanDay mealPlanDay = new MealPlanDay(day, ingredientArrayList, recipeArrayList);
+
+        mealPlanDayArrayList.add(mealPlanDay);
+        mealPlanDaysCollection.createDocument(mealPlanDay, () ->
+                {
+                    adapter.notifyItemInserted(mealPlanDayArrayList.lastIndexOf(mealPlanDay));
+                    sort.sortByFieldName();
+                }
+        );
+    }
+
+    /**
+     * Checks if user input is in current meal plan.
+     * @param day
+     * @return
+     */
+    @Override
+    public boolean isInList(String day) {
+        ArrayList<String> mealPlanDays = new ArrayList<>();
+
+        for (MealPlanDay meal: mealPlanDayArrayList){
+                mealPlanDays.add(meal.getDay());
+        }
+        if (mealPlanDays.contains(day)){
+            return true;
+        }
+        return false;
+    }
+
+    private void initializeSort() {
+        sort = new Sort<>(this.mealPlanDaysCollection, this.adapter, this.mealPlanDayArrayList, MealPlanDay.FieldName.class);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.sort_spinnerMP, sort)
+                .commit();
+    }
+
 
     /**
      * When a ingredient in a meal plan is clicked, change the amount of ingredients

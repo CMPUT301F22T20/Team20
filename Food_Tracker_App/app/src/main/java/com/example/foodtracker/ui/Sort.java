@@ -37,7 +37,7 @@ public class Sort<E extends Enum<E> & DocumentableFieldName, A extends RecyclerV
     private final List<T> documentList;
     private final A adapter;
     private final EnumSet<E> fieldNameEnum;
-    private Query.Direction sortingDirection = Query.Direction.DESCENDING;
+    private Query.Direction sortingDirection = Query.Direction.ASCENDING;
     private String sortingFieldName;
 
     /**
@@ -122,7 +122,6 @@ public class Sort<E extends Enum<E> & DocumentableFieldName, A extends RecyclerV
                 sortingFieldName = toSort.getText().toString();
                 sortByFieldName();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 sortByFieldName();
