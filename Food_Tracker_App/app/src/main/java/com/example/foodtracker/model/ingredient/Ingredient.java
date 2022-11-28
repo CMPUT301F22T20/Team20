@@ -41,7 +41,7 @@ public class Ingredient extends Document {
     /**
      * Represents the expiry date of our ingredient
      */
-    private String expiry;
+    private String expiry = "";
 
     public Ingredient() {
     }
