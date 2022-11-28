@@ -21,6 +21,8 @@ public class Recipe extends Document {
     public Recipe() {
     }
 
+
+
     /**
      * @see <a href=https://www.geeksforgeeks.org/overriding-equals-method-in-java/%22%3EGeeks for Geeks</a>
      */

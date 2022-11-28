@@ -18,6 +18,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.foodtracker.R;
 import com.example.foodtracker.model.IngredientUnit.IngredientUnit;
 import com.example.foodtracker.model.ingredient.Category;
+import com.example.foodtracker.model.ingredient.Ingredient;
 import com.example.foodtracker.model.recipe.SimpleIngredient;
 import com.example.foodtracker.ui.ingredients.dialogs.AddCategoryDialog;
 import com.example.foodtracker.utils.Collection;
@@ -75,6 +76,9 @@ public class RecipeIngredientDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         Bundle arguments = getArguments();
         if (arguments != null) {
+            if (arguments.getSerializable("MEAL_PLAN_NEW_INGREDIENT") != null) {
+                return createAddMealPlanIngredientDialog(view, builder,arguments);
+            }
             return createEditRecipeIngredientDialog(view, builder, arguments);
         }
         return createAddRecipeIngredientDialog(view, builder);
@@ -103,6 +107,25 @@ public class RecipeIngredientDialog extends DialogFragment {
             SimpleIngredient ingredient = new SimpleIngredient();
             button.setOnClickListener(v -> {
                 if (addClick(ingredient)) {
+                    dialog.dismiss();
+                }
+            });
+        });
+        return dialog;
+    }
+
+    private AlertDialog createAddMealPlanIngredientDialog(View view, AlertDialog.Builder builder, Bundle arguments) {
+        Ingredient mealPlanIngredient = (Ingredient) arguments.get("MEAL_PLAN_NEW_INGREDIENT");
+        refreshDropdowns(null);
+        AlertDialog dialog = builder
+                .setView(view)
+                .setTitle("Add Meal Plan Ingredient")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Add", null).create();
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> {
+                if (mealPlanAddClick(mealPlanIngredient)) {
                     dialog.dismiss();
                 }
             });
@@ -175,7 +198,7 @@ public class RecipeIngredientDialog extends DialogFragment {
 
         String addQuantityStr = quantity.getText().toString();
         try {
-            int addQuantityInt = Integer.parseInt(addQuantityStr);
+            double addQuantityInt = Double.parseDouble(addQuantityStr);
             ingredient.setAmountQuantity(addQuantityInt);
         } catch (NumberFormatException e) {
             quantity.setError("Invalid amount");
@@ -228,6 +251,52 @@ public class RecipeIngredientDialog extends DialogFragment {
         return valid;
     }
 
+    /**
+     * Adds an ingredient to a meal plan, returns true if the added ingredient is valid
+     * and false otherwise
+     *
+     * @param ingredient {@link Ingredient} the ingredient to be added to a meal plan
+     * @return true if the added ingredient is valid, false otherwise
+     */
+    private boolean mealPlanAddClick(Ingredient ingredient) {
+        boolean valid = true;
+
+        String addDescription = description.getText().toString();
+        ingredient.setDescription(addDescription);
+        if (addDescription.isEmpty()) {
+            description.setError("Description must not be empty");
+            valid = false;
+        }
+
+        String addQuantityStr = quantity.getText().toString();
+        try {
+            double addQuantityDouble = Double.parseDouble(addQuantityStr);
+            ingredient.setAmount(addQuantityDouble);
+        } catch (NumberFormatException e) {
+            quantity.setError("Invalid amount");
+            valid = false;
+        }
+
+        if (unit.getSelectedItem() == null) {
+            valid = false;
+        } else {
+            ingredient.setUnit(unit.getSelectedItem().toString());
+        }
+
+        if (category.getSelectedItem() == null) {
+            valid = false;
+        } else {
+            String addCategory = category.getSelectedItem().toString();
+            ingredient.setCategory(addCategory);
+        }
+
+        if (valid) {
+            listener.addMealPlanIngredient(ingredient);
+        }
+
+        return valid;
+    }
+
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         refreshDropdowns(ingredientToEdit);
@@ -240,5 +309,7 @@ public class RecipeIngredientDialog extends DialogFragment {
         void addRecipeIngredient(SimpleIngredient ingredient);
 
         void editRecipeIngredient(SimpleIngredient ingredient);
+
+        void addMealPlanIngredient(Ingredient ingredient);
     }
 }
