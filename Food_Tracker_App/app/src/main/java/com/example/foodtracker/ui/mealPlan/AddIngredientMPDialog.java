@@ -89,7 +89,7 @@ public class AddIngredientMPDialog extends DialogFragment {
         /**
          * when editing the amount of ingredient in a meal plan
          */
-        if (getArguments().get("meal_plan_edit_ingredient") != null) {
+        else {
             Bundle bundle1 = (Bundle) getArguments().get("meal_plan_edit_ingredient");
             MealPlanDay received_meal_plan = (MealPlanDay) bundle1.get("meal_plan");
 
@@ -116,10 +116,6 @@ public class AddIngredientMPDialog extends DialogFragment {
             return dialog;
 
         }
-
-        return builder.setView(view).setTitle("Add an ingredient")
-                .setPositiveButton("Add", null)
-                .create();
 
     }
 
