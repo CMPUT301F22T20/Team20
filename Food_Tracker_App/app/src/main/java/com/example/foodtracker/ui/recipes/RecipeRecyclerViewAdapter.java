@@ -47,9 +47,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     public void onBindViewHolder(RecipeRecyclerViewAdapter.RecipeHolder holder, int position) {
         Recipe recipe = recipeArrayList.get(position);
         holder.title.setText(recipe.getTitle());
-        holder.prepTime.setText(String.format("Prep Time: %s", recipe.getPrepTime()));
-        holder.servings.setText(String.format("Servings: %s", recipe.getServings()));
-        holder.category.setText(String.format("Category: %s", recipe.getCategory()));
+        holder.prepTime.setText(String.format("%s", recipe.getPrepTime()));
+        holder.servings.setText(String.format("%s", recipe.getServings()));
+        holder.category.setText(recipe.getCategory());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         protected final TextView title = itemView.findViewById(R.id.recipe_name);
         protected final TextView prepTime = itemView.findViewById(R.id.text_recipe_preptime);
         protected final TextView servings = itemView.findViewById(R.id.text_recipe_servings);
-        protected final TextView category = itemView.findViewById(R.id.text_recipe_category);
+        protected final TextView category = itemView.findViewById(R.id.recipe_ingredient_category);
 
         public RecipeHolder(View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);

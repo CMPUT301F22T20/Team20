@@ -8,10 +8,11 @@ import java.io.Serializable;
  */
 public class IngredientAmount implements Serializable {
 
-    double amount;
+    double amount = 0;
     IngredientUnit unit;
 
-    public IngredientAmount() {}
+    public IngredientAmount() {
+    }
 
     public IngredientAmount(IngredientUnit unit, double amount) {
         this.setUnit(unit);
@@ -22,20 +23,19 @@ public class IngredientAmount implements Serializable {
         return amount;
     }
 
-    public IngredientUnit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(IngredientUnit unit) {
-        this.unit = unit;
-    }
-
-
     public void setAmount(double amount) {
         if (amount >= 0) {
             this.amount = amount;
         } else {
             throw new IllegalArgumentException("Amount must be positive");
         }
+    }
+
+    public IngredientUnit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(IngredientUnit unit) {
+        this.unit = unit;
     }
 }
