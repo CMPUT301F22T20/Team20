@@ -47,7 +47,7 @@ public class SimpleIngredient implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SimpleIngredient that = (SimpleIngredient) o;
-        return getDescription().equalsIgnoreCase(that.getDescription());
+        return getDescription().equalsIgnoreCase(that.getDescription()) && getUnit().equals(that.getUnit());
     }
 
     public String getDescription() {

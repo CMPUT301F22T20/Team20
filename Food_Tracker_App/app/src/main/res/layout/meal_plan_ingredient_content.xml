@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/mealPlanIngredientName"
             style="@style/ingredientViewText"
-            android:text="@string/ingredient_name"
+            android:text="@string/name"
             android:textSize="20sp" />
 
         <ImageButton

@@ -8,7 +8,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_nav_bar_item">A menu navbar item</string>
     <string name="plus_icon">+</string>
-    <string name="ingredient_name">Name</string>
+    <string name="name">Name</string>
     <string name="expiry_date">Expiry Date</string>
     <string name="category">Category</string>
     <string name="location">Location</string>
@@ -61,6 +61,7 @@
     <string name="remove_icon_text">X</string>
     <string name="amount_abbreviation">Amt.</string>
     <string name="no_ingredients">No ingredients</string>
+    <string name="group_arrow">Group arrow</string>
     <string name="add_from_gallery">Add from gallery</string>
     <string name="add_from_camera">Add from camera</string>
     <string name="edit_recipe">Edit recipe</string>

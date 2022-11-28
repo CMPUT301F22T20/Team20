@@ -51,6 +51,9 @@ public abstract class ConversionUtil {
         ounceConversionMap.putAll(getRelativeConversionMap(kilogramConversions, KILOGRAM_TO_OUNCE_CONVERSION));
         ounceConversionMap.putAll(getRelativeConversionMap(cupConversions, CUPS_TO_OUNCES_CONVERSION));
         conversionMaps.put(IngredientUnit.OUNCE, ounceConversionMap);
+        EnumMap<IngredientUnit, Double> unitConversionMap = new EnumMap<>(IngredientUnit.class);
+        unitConversionMap.put(IngredientUnit.UNIT, 1.0);
+        conversionMaps.put(IngredientUnit.UNIT, unitConversionMap);
         return conversionMaps;
     }
 
