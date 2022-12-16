@@ -280,4 +280,25 @@ Total = 9.11
 
 Demo ability / Polished / Clear and coherent / Motivated / Compelling, holds attention, tells a story / Coverage of features logically organized by customer usage / Well explained user interface / Easy to follow user roles / Realistic data and inputs / All members present / Team well coordinated in demo / Within time limit / No misspellings / Clear vocals from everyone / Eye contact, rarely consulting or reading notes / Involves the audience / Good and concise responses to questions
 
+##Project Part3 Updated Feedback
 
+
+### Object Oriented DESIGN
+2 = 
+"There are many set of classes that are stand alone. which means that they won't have a relationship with other set of classes, I don't think this is the case for example category which is composed in ingredient but this relation is not shown in uml.
+• Clean design: it is difficult to follow some connections, each box represents a class, from uml it seems that some classes are repetitive
+• Design intent is clear: yes
+• Properly OO: yes
+• Clearly separates concerns: yes but some classes are not named properly, for example why there is a class named fieldnames rather it could have been recipeParser etc
+• Layering in design, including entity, control, and boundary objects: yes
+• Comprehensive information hiding: yes
+• Proper encapsulation: yes
+• Clear classes and interfaces: yes
+• Important elements described: yes
+• Correct notation: yes
+• Neatly laid out and labeled diagrams: yes
+• Helpful explanations or commentary: yes
+• Consistent with requirements, code, tests, and documentation: not all of the classes present in code are present in uml"
+
+
+Updated Total Score = 10.0
